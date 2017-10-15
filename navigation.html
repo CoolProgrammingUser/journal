@@ -1,0 +1,11 @@
+<h2>
+	Contents
+</h2>
+<ul id="contentsList"></ul>
+<script>
+	[  // [page URL, title]
+		["/journal/", "Home"],
+	].forEach(function(pair) {
+		document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
+	});
+</script>
