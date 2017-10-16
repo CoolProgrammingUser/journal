@@ -1,3 +1,6 @@
-body {
-	/* will give a different background */
+aside::before {
+	content: attr(data-heading) "Nothing here";
+	display: block;
+	font-size: 1.5em;
+	font-weight: bold;
 }
