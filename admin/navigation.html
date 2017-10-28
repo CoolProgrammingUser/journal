@@ -1,0 +1,14 @@
+<h2>
+	Contents
+</h2>
+<ul id="contentsList"></ul>
+<script>
+	[  // [page URL, title]
+		["..", "Main website"],
+		["entries.html", "Planned entries"],
+		["syntax.html", "Coding syntax"],
+		["people.html", "People list"]
+	].forEach(function(pair) {
+		document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
+	});
+</script>
