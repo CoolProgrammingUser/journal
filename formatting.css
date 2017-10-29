@@ -11,10 +11,13 @@ a.discreet:hover {
 	text-decoration: none;
 }
 span {
-	/**
-	styles sections of text
-	*/
 	border-bottom: inherit;
+}
+li {
+	border-bottom: .1em solid #80aa80;
+}
+ol.boring li, ul.boring li {
+	border-bottom: none;
 }
 p > span {
 	/**
