@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="html-class">
+	<head>
+		<title>
+			Journal
+		</title>
+		<script src="https://epicenterprograms.github.io/standards/behavior.js"></script>
+		<script src="../behavior.js"></script>
+		<script>
+			var S = Standards;
+			S.onLoad(function() {
+				S.getTag("input").forEach(funtion(input) {
+					if (input.type == "radio") {
+						if (input.name == "truth") {
+							S.listen(input, "click", function() {
+								let color = S.getId("truthColor").getElementsByTagName("span")[0];
+								if (this.checked) {
+									let greenValue = "#00" + Math.round(255/6*(Number(this.id[1])-1)).toString(16) + "00";
+									color.innerHTML = greenValue;
+									color.style.color = greenValue;
+								} else {
+									color.innerHTML = "#";
+									color.style.color = "inherit";
+								}
+							});
+						} else if (input.name == "contentment") {
+							S.listen(input, "click", function() {
+								let text = S.getId("emotionColor").getElementsByTagName("span")[0];
+								if (this.checked && S.getName("energy", true) !== null) {
+									let contentment = Number(this.id[1]) - 1;
+									let energy = Number(S.getName("energy", true).id[2]) - 1;
+									let red = Math.round(255/6*(6-energy)).toString(16);
+									let green = Math.round(255/6*contentment).toString(16);
+									let blue = Math.round(255/6*energy).toString(16);
+									let color = "#" + red + green + blue;
+									text.innerHTML = color;
+									text.style.borderBottom = ".1em solid " + color;
+								} else {
+									text.innerHTML = "#";
+									text.style.borderBottom = "none";
+								}
+							});
+						} else if (input.name == "energy") {
+							S.listen(input, "click", function() {
+								let text = S.getId("emotionColor").getElementsByTagName("span")[0];
+								if (this.checked && S.getName("contentment", true) !== null) {
+									let contentment = Number(S.getName("contentment", true).id[1]) - 1;
+									let energy = Number(this.id[2]) - 1;
+									let red = Math.round(255/6*(6-energy)).toString(16);
+									let green = Math.round(255/6*contentment).toString(16);
+									let blue = Math.round(255/6*energy).toString(16);
+									let color = "#" + red + green + blue;
+									text.innerHTML = color;
+									text.style.borderBottom = ".1em solid " + color;
+								} else {
+									text.innerHTML = "#";
+									text.style.borderBottom = "none";
+								}
+							});
+						}
+					}
+				});
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+	</head>
+	<body>
+		<nav class="hidden-left-nav" data-href="navigation.html"></nav>
+		<h1 class="main-title">
+			Coding syntax
+		</h1>
+		<main>
+			<p>
+				This helps me format my entries.
+			</p>
+			<div class="page-jump-sections">
+				<h2>
+					Truth and emotion
+				</h2>
+				<p id="truthColor">
+					Truth color: <span class="boring">#</span>
+				</p>
+				<table class="organizational">
+					<tr>
+						<th></th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+					</tr>
+					<tr>
+						<th>Truth value</th>
+						<td><input type="radio" name="truth" id="t1"></td>
+						<td><input type="radio" name="truth" id="t2"></td>
+						<td><input type="radio" name="truth" id="t3"></td>
+						<td><input type="radio" name="truth" id="t4"></td>
+						<td><input type="radio" name="truth" id="t5"></td>
+						<td><input type="radio" name="truth" id="t6"></td>
+						<td><input type="radio" name="truth" id="t7"></td>
+					</tr>
+				</table>
+				<p id="emotionColor">
+					Emotion color: <span class="boring">#</span>
+				</p>
+				<table class="organizational">
+					<tr>
+						<th></th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+					</tr>
+					<tr>
+						<th>Contentment value</th>
+						<td><input type="radio" name="contentment" id="e1_"></td>
+						<td><input type="radio" name="contentment" id="e2_"></td>
+						<td><input type="radio" name="contentment" id="e3_"></td>
+						<td><input type="radio" name="contentment" id="e4_"></td>
+						<td><input type="radio" name="contentment" id="e5_"></td>
+						<td><input type="radio" name="contentment" id="e6_"></td>
+						<td><input type="radio" name="contentment" id="e7_"></td>
+					</tr>
+					<tr>
+						<th>Energy value</th>
+						<td><input type="radio" name="energy" id="e_1"></td>
+						<td><input type="radio" name="energy" id="e_2"></td>
+						<td><input type="radio" name="energy" id="e_3"></td>
+						<td><input type="radio" name="energy" id="e_4"></td>
+						<td><input type="radio" name="energy" id="e_5"></td>
+						<td><input type="radio" name="energy" id="e_6"></td>
+						<td><input type="radio" name="energy" id="e_7"></td>
+					</tr>
+				</table>
+			<div>
+		</main>
+	</body>
+</html>
