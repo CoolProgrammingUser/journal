@@ -13,16 +13,13 @@ a.discreet:hover {
 span {
 	border-bottom: inherit;
 }
-li {
-	border-bottom: .1em solid #80aa80;
-}
-ol.boring li, ul.boring li {
-	border-bottom: none;
-}
 p > span {
 	/**
 	styles most things with objective styling (t6 e54)
 	*/
+	border-bottom: .1em solid #80aa80;
+}
+li > span {
 	border-bottom: .1em solid #80aa80;
 }
 span.boring {
