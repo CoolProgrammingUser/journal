@@ -16,7 +16,7 @@ span {
 section {
 	/**
 	This is a paragraph tag replacement.
-	Paragraph tags can't be used because they can't handled imbedded <div>s (like in notes).
+	Paragraph tags can't be used because they can't handle imbedded <div>s (like in notes).
 	*/
 	display: block;
 	margin: 1em 0em;
