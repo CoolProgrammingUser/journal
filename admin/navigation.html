@@ -5,9 +5,10 @@
 <script>
 	[  // [page URL, title]
 		["..", "Main website"],
-		["entries.html", "Planned entries"],
-		["syntax.html", "Coding syntax"],
-		["people.html", "People list"]
+		["/admin/", "Administrative home"],
+		["entries", "Planned entries"],
+		["syntax", "Coding syntax"],
+		["people", "People list"]
 	].forEach(function(pair) {
 		document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
 	});
