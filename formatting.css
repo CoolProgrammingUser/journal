@@ -4,7 +4,13 @@ aside::before {
 	font-size: 1.5em;
 	font-weight: bold;
 }
-p span {
+span {
+	/**
+	styles sections of text
+	*/
+	border-bottom: inherit;
+}
+p > span {
 	/**
 	styles most things with objective styling (t6 e54)
 	*/
