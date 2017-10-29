@@ -4,3 +4,15 @@ aside::before {
 	font-size: 1.5em;
 	font-weight: bold;
 }
+p span {
+	/**
+	styles most things with objective styling (t6 e54)
+	*/
+	border-bottom: .1em solid #80aa80;
+}
+span.boring {
+	/**
+	allows spans to be unstyled
+	*/
+	border-bottom: none;
+}
