@@ -4,6 +4,12 @@ aside::before {
 	font-size: 1.5em;
 	font-weight: bold;
 }
+a.discreet {
+	color: inherit;
+}
+a.discreet:hover {
+	text-decoration: none;
+}
 span {
 	/**
 	styles sections of text
