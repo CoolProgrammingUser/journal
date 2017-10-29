@@ -13,7 +13,15 @@ a.discreet:hover {
 span {
 	border-bottom: inherit;
 }
-p > span {
+section {
+	/**
+	This is a paragraph tag replacement.
+	Paragraph tags can't be used because they can't handled imbedded <div>s (like in notes).
+	*/
+	display: block;
+	margin: 1em 0em;
+}
+section > span {
 	/**
 	styles most things with objective styling (t6 e54)
 	*/
