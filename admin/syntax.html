@@ -15,7 +15,7 @@
 							S.listen(input, "click", function() {
 								let color = S.getId("truthColor").getElementsByTagName("span")[0];
 								if (this.checked) {
-									let greenValue = "#00" + Math.round(255/6*(Number(this.id[1])-1)).toString(16) + "00";
+									let greenValue = "#00" + ("0" + Math.round(255/6*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
 									color.innerHTML = greenValue;
 									color.style.color = greenValue;
 								} else {
@@ -29,9 +29,9 @@
 								if (this.checked && S.getName("energy", true) !== null) {
 									let contentment = Number(this.id[1]) - 1;
 									let energy = Number(S.getName("energy", true).id[2]) - 1;
-									let red = Math.round(255/6*(6-energy)).toString(16);
-									let green = Math.round(255/6*contentment).toString(16);
-									let blue = Math.round(255/6*energy).toString(16);
+									let red = ("0" + Math.round(255/6*energy).toString(16)).slice(-2);
+									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
+									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
 									text.innerHTML = color;
 									text.style.borderBottom = ".1em solid " + color;
@@ -46,9 +46,9 @@
 								if (this.checked && S.getName("contentment", true) !== null) {
 									let contentment = Number(S.getName("contentment", true).id[1]) - 1;
 									let energy = Number(this.id[2]) - 1;
-									let red = Math.round(255/6*(6-energy)).toString(16);
-									let green = Math.round(255/6*contentment).toString(16);
-									let blue = Math.round(255/6*energy).toString(16);
+									let red = ("0" + Math.round(255/6*energy).toString(16)).slice(-2);
+									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
+									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
 									text.innerHTML = color;
 									text.style.borderBottom = ".1em solid " + color;
