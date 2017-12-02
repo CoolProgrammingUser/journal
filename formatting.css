@@ -1,5 +1,5 @@
 aside::before {
-	content: attr(data-heading) "Nothing here";
+	content: attr(data-heading);
 	display: block;
 	font-size: 1.5em;
 	font-weight: bold;
@@ -8,6 +8,7 @@ a.discreet {
 	color: inherit;
 }
 a.discreet:hover {
+	font-weight: bold;
 	text-decoration: none;
 }
 span {
@@ -25,10 +26,10 @@ section > span {
 	/**
 	styles most things with objective styling (t6 e54)
 	*/
-	border-bottom: .1em solid #80aa80;
+	border-bottom: .15em solid #80aa80;
 }
 li > span {
-	border-bottom: .1em solid #80aa80;
+	border-bottom: .15em solid #80aa80;
 }
 span.boring {
 	/**
