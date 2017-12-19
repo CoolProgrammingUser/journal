@@ -4,10 +4,10 @@
 		<title>
 			Journal
 		</title>
-		<script src="https://epicenterprograms.github.io/standards/behavior.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="../behavior.js"></script>
 		<script>
-			var S = Standards;
+			var S = Standards.general;
 			S.onLoad(function() {
 				S.getTag("input").forEach(function(input) {
 					if (input.type == "radio") {
@@ -66,7 +66,9 @@
 		<link rel="stylesheet" href="../formatting.css">
 	</head>
 	<body>
-		<nav class="hidden-left-nav" data-href="navigation.html"></nav>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
 		<h1 class="main-title">
 			Coding syntax
 		</h1>
@@ -138,7 +140,7 @@
 						<td><input type="radio" name="energy" id="e_7"></td>
 					</tr>
 				</table>
-			<div>
+			</div>
 		</main>
 	</body>
 </html>

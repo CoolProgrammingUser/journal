@@ -1,12 +1,20 @@
-<h2>
-	Contents
-</h2>
-<ul class="boring" id="contentsList"></ul>
-<script>
-	[  // [page URL, title]
-		["/journal/", "Home"],
-		["people", "People finder"]
-	].forEach(function(pair) {
-		document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
-	});
-</script>
+<!DOCTYPE html>
+<html class="html-class">
+	<head>
+		<base target="_parent">
+	</head>
+	<body class="navigation">
+		<h2>
+			Contents
+		</h2>
+		<ul class="boring" id="contentsList"></ul>
+		<script>
+			[  // [page URL, title]
+				["/journal/", "Home"],
+				["people", "People finder"]
+			].forEach(function (pair) {
+				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
+			});
+		</script>
+	</body>
+</html>
