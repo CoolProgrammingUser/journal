@@ -11,6 +11,59 @@ a.discreet:hover {
 	font-weight: bold;
 	text-decoration: none;
 }
+future- {
+	position: relative;
+	top: -.4em;
+	vertical-align: baseline;
+	font-size: smaller;
+}
+future-::before {
+	content: "[future]";
+}
+future-:hover {
+	text-decoration: underline;
+}
+future- div {
+	max-height: 20em;
+	overflow: auto;
+}
+future- > div {
+	font-size: .75em;  /* This changes the "em" value for everything else (including "::before" and "::after"). */
+	position: absolute;
+	left: -1em;
+	bottom: 2em;
+	border-radius: .5em;
+	padding: .5em;
+	min-width: 15em;
+	background: white;
+	color: black;
+	overflow: visible;
+	box-shadow: 0.25em 0.25em 0.75em #222;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity .5s linear .5s;
+}
+future- > div::before {
+	content: "";
+	position: absolute;
+	left: 0em;
+	bottom: -.8em;
+	width: 15em;
+	height: .8em;
+}
+future- > div::after {
+	content: "";
+	position: absolute;
+	left: 1em;
+	bottom: -1em;
+	border-width: .5em;
+	border-style: solid;
+	border-color: white transparent transparent transparent;
+}
+future-:hover > div {
+	opacity: 1;
+	pointer-events: auto;
+}
 span {
 	border-bottom: inherit;
 }
