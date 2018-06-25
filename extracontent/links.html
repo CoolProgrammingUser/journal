@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Journal
+		</title>
+		<base target="_blank">
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="../behavior.js"></script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+	</head>
+	<body>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
+		<h1 class="main-title">
+			External links
+		</h1>
+		<main>
+			<p>
+				This is a list of links relating to me, generally in the order that they became relevant (except for the first one).
+			</p>
+			<ul id="linkList"></ul>
+			<script>
+				[
+					["https://github.com/CoolProgrammingUser/journal", "this website on GitHub"],
+					["https://en.wikipedia.org/User/Frivolous_Consultant/", "me on Wikipedia"],
+					["https://en.wikipedia.org/Tin_can_telephone/", "Tin can telephone (on Wikipedia)"],
+					["https://sites.google.com/site/canphonesandcorners/", "Can phones and corners"],
+					["https://scratch.mit.edu/projects/73733458/", "Egg Catcher (using Scratch)"],
+					["https://scratch.mit.edu/projects/103296981/", "my psychology project (using Scratch)"],
+					["https://coolprogramminguser.github.io/programs/python/Super Duper Mario.py", "Super Duper Mario (automatically downloads as a .py file)"],
+					["https://sites.google.com/site/referenceforprogramming/", "Programming reference (for my commputer science teacher)"],
+					["https://github.com/CoolProgrammingUser/cramped/releases/download/1.4/FlashCards.apk", "my flash cards app (automatically downloads)"],
+					["https://epicenterprograms.github.io/calculator/", "my calculator"],
+					["https://coolprogramminguser.github.io/cramped/", "Cramped (my cool website)"],
+					["https://epicenterprograms.github.io/lists/", "my ridiculously useful to-do list"],
+					["https://epicenterprograms.github.io/alarm/", "my alarm"],
+					["https://coolprogramminguser.github.io/decoder/", "my decoder"]
+				].forEach(function (pair) {
+					document.getElementById("linkList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
+				});
+			</script>
+		</main>
+	</body>
+</html>

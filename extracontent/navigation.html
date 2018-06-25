@@ -13,12 +13,15 @@
 		<script>
 			[  // [page URL, title]
 				["..", "Main website"],
-				["/journal/admin/", "Administrative home"],
-				["entries", "Planned entries"],
-				["plans", "Journal plans"],
-				["notes", "Notes"],
-				["syntax", "Coding syntax"]
-			].forEach(function(pair) {
+				[".", "Home"],
+				["evolution", "Why evolution is real"],
+				["talking", "How to talk to people"],
+				["conflicts", "Conflict resolution"],
+				["girls", "Girls"],
+				["sleeplessness", "Sleep deprivation"],
+				["addiction", "My addiction"],
+				["links", "External links"]
+			].forEach(function (pair) {
 				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
 			});
 		</script>

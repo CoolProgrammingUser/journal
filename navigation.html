@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="html-class">
+<html>
 	<head>
 		<base target="_parent">
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
@@ -9,11 +9,13 @@
 		<h2>
 			Contents
 		</h2>
-		<ul class="boring" id="contentsList"></ul>
+		<ul id="contentsList"></ul>
 		<script>
 			[  // [page URL, title]
 				["/journal/", "Home"],
-				["people", "People finder"]
+				["indicators", "Indicators"],
+				["search", "Search"],
+				["extracontent/", "Extra content"]
 			].forEach(function (pair) {
 				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
 			});

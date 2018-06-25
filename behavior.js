@@ -1,5 +1,7 @@
 var S = Standards.general;
+
 var people = [];
+people[0] = {};
 
 S.onLoad(function() {
 	// fills all of the empty person references with people
@@ -12,7 +14,9 @@ S.onLoad(function() {
 		S.forEach(S.getClass("p" + index), function(occurrence) {
 			let link = document.createElement("a");
 			link.className = "discreet";
-			link.href = "/journal/people?p=" + index;  // "/journal/" is included just in case the link is put in a weird place
+			link.href = "/journal/search?p=" + index;  // "/journal/" is included just in case the link is put in a weird place
+			link.target = "_blank";
+			link.title = person.fullName;
 			if (occurrence.textContent.trim() != "") {
 				link.textContent = occurrence.textContent;
 				occurrence.textContent = "";

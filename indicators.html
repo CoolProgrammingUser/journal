@@ -4,23 +4,46 @@
 		<title>
 			Journal
 		</title>
+		
+		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
+		<script src="behavior.js"></script>
+		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="formatting.css">
+		
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
-		<script src="../behavior.js"></script>
+		<script src="behavior.js"></script>
 		<script>
 			var S = Standards.general;
-			S.onLoad(function() {
-				S.getTag("input").forEach(function(input) {
+			S.onLoad(function () {
+				let emotions = [
+					{ c: [1], e: [1, 2], n: "Devastated" },
+					{ c: [1, 2], e: [3, 4], n: "Exhausted" },
+					{ c: [1], e: [7], n: "Furious" },
+					{ c: [2], e: [1, 2], n: "Sad" },
+					{ c: [2], e: [4, 5], n: "Irritated" },
+					{ c: [2], e: [6, 7], n: "Angry" },
+					{ c: [3], e: [4, 5], n: "Annoyed" },
+					{ c: [3], e: [6, 7], n: "Frustrated" },
+					{ c: [4], e: [3, 4, 5], n: "Unfeeling" },
+					{ c: [5], e: [4, 5, 6], n: "Content" },
+					{ c: [6], e: [5, 6, 7], n: "Happy" },
+					{ c: [6, 7], e: [1, 2], n: "Relieved" },
+					{ c: [7], e: [7], n: "Ecstatic" }
+				];
+				S.forEach(S.getTag("input"), function(input) {
 					if (input.type == "radio") {
 						if (input.name == "truth") {
 							S.listen(input, "click", function() {
 								let color = S.getId("truthColor").getElementsByTagName("span")[0];
 								if (this.checked) {
-									let greenValue = "#00" + ("0" + Math.round(255/6*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
-									color.innerHTML = greenValue;
-									color.style.color = greenValue;
+									let greenValue = "#00" + ("0" + Math.round(255/4*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
+									color.textContent = greenValue;
+									color.style.borderBottom = ".1em solid " + greenValue;
+									color.title = "Honesty = " + this.id[1];
 								} else {
-									color.innerHTML = "#";
-									color.style.color = "inherit";
+									color.textContent = "#";
+									color.style.borderBottom = "inherit";
+									color.title = "";
 								}
 							});
 						} else if (input.name == "contentment") {
@@ -33,11 +56,22 @@
 									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
-									text.innerHTML = color;
-									text.style.borderBottom = ".1em solid " + color;
+									text.textContent = color;
+									text.style.backgroundColor = color;
+									let matched = false;
+									emotions.forEach(function (set) {
+										if (set.c.includes(contentment+1) && set.e.includes(energy+1)) {
+											text.title = "Emotion = " + (contentment+1) + "," + (energy+1) + " (" + set.n + ")";
+											matched = true;
+										}
+									});
+									if (!matched) {
+										text.title = "Emotion = " + (contentment+1) + "," + (energy+1);
+									}
 								} else {
-									text.innerHTML = "#";
-									text.style.borderBottom = "none";
+									text.textContent = "#";
+									text.style.backgroundColor = "none";
+									text.title = "";
 								}
 							});
 						} else if (input.name == "energy") {
@@ -50,11 +84,22 @@
 									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
-									text.innerHTML = color;
-									text.style.borderBottom = ".1em solid " + color;
+									text.textContent = color;
+									text.style.backgroundColor = color;
+									let matched = false;
+									emotions.forEach(function (set) {
+										if (set.c.includes(contentment+1) && set.e.includes(energy+1)) {
+											text.title = "Emotion = " + (contentment+1) + "," + (energy+1) + " (" + set.n + ")";
+											matched = true;
+										}
+									});
+									if (!matched) {
+										text.title = "Emotion = " + (contentment+1) + "," + (energy+1);
+									}
 								} else {
-									text.innerHTML = "#";
-									text.style.borderBottom = "none";
+									text.textContent = "#";
+									text.style.backgroundColor = "none";
+									text.title = "";
 								}
 							});
 						}
@@ -63,14 +108,14 @@
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="../formatting.css">
+		<link rel="stylesheet" href="formatting.css">
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
 			<iframe src="navigation.html"></iframe>
 		</nav>
 		<h1 class="main-title">
-			Coding syntax
+			Indicators
 		</h1>
 		<main>
 			<p>
@@ -78,10 +123,10 @@
 			</p>
 			<div class="page-jump-sections">
 				<h2>
-					Truth and emotion
+					Honesty
 				</h2>
 				<p id="truthColor">
-					Truth color: <span>#</span>
+					Honesty color: <span>#</span>
 				</p>
 				<table class="organizational">
 					<tr>
@@ -91,8 +136,6 @@
 						<th>3</th>
 						<th>4</th>
 						<th>5</th>
-						<th>6</th>
-						<th>7</th>
 					</tr>
 					<tr>
 						<th>Truth value</th>
@@ -101,10 +144,11 @@
 						<td><input type="radio" name="truth" id="t3"></td>
 						<td><input type="radio" name="truth" id="t4"></td>
 						<td><input type="radio" name="truth" id="t5"></td>
-						<td><input type="radio" name="truth" id="t6"></td>
-						<td><input type="radio" name="truth" id="t7"></td>
 					</tr>
 				</table>
+				<h2>
+					Emotion
+				</h2>
 				<p id="emotionColor">
 					Emotion color: <span>#</span>
 				</p>
