@@ -1,0 +1,245 @@
+/* honesty indications */
+.h1 {
+	border-bottom: .1em solid #000000;
+}
+.h2 {
+	border-bottom: .1em solid #002b00;
+}
+.h3 {
+	border-bottom: .1em solid #005500;
+}
+.h4 {
+	border-bottom: .1em solid #008000;
+}
+.h5 {
+	border-bottom: .1em solid #00aa00;
+}
+.h6 {
+	border-bottom: .1em solid #00d500;
+}
+.h7 {
+	border-bottom: .1em solid #00ff00;
+}
+
+/* emotion indications */
+.e11 {
+	background-color: #0000ff;
+}
+.e12 {
+	background-color: #2b00d5;
+}
+.e13 {
+	background-color: #5500aa;
+}
+.e14 {
+	background-color: #800080;
+}
+.e15 {
+	background-color: #aa0055;
+}
+.e16 {
+	background-color: #d5002b;
+}
+.e17 {
+	background-color: #ff0000;
+}
+.e21 {
+	background-color: #002bff;
+}
+.e22 {
+	background-color: #2b2bd5;
+}
+.e23 {
+	background-color: #552baa;
+}
+.e24 {
+	background-color: #802b80;
+}
+.e25 {
+	background-color: #aa2b55;
+}
+.e26 {
+	background-color: #d52b2b;
+}
+.e27 {
+	background-color: #ff2b00;
+}
+.e31 {
+	background-color: #0055ff;
+}
+.e32 {
+	background-color: #2b55d5;
+}
+.e33 {
+	background-color: #5555aa;
+}
+.e34 {
+	background-color: #805580;
+}
+.e35 {
+	background-color: #aa5555;
+}
+.e36 {
+	background-color: #d5552b;
+}
+.e37 {
+	background-color: #ff5500;
+}
+.e41 {
+	background-color: #0080ff;
+}
+.e42 {
+	background-color: #2b80d5;
+}
+.e43 {
+	background-color: #5580aa;
+}
+.e44 {
+	background-color: #808080;
+}
+.e45 {
+	background-color: #aa8055;
+}
+.e46 {
+	background-color: #d5802b;
+}
+.e47 {
+	background-color: #ff8000;
+}
+.e51 {
+	background-color: #00aaff;
+}
+.e52 {
+	background-color: #2baad5;
+}
+.e53 {
+	background-color: #55aaaa;
+}
+.e54 {
+	background-color: #80aa80;
+}
+.e55 {
+	background-color: #aaaa55;
+}
+.e56 {
+	background-color: #d5aa2b;
+}
+.e57 {
+	background-color: #ffaa00;
+}
+.e61 {
+	background-color: #00d5ff;
+}
+.e62 {
+	background-color: #2bd5d5;
+}
+.e63 {
+	background-color: #55d5aa;
+}
+.e64 {
+	background-color: #80d580;
+}
+.e65 {
+	background-color: #aad555;
+}
+.e66 {
+	background-color: #d5d52b;
+}
+.e67 {
+	background-color: #ffd500;
+}
+.e71 {
+	background-color: #00ffff;
+}
+.e72 {
+	background-color: #2bffd5;
+}
+.e73 {
+	background-color: #55ffaa;
+}
+.e74 {
+	background-color: #80ff80;
+}
+.e75 {
+	background-color: #aaff55;
+}
+.e76 {
+	background-color: #d5ff2b;
+}
+.e77 {
+	background-color: #ffff00;
+}
+.e-1 {
+	background-color: pink;
+	background-image: -webkit-linear-gradient(yellow, yellow 50%, pink 50%);
+	background-image: -o-linear-gradient(yellow, yellow 50%, pink 50%);
+	background-image: -moz-linear-gradient(yellow, yellow 50%, pink 50%);
+	background-image: linear-gradient(yellow, yellow 50%, pink 50%);
+}
+.e-2 {
+	background-color: pink;
+	background-image: -webkit-linear-gradient(orange, orange 50%, pink 50%);
+	background-image: -o-linear-gradient(orange, orange 50%, pink 50%);
+	background-image: -moz-linear-gradient(orange, orange 50%, pink 50%);
+	background-image: linear-gradient(orange, orange 50%, pink 50%);
+}
+.e-3 {
+	background-color: pink;
+	background-image: -webkit-linear-gradient(red, red 50%, pink 50%);
+	background-image: -o-linear-gradient(red, red 50%, pink 50%);
+	background-image: -moz-linear-gradient(red, red 50%, pink 50%);
+	background-image: linear-gradient(red, red 50%, pink 50%);
+}
+
+/* exception handling */
+a.e11 {
+	color: green;
+}
+a.e12 {
+	color: green;
+}
+a.e21 {
+	color: green;
+}
+a.e31 {
+	color: green;
+}
+a.e41 {
+	color: green;
+}
+a.discreet {
+	color: inherit;
+}
+.elaborate.e11 {
+	color: green;
+}
+.elaborate.e12 {
+	color: green;
+}
+.elaborate.e21 {
+	color: green;
+}
+.elaborate.e31 {
+	color: green;
+}
+.elaborate.e41 {
+	color: green;
+}
+.elaborate.discreet {
+	color: inherit;
+}
+note-.e11 {
+	color: green;
+}
+note-.e12 {
+	color: green;
+}
+note-.e21 {
+	color: green;
+}
+note-.e31 {
+	color: green;
+}
+note-.e41 {
+	color: green;
+}

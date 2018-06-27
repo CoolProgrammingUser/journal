@@ -30,7 +30,7 @@
 					row.appendChild(document.createElement("td"));
 					row.appendChild(document.createElement("td"));
 					row.children[0].textContent = "p" + index;
-					row.children[1].textContent = person.fullName;
+					row.children[1].textContent = person.firstName + " " + person.lastName;
 				});
 			});
 
@@ -44,9 +44,9 @@
 					} else if (query[0] == "hint") {
 						let hint = decodeURIComponent(query[1]);
 						S.forEach(people, function (person, index) {
-							if (person.name.includes(hint) || person.fullName.includes(hint)) {
+							if ((person.name+" "+person.lastName+" "+person.firstName+" "+person.lastName).includes(hint)) {
 								let listItem = document.createElement("li");
-								listItem.innerHTML = '<a href="search?p=' + index + '">' + person.name + "</a><br>(" + person.fullName + ")<br>person number = " + index;
+								listItem.innerHTML = '<a href="search?p=' + index + '">' + person.name + "</a><br>(" + person.firstName + " " + person.lastName + ")<br>person number = " + index;
 								S.getId("result").appendChild(listItem);
 							}
 						});

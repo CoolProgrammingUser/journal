@@ -4,12 +4,13 @@
 		<title>
 			Journal
 		</title>
-		
+		<!--
 		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
 		<script src="behavior.js"></script>
 		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
-		
+		<link rel="stylesheet" href="basicfeelings.css">
+		-->
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="behavior.js"></script>
 		<script>
@@ -36,7 +37,7 @@
 							S.listen(input, "click", function() {
 								let color = S.getId("truthColor").getElementsByTagName("span")[0];
 								if (this.checked) {
-									let greenValue = "#00" + ("0" + Math.round(255/4*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
+									let greenValue = "#00" + ("0" + Math.round(255/6*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
 									color.textContent = greenValue;
 									color.style.borderBottom = ".1em solid " + greenValue;
 									color.title = "Honesty = " + this.id[1];
@@ -109,6 +110,7 @@
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
+		<link rel="stylesheet" href="basicfeelings.css">
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
@@ -136,6 +138,8 @@
 						<th>3</th>
 						<th>4</th>
 						<th>5</th>
+						<th>6</th>
+						<th>7</th>
 					</tr>
 					<tr>
 						<th>Truth value</th>
@@ -144,6 +148,8 @@
 						<td><input type="radio" name="truth" id="t3"></td>
 						<td><input type="radio" name="truth" id="t4"></td>
 						<td><input type="radio" name="truth" id="t5"></td>
+						<td><input type="radio" name="truth" id="t6"></td>
+						<td><input type="radio" name="truth" id="t7"></td>
 					</tr>
 				</table>
 				<h2>
@@ -184,6 +190,30 @@
 						<td><input type="radio" name="energy" id="e_7"></td>
 					</tr>
 				</table>
+				<table class="organizational">
+					<tr>
+						<th colspan="3">
+							Anxiety
+						</th>
+					</tr>
+					<tr>
+						<th><span class="e-1">1</span></th>
+						<th><span class="e-2">2</span></th>
+						<th><span class="e-3">3</span></th>
+					</tr>
+					<tr>
+						<td><input type="radio" name="anxiety" id="a1"></td>
+						<td><input type="radio" name="anxiety" id="a2"></td>
+						<td><input type="radio" name="anxiety" id="a3"></td>
+					</tr>
+				</table>
+				<h2>
+					Unseen indicators
+				</h2>
+				data-importance, data-awesomeness, data-topic<br>
+				data-dependencies &rarr; language, culture, time<br>
+				data-currency &rarr; USD<br>
+				data-relabel, data-revisit
 			</div>
 		</main>
 	</body>
