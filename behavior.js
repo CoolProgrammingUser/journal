@@ -28,7 +28,11 @@ S.onLoad(function () {
 				link.textContent = occurrence.textContent;
 				occurrence.textContent = "";
 			} else if (occurrence.dataset.use) {
-				link.textContent = person[occurrence.dataset.use];
+				if (occurrence.dataset.use.includes("extra")) {
+					link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/))];
+				} else {
+					link.textContent = person[occurrence.dataset.use];
+				}
 			} else {
 				link.textContent = person.name;
 			}
@@ -92,12 +96,19 @@ S.onLoad(function () {
 			});
 			if (element.className.search(/(?:^| )h\d/) > -1) {
 				element.title += "\nHonesty = " + element.className.match(/(?:^| )h(\d)/)[1];
+			} else if (element.className.includes("understated")) {
+				element.title += "\nUnderstated = " + element.className.match(/understated(\d)/)[1];
 			}
 		} else if (element.className.search(/(?:^| )h\d/) > -1) {
 			if (!element.title == "") {
 				element.title += "\n";
 			}
 			element.title += "Honesty = " + element.className.match(/(?:^| )h(\d)/)[1];
+		} else if (element.className.includes("understated")) {
+			if (!element.title == "") {
+				element.title += "\n";
+			}
+			element.title += "Understated = " + element.className.match(/understated(\d)/)[1];
 		}
 	});
 });

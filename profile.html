@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Journal
+		</title>
+		<base target="_blank">
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="behavior.js"></script>
+		<script>
+			function update() {
+				var seconds = String(Math.floor((new Date().getTime() - new Date("March 11, 1998 4:00 GMT-0600").getTime())/1000));  // timezones and daylight saving time can mess you up; use GMT offsets and .getTimezoneOffset() (for DST checking) to fix it (.getTimezoneOffset() not needed here)
+				for (var index=3; index<seconds.length; index+=4) {
+					seconds = seconds.slice(0, -index) + "," + seconds.slice(-index);
+				}
+				document.getElementById("age").innerHTML = seconds + " seconds";
+			}
+			window.addEventListener("finished", function() {
+				update();
+				setInterval(update, 1000);
+				S.colorCode(document.getElementById("eyeColor"), null, [0, 200, 50], [0, 200, 250], [0, 50, 250]);
+				S.colorCode(document.getElementById("favoriteColor"), null, [250, 0, 0], [250, 240, 0], [0, 240, 0], [0, 240, 250], [0, 0, 250]);
+				var sound = new S.Sound({"waveform":"square"});  // Standards.audio doesn't exist in some browsers, so trying to access it at the end allows the rest of the script to end
+				var playing = false;
+				document.getElementById("morseCode").addEventListener("mouseenter", function() {
+					if (!playing) {
+						playing = true;
+						sound.play("a4-- a4--   a4-- a4-- a4--   a4 a4-- a4   a4 a4 a4   a4       a4-- a4 a4-- a4   a4-- a4-- a4--   a4-- a4 a4   a4", {"volume":.2, "attack":1, "noteLength":50, "decay":1}, function() {
+							playing = false;
+						});
+					}
+				});
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="formatting.css">
+		<style>
+			#information {
+				text-align: left;
+			}
+			#information > li {
+				margin-top: .5em;
+				margin-bottom: .5em;
+			}
+		</style>
+	</head>
+	<body>
+		<iframe class="hidden-left-nav" src="navigation.html"></iframe>
+		<h1 class="main-title">
+			Profile
+		</h1>
+		<main>
+			<ul id="information">
+				<li>
+					Name: Robert Tour Benson
+				</li>
+				<li>
+					Age: <a id="age" href="https://en.wikipedia.org/wiki/Second" target="_blank"></a>
+				</li>
+				<li>
+					Height: <a href="https://en.wikipedia.org/wiki/Smoot" target="_blank">1.0112 Smoots</a>
+				</li>
+				<li>
+					Mass: <a href="https://en.wikipedia.org/wiki/Unified_atomic_mass_unit" target="_blank">3.8521&times;10<sup>28</sup> Da</a>
+				</li>
+				<li>
+					<span style="color:#64320a">Hair color</span>: <a href="https://en.wikipedia.org/wiki/Web_colors" target="_blank">#64320a</a>
+				</li>
+				<li>
+					<span id="eyeColor">Eye color</span>: <a href="https://en.wikipedia.org/wiki/Visible_spectrum" target="_blank">485 nm</a>
+				</li>
+				<li>
+					Number of limbs: <a href="https://en.wikipedia.org/wiki/Binary_number" target="_blank">100</a>
+				</li>
+				<li>
+					<span id="favoriteColor">Favorite color</span>: <a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank">undefined</a>
+				</li>
+				<li>
+					Favorite animal: <a href="https://en.wikipedia.org/wiki/Cuttlefish" target="_blank">cuttlefish</a>
+				</li>
+				<li>
+					Favorite drink: <a href="http://www.dhmo.org/" target="_blank">dihydrogen monoxide</a> <a href="https://en.wikipedia.org/wiki/Dihydrogen_monoxide_hoax" target="_blank">(I guess you can click here too)</a>
+				</li>
+				<li id="morseCode">
+					Favorite sound: <a href="https://en.wikipedia.org/wiki/Morse_code" target="_blank">&ndash; &ndash;&ensp; &ndash; &ndash; &ndash;&ensp; &bull; &ndash; &bull;&ensp; &bull; &bull; &bull;&ensp; &bull; &emsp; &ndash; &bull; &ndash; &bull;&ensp; &ndash; &ndash; &ndash;&ensp; &ndash; &bull; &bull;&ensp; &bull;</a>
+				</li>  <!-- &nbsp; = 1 space, &ensp; = 2 spaces, and &emsp; = 4 spaces -->
+				<li>
+					Favorite texture: <a href="https://en.wikipedia.org/wiki/Braille" target="_blank" style="font-family:Braille">Cbraille</a>  <!-- The "C" is for the capital symbol. -->
+				</li>
+				<li>
+					Favorite Wikipedia contributor: <a href="https://en.m.wikipedia.org/wiki/User:Frivolous_Consultant" target="_blank">Frivolous Consultant</a>
+				</li>
+			</ul>
+		</main>
+	</body>
+</html>

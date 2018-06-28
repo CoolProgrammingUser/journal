@@ -23,6 +23,13 @@ section {
 note-::before {
 	content: "";
 }
+.trigger {
+	color: blue;
+	cursor: help;
+}
+.trigger:hover {
+	text-decoration: underline;
+}
 
 .elaborate {
 	/**
