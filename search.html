@@ -98,22 +98,22 @@
 						// checks for matches with people
 						S.forEach(people.slice(1), function (person, index) {
 							let personComparison = Math.min(S.compare(person.name, hint) * 1.5, S.compare(person.firstName, hint), S.compare(person.lastName, hint), S.compare(person.firstName+" "+person.lastName, hint), S.compare(person.name+" "+person.lastName, hint));
-							if (personComparison <= 5) {
+							if (personComparison <= 3) {
 								if (results.hasOwnProperty(personComparison)) {
-									results[personComparison].push({ type: "person", item: person, index: index });
+									results[Math.round(personComparison*10)].push({ type: "person", item: person, index: index });
 								} else {
-									results[personComparison] = [{ type: "person", item: person, index: index }];
+									results[Math.round(personComparison*10)] = [{ type: "person", item: person, index: index }];
 								}
 							}
 						});
 						// checks for matches with topics
 						S.forEach(topics.slice(1), function (topic, index) {
-							let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint));
-							if (topicComparison <= 10) {
+							let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint) / 1.5);
+							if (topicComparison <= 4) {
 								if (results.hasOwnProperty(topicComparison)) {
-									results[topicComparison].push({ type: "topic", item: topic, index: index });
+									results[Math.round(topicComparison*10)].push({ type: "topic", item: topic, index: index });
 								} else {
-									results[topicComparison] = [{ type: "topic", item: topic, index: index }];
+									results[Math.round(topicComparison*10)] = [{ type: "topic", item: topic, index: index }];
 								}
 							}
 						});
