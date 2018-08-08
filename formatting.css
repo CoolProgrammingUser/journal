@@ -20,9 +20,6 @@ section {
 	margin: 1em 0em;
 }
 
-note-::before {
-	content: "";
-}
 .trigger {
 	color: blue;
 	cursor: help;
@@ -63,4 +60,16 @@ button.hide-aside {
 }
 button.hide-aside:hover {
 	text-decoration: underline;
+}
+
+.bce { /* Before Current Events */
+	border-width: .05rem;
+	border-color: green;
+	border-style: solid;
+}
+
+.nonsequitor {
+	border-width: .05rem;
+	border-color: orange;
+	border-style: solid;
 }

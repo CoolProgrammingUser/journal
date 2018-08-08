@@ -20,6 +20,30 @@
 .h7 {
 	border-bottom: .1em solid #00ff00;
 }
+.fanciful {
+	border-bottom: .1em solid #000000;
+}
+.suggestive {
+	border-bottom: .1em solid #000000;
+}
+.subtle {
+	border-bottom: .1em solid #000000;
+}
+.honest {
+	border-bottom: .1em solid #000000;
+}
+.sinscere {
+	border-bottom: .1em solid #00ff00;
+}
+.exaggerated1 {
+	border-bottom: .1em solid #000000;
+}
+.exaggerated2 {
+	border-bottom: .1em solid #000000;
+}
+.exaggerated3 {
+	border-bottom: .1em solid #000000;
+}
 .understated1 {
 	border-bottom: .1em solid #aaaaff;
 }
@@ -31,10 +55,10 @@
 }
 
 /* emotion indications */
-.e11 {
+.e11 {  /* devastated */
 	background-color: #0000ff;
 }
-.e12 {
+.e12 {  /* devastated */
 	background-color: #2b00d5;
 }
 .e13 {
@@ -49,64 +73,64 @@
 .e16 {
 	background-color: #d5002b;
 }
-.e17 {
+.e17 {  /* furious */
 	background-color: #ff0000;
 }
-.e21 {
+.e21 {  /* sad */
 	background-color: #002bff;
 }
-.e22 {
+.e22 {  /* sad */
 	background-color: #2b2bd5;
 }
 .e23 {
 	background-color: #552baa;
 }
-.e24 {
+.e24 {  /* irritated */
 	background-color: #802b80;
 }
-.e25 {
+.e25 {  /* irritated */
 	background-color: #aa2b55;
 }
-.e26 {
+.e26 {  /* angry */
 	background-color: #d52b2b;
 }
-.e27 {
+.e27 {  /* angry */
 	background-color: #ff2b00;
 }
-.e31 {
+.e31 {  /* exhausted */
 	background-color: #0055ff;
 }
-.e32 {
+.e32 {  /* exhausted */
 	background-color: #2b55d5;
 }
 .e33 {
 	background-color: #5555aa;
 }
-.e34 {
+.e34 {  /* annoyed */
 	background-color: #805580;
 }
-.e35 {
+.e35 {  /* annoyed */
 	background-color: #aa5555;
 }
-.e36 {
+.e36 {  /* frustrated */
 	background-color: #d5552b;
 }
-.e37 {
+.e37 {  /* frustrated */
 	background-color: #ff5500;
 }
-.e41 {
+.e41 {  /* exhausted */
 	background-color: #0080ff;
 }
-.e42 {
+.e42 {  /* exhausted */
 	background-color: #2b80d5;
 }
-.e43 {
+.e43 {  /* unfeeling */
 	background-color: #5580aa;
 }
-.e44 {
+.e44 {  /* unfeeling */
 	background-color: #808080;
 }
-.e45 {
+.e45 {  /* unfeeling */
 	background-color: #aa8055;
 }
 .e46 {
@@ -115,31 +139,31 @@
 .e47 {
 	background-color: #ff8000;
 }
-.e51 {
+.e51 {  /* exhausted */
 	background-color: #00aaff;
 }
-.e52 {
+.e52 {  /* exhausted */
 	background-color: #2baad5;
 }
 .e53 {
 	background-color: #55aaaa;
 }
-.e54 {
+.e54 {  /* content */
 	background-color: #80aa80;
 }
-.e55 {
+.e55 {  /* content */
 	background-color: #aaaa55;
 }
-.e56 {
+.e56 {  /* content */
 	background-color: #d5aa2b;
 }
 .e57 {
 	background-color: #ffaa00;
 }
-.e61 {
+.e61 {  /* relieved */
 	background-color: #00d5ff;
 }
-.e62 {
+.e62 {  /* relieved */
 	background-color: #2bd5d5;
 }
 .e63 {
@@ -148,19 +172,19 @@
 .e64 {
 	background-color: #80d580;
 }
-.e65 {
+.e65 {  /* happy */
 	background-color: #aad555;
 }
-.e66 {
+.e66 {  /* happy */
 	background-color: #d5d52b;
 }
-.e67 {
+.e67 {  /* happy */
 	background-color: #ffd500;
 }
-.e71 {
+.e71 {  /* relieved */
 	background-color: #00ffff;
 }
-.e72 {
+.e72 {  /* relieved */
 	background-color: #2bffd5;
 }
 .e73 {
@@ -175,29 +199,38 @@
 .e76 {
 	background-color: #d5ff2b;
 }
-.e77 {
+.e77 {  /* ecstatic */
 	background-color: #ffff00;
 }
-.e-1 {
+.e-a1 {  /* worried */
 	background-color: pink;
 	background-image: -webkit-linear-gradient(yellow, yellow 50%, pink 50%);
 	background-image: -o-linear-gradient(yellow, yellow 50%, pink 50%);
 	background-image: -moz-linear-gradient(yellow, yellow 50%, pink 50%);
 	background-image: linear-gradient(yellow, yellow 50%, pink 50%);
 }
-.e-2 {
+.e-a2 {  /* anxious */
 	background-color: pink;
 	background-image: -webkit-linear-gradient(orange, orange 50%, pink 50%);
 	background-image: -o-linear-gradient(orange, orange 50%, pink 50%);
 	background-image: -moz-linear-gradient(orange, orange 50%, pink 50%);
 	background-image: linear-gradient(orange, orange 50%, pink 50%);
 }
-.e-3 {
+.e-a3 {  /* terrified */
 	background-color: pink;
 	background-image: -webkit-linear-gradient(red, red 50%, pink 50%);
 	background-image: -o-linear-gradient(red, red 50%, pink 50%);
 	background-image: -moz-linear-gradient(red, red 50%, pink 50%);
 	background-image: linear-gradient(red, red 50%, pink 50%);
+}
+.e-m1 {  /* mischevious 1 */
+	background-color: #000000;
+}
+.e-m2 {  /* mischevious 2 */
+	background-color: #000000;
+}
+.e-m3 {  /* mischevious 3 */
+	background-color: #000000;
 }
 
 /* exception handling */

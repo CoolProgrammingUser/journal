@@ -20,7 +20,7 @@
 				setInterval(update, 1000);
 				S.colorCode(document.getElementById("eyeColor"), null, [0, 200, 50], [0, 200, 250], [0, 50, 250]);
 				S.colorCode(document.getElementById("favoriteColor"), null, [250, 0, 0], [250, 240, 0], [0, 240, 0], [0, 240, 250], [0, 0, 250]);
-				var sound = new S.Sound({"waveform":"square"});  // Standards.audio doesn't exist in some browsers, so trying to access it at the end allows the rest of the script to end
+				var sound = new S.Sound({"waveform":"square"});  // Standards.general.audio doesn't exist in some browsers, so trying to access it at the end allows the rest of the script to end
 				var playing = false;
 				document.getElementById("morseCode").addEventListener("mouseenter", function() {
 					if (!playing) {
@@ -55,40 +55,46 @@
 					Name: Robert Tour Benson
 				</li>
 				<li>
-					Age: <a id="age" href="https://en.wikipedia.org/wiki/Second" target="_blank"></a>
+					Born: March 11, 1998; 4:00am
 				</li>
 				<li>
-					Height: <a href="https://en.wikipedia.org/wiki/Smoot" target="_blank">1.0112 Smoots</a>
+					Parents: Robert William Benson and Barbara Mary Benson neé Dalpiaz
 				</li>
 				<li>
-					Mass: <a href="https://en.wikipedia.org/wiki/Unified_atomic_mass_unit" target="_blank">3.8521&times;10<sup>28</sup> Da</a>
+					Age: <a id="age" href="https://en.wikipedia.org/wiki/Second"></a>
 				</li>
 				<li>
-					<span style="color:#64320a">Hair color</span>: <a href="https://en.wikipedia.org/wiki/Web_colors" target="_blank">#64320a</a>
+					Height: <a href="https://en.wikipedia.org/wiki/Smoot">1.0112 Smoots</a>
 				</li>
 				<li>
-					<span id="eyeColor">Eye color</span>: <a href="https://en.wikipedia.org/wiki/Visible_spectrum" target="_blank">485 nm</a>
+					Mass: <a href="https://en.wikipedia.org/wiki/Unified_atomic_mass_unit">3.8521&times;10<sup>28</sup> Da</a>
 				</li>
 				<li>
-					Number of limbs: <a href="https://en.wikipedia.org/wiki/Binary_number" target="_blank">100</a>
+					<span style="color:#64320a">Hair color</span>: <a href="https://en.wikipedia.org/wiki/Web_colors">#64320a</a>
 				</li>
 				<li>
-					<span id="favoriteColor">Favorite color</span>: <a href="https://en.wikipedia.org/wiki/Undefined_behavior" target="_blank">undefined</a>
+					<span id="eyeColor">Eye color</span>: <a href="https://en.wikipedia.org/wiki/Visible_spectrum">485 nm</a>
 				</li>
 				<li>
-					Favorite animal: <a href="https://en.wikipedia.org/wiki/Cuttlefish" target="_blank">cuttlefish</a>
+					Number of limbs: <a href="https://en.wikipedia.org/wiki/Binary_number">100</a>
 				</li>
 				<li>
-					Favorite drink: <a href="http://www.dhmo.org/" target="_blank">dihydrogen monoxide</a> <a href="https://en.wikipedia.org/wiki/Dihydrogen_monoxide_hoax" target="_blank">(I guess you can click here too)</a>
+					<span id="favoriteColor">Favorite color</span>: <a href="https://en.wikipedia.org/wiki/Undefined_behavior">undefined</a>
+				</li>
+				<li>
+					Favorite animal: <a href="https://en.wikipedia.org/wiki/Cuttlefish">cuttlefish</a>
+				</li>
+				<li>
+					Favorite drink: <a href="http://www.dhmo.org/">dihydrogen monoxide</a> <a href="https://en.wikipedia.org/wiki/Dihydrogen_monoxide_hoax">(I guess you can click here too)</a>
 				</li>
 				<li id="morseCode">
-					Favorite sound: <a href="https://en.wikipedia.org/wiki/Morse_code" target="_blank">&ndash; &ndash;&ensp; &ndash; &ndash; &ndash;&ensp; &bull; &ndash; &bull;&ensp; &bull; &bull; &bull;&ensp; &bull; &emsp; &ndash; &bull; &ndash; &bull;&ensp; &ndash; &ndash; &ndash;&ensp; &ndash; &bull; &bull;&ensp; &bull;</a>
+					Favorite sound: <a href="https://en.wikipedia.org/wiki/Morse_code">&ndash; &ndash;&ensp; &ndash; &ndash; &ndash;&ensp; &bull; &ndash; &bull;&ensp; &bull; &bull; &bull;&ensp; &bull; &emsp; &ndash; &bull; &ndash; &bull;&ensp; &ndash; &ndash; &ndash;&ensp; &ndash; &bull; &bull;&ensp; &bull;</a>
 				</li>  <!-- &nbsp; = 1 space, &ensp; = 2 spaces, and &emsp; = 4 spaces -->
 				<li>
-					Favorite texture: <a href="https://en.wikipedia.org/wiki/Braille" target="_blank" style="font-family:Braille">Cbraille</a>  <!-- The "C" is for the capital symbol. -->
+					Favorite texture: <a href="https://en.wikipedia.org/wiki/Braille" style="font-family:Braille">Cbraille</a>  <!-- The "C" is for the capital symbol. -->
 				</li>
 				<li>
-					Favorite Wikipedia contributor: <a href="https://en.m.wikipedia.org/wiki/User:Frivolous_Consultant" target="_blank">Frivolous Consultant</a>
+					Favorite Wikipedia contributor: <a href="https://en.m.wikipedia.org/wiki/User:Frivolous_Consultant">Frivolous Consultant</a>
 				</li>
 			</ul>
 		</main>

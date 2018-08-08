@@ -4,13 +4,20 @@
 		<title>
 			Journal
 		</title>
+		<!--
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		-->
+		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
+		<script src="people.js"></script>
+		<script src="topics.js"></script>
 		<script src="behavior.js"></script>
 		<script>
+			var months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 			S.listen("searchButton", "click", function () {
 				if (S.getId("searchText").value.trim()) {
 					let text = S.getId("searchText").value.trim();
-					let query = "";
+					let query;
 					if (text.search(/p.*\d+/) > -1) {
 						query = "?p=" + text.match(/\d+/)[0];
 					} else if (text.search(/t.*\d+/) > -1) {
@@ -18,48 +25,125 @@
 					} else {
 						query = "?hint=" + encodeURIComponent(text);
 					}
-					window.location.href = "search" + query;
+					window.location.href = query;
 				}
 			});
 
 			S.listen("peopleLister", "click", function () {
+				S.getId("heading").textContent = "Results:";
+				S.getId("result").innerHTML = "";
 				let table = document.createElement("table");
 				table.className = "conversation";
 				S.forEach(people.slice(1), function (person, index) {
 					let row = table.insertRow(-1);
 					row.appendChild(document.createElement("td"));
 					row.appendChild(document.createElement("td"));
-					row.children[0].textContent = "p" + index;
-					row.children[1].textContent = person.firstName + " " + person.lastName;
+					row.children[0].textContent = "p" + (index+1);
+					row.children[1].innerHTML = '<a href="?p=' + (index+1) + '">' + person.firstName + " " + person.lastName + "</a>";
 				});
+				S.getId("result").appendChild(table);
 			});
+
+			S.listen("topicLister", "click", function () {
+				S.getId("heading").textContent = "Results:";
+				S.getId("result").innerHTML = "";
+				let table = document.createElement("table");
+				table.className = "conversation";
+				S.forEach(topics.slice(1), function (topic, index) {
+					let row = table.insertRow(-1);
+					row.appendChild(document.createElement("td"));
+					row.appendChild(document.createElement("td"));
+					row.children[0].textContent = "t" + (index + 1);
+					row.children[1].innerHTML = '<a href="?t=' + (index + 1) + '">' + topic.title + "</a>";
+				});
+				S.getId("result").appendChild(table);
+			});
+
+			function addListItem(HTML) {
+				let listItem = document.createElement("li");
+				listItem.innerHTML = HTML;
+				S.getId("result").appendChild(listItem);
+			}
 
 			S.onLoad(function () {
 				if (window.location.href.includes("?")) {
-					let query = window.location.href.slice(window.location.href.indexOf("?")).split("=");
+					let query = window.location.href.slice(window.location.href.indexOf("?")+1).split("=");
 					if (query[0] == "p") {
-
+						let person = people[query[1]];
+						if (typeof person === undefined || person == {}) {
+							S.getId("heading").textContent = "Error";
+							S.getId("result").textContent = "This person doesn't exist.";
+						} else {
+							S.getId("heading").textContent = person.firstName + " " + person.lastName;
+							addListItem("Common name: " + person.name);
+							addListItem("Full name pronunciation: " + person.pronunciation);
+							if (person.hasOwnProperty("dateOfBirth")) {
+								let date = person.dateOfBirth.split("/");
+								addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
+							}
+							addListItem("Numerical designation: " + query[1]);
+						}
 					} else if (query[0] == "t") {
-
+						let topic = topics[query[1]];
+						if (typeof topic === undefined || topic == {}) {
+							S.getId("heading").textContent = "Error";
+							S.getId("result").textContent = "This topic doesn't exist.";
+						} else {
+							S.getId("heading").textContent = topic.title;
+							addListItem("Summary: " + topic.summary);
+						}
 					} else if (query[0] == "hint") {
 						let hint = decodeURIComponent(query[1]);
-						S.forEach(people, function (person, index) {
-							if ((person.name+" "+person.lastName+" "+person.firstName+" "+person.lastName).includes(hint)) {
-								let listItem = document.createElement("li");
-								listItem.innerHTML = '<a href="search?p=' + index + '">' + person.name + "</a><br>(" + person.firstName + " " + person.lastName + ")<br>person number = " + index;
-								S.getId("result").appendChild(listItem);
+						let results = {};
+						// checks for matches with people
+						S.forEach(people.slice(1), function (person, index) {
+							let personComparison = Math.min(S.compare(person.name, hint) * 1.5, S.compare(person.firstName, hint), S.compare(person.lastName, hint), S.compare(person.firstName+" "+person.lastName, hint), S.compare(person.name+" "+person.lastName, hint));
+							if (personComparison <= 5) {
+								if (results.hasOwnProperty(personComparison)) {
+									results[personComparison].push({ type: "person", item: person, index: index });
+								} else {
+									results[personComparison] = [{ type: "person", item: person, index: index }];
+								}
 							}
 						});
+						// checks for matches with topics
+						S.forEach(topics.slice(1), function (topic, index) {
+							let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint));
+							if (topicComparison <= 10) {
+								if (results.hasOwnProperty(topicComparison)) {
+									results[topicComparison].push({ type: "topic", item: topic, index: index });
+								} else {
+									results[topicComparison] = [{ type: "topic", item: topic, index: index }];
+								}
+							}
+						});
+						// displays results
+						S.forEach(results, function (set) {
+							S.forEach(set, function (result) {
+								if (result.type == "person") {
+									addListItem('<a href="?p='+result.index+'">'+result.item.name+"</a><br>("+result.item.firstName+" "+result.item.lastName+")");
+								} else if (result.type == "topic") {
+									addListItem('<a href="?t=' + result.index + '">' + result.item.title + "</a><br>(" + result.item.summary + ")");
+								}
+							});
+						});
+						// accounts for no results
+						if (S.getId("result").textContent == "") {
+							S.getId("result").textContent = "No result was found.";
+						}
 					} else {
 						S.getId("result").textContent = "An invalid type of search was attempted.";
 					}
 				}
 			});
 		</script>
+		<!--
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		-->
+		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<style>
-			#result a {
+			#result li {
 				font-size: 1.25rem;
 				font-weight: bold;
 			}
@@ -70,7 +154,7 @@
 			<iframe src="navigation.html"></iframe>
 		</nav>
 		<h1 class="main-title">
-			People finder
+			Search
 		</h1>
 		<main>
 			<input type="text" id="searchText" placeholder="Type something to search">
@@ -83,10 +167,10 @@
 			<button id="peopleLister">
 				List people
 			</button>
-			<button>
+			<button id="topicLister">
 				List topics
 			</button>
-			<h2>
+			<h2 id="heading">
 				Results:
 			</h2>
 			<ul id="result"></ul>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Journal
+		</title>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="../behavior.js"></script>
+		<script>
+			var startingDate = new Date("2018 August 5");
+			S.forEach(S.getTag("ol")[0].children, function (listItem) {
+				listItem.title = startingDate.getMonth() + 1 + "/" + startingDate.getDay() + "/" + startingDate.getFullYear();
+				startingDate = new Date(startingDate.getTime() + 86400000);
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+	</head>
+	<body>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
+		<h1 class="main-title">
+			Daily log
+		</h1>
+		<main>
+			<p>
+				This keeps track of my day-to-day activities, so I don't forget what to put in my journal.
+			</p>
+			<ol>
+				<li>
+					<ol>
+						<li>Sophia's mother-in-law's funeral reception</li>
+						<li>expanding my lists</li>
+						<li>definitely less people visiting my can phones website (particularly by referal)</li>
+					</ol>
+				</li>
+				<li>made a compare function</li>
+				<li>
+					<ol>
+
+					</ol>
+				</li>
+			</ol>
+		</main>
+	</body>
+</html>
