@@ -19,7 +19,6 @@
 				update();
 				setInterval(update, 1000);
 				S.colorCode(document.getElementById("eyeColor"), null, [0, 200, 50], [0, 200, 250], [0, 50, 250]);
-				S.colorCode(document.getElementById("favoriteColor"), null, [250, 0, 0], [250, 240, 0], [0, 240, 0], [0, 240, 250], [0, 0, 250]);
 				var sound = new S.Sound({"waveform":"square"});  // Standards.general.audio doesn't exist in some browsers, so trying to access it at the end allows the rest of the script to end
 				var playing = false;
 				document.getElementById("morseCode").addEventListener("mouseenter", function() {
@@ -45,7 +44,9 @@
 		</style>
 	</head>
 	<body>
-		<iframe class="hidden-left-nav" src="navigation.html"></iframe>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
 		<h1 class="main-title">
 			Profile
 		</h1>
@@ -59,6 +60,9 @@
 				</li>
 				<li>
 					Parents: Robert William Benson and Barbara Mary Benson neé Dalpiaz
+				</li>
+				<li>
+					Half-sister: Shawny Green
 				</li>
 				<li>
 					Age: <a id="age" href="https://en.wikipedia.org/wiki/Second"></a>
@@ -79,7 +83,7 @@
 					Number of limbs: <a href="https://en.wikipedia.org/wiki/Binary_number">100</a>
 				</li>
 				<li>
-					<span id="favoriteColor">Favorite color</span>: <a href="https://en.wikipedia.org/wiki/Undefined_behavior">undefined</a>
+					<span style="animation:rainbow 1.5s linear 0s infinite normal forwards">Favorite color</span>: <a href="https://en.wikipedia.org/wiki/Undefined_behavior">undefined</a>
 				</li>
 				<li>
 					Favorite animal: <a href="https://en.wikipedia.org/wiki/Cuttlefish">cuttlefish</a>

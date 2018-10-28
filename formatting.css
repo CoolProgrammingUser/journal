@@ -1,3 +1,37 @@
+body.navigation {
+	font-family: cursive;
+}
+body.navigation a {
+	color: black;
+}
+@keyframes rainbow {
+	0% {
+		color: red;
+	}
+	17% {
+		color: orange;
+	}
+	33% {
+		color: #cc0;
+	}
+	50% {
+		color: green;
+	}
+	67% {
+		color: blue;
+	}
+	83% {
+		color: purple;
+	}
+	100% {
+		color: red;
+	}
+}
+body.navigation a:hover {
+	font-weight: bold;
+	animation: rainbow 1s linear 0s infinite normal forwards;
+}
+
 a.discreet {
 	color: inherit;
 }

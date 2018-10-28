@@ -9,18 +9,37 @@
 		<script>
 			var S = Standards.general;
 			S.onLoad(function() {
-				S.getTag("input").forEach(function(input) {
+				S.forEach(S.getTag("input"), function(input) {
 					if (input.type == "radio") {
 						if (input.name == "truth") {
 							S.listen(input, "click", function() {
 								let color = S.getId("truthColor").getElementsByTagName("span")[0];
 								if (this.checked) {
-									let greenValue = "#00" + ("0" + Math.round(255/6*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
-									color.innerHTML = greenValue;
-									color.style.color = greenValue;
+									let greenValue = "#00" + ("0" + Math.round(255/4*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
+									color.textContent = greenValue;
+									color.style.borderBottom = ".1em solid " + greenValue;
 								} else {
 									color.innerHTML = "#";
 									color.style.color = "inherit";
+								}
+								switch (Number(this.id[1])) {
+									case 1:
+										color.title = "Honesty = " + this.id[1] + " (Fanciful)";
+										break;
+									case 2:
+										color.title = "Honesty = " + this.id[1] + " (Suggestive)";
+										break;
+									case 3:
+										color.title = "Honesty = " + this.id[1] + " (Subtle)";
+										break;
+									case 4:
+										color.title = "Honesty = " + this.id[1] + " (Honest)";
+										break;
+									case 5:
+										color.title = "Honesty = " + this.id[1] + " (Sincere)";
+										break;
+									default:
+										color.title = "";
 								}
 							});
 						} else if (input.name == "contentment") {
@@ -33,11 +52,11 @@
 									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
-									text.innerHTML = color;
-									text.style.borderBottom = ".1em solid " + color;
+									text.textContent = color;
+									text.style.backgroundColor = color;
 								} else {
-									text.innerHTML = "#";
-									text.style.borderBottom = "none";
+									text.textContent = "#";
+									text.style.backgroundColor = "none";
 								}
 							});
 						} else if (input.name == "energy") {
@@ -50,11 +69,11 @@
 									let green = ("0" + Math.round(255/6*contentment).toString(16)).slice(-2);
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
-									text.innerHTML = color;
-									text.style.borderBottom = ".1em solid " + color;
+									text.textContent = color;
+									text.style.backgroundColor = color;
 								} else {
-									text.innerHTML = "#";
-									text.style.borderBottom = "none";
+									text.textContent = "#";
+									text.style.backgroundColor = "none";
 								}
 							});
 						}
@@ -91,8 +110,6 @@
 						<th>3</th>
 						<th>4</th>
 						<th>5</th>
-						<th>6</th>
-						<th>7</th>
 					</tr>
 					<tr>
 						<th>Truth value</th>
@@ -101,8 +118,6 @@
 						<td><input type="radio" name="truth" id="t3"></td>
 						<td><input type="radio" name="truth" id="t4"></td>
 						<td><input type="radio" name="truth" id="t5"></td>
-						<td><input type="radio" name="truth" id="t6"></td>
-						<td><input type="radio" name="truth" id="t7"></td>
 					</tr>
 				</table>
 				<p id="emotionColor">

@@ -4,6 +4,7 @@
 		<base target="_parent">
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../../formatting.css">
+		<link rel="stylesheet" href="formatting.css">
 	</head>
 	<body class="navigation">
 		<h2>
@@ -16,7 +17,8 @@
 				["../addiction/", "Home"],
 				["entries", "Entries"],
 				["attempts", "Attempts to quit"],
-				["advice", "Advice"]
+				["advice", "Advice"],
+				["consolation", "Consolation"]
 			].forEach(function (pair) {
 				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
 			});

@@ -13,19 +13,19 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 
 		// fills all of the empty person references with people
 		let HTML = document.body.innerHTML;
-		HTML = HTML.replace(/([^'"“])(p\d+)([^'"”])/g, function (match, leftCharacter, person, rightCharacter) {
+		HTML = HTML.replace(/([^'"“])(p\d+)([^"”])/g, function (match, leftCharacter, person, rightCharacter) {
 			return leftCharacter + '<span class="' + person + '"></span>' + rightCharacter;
 		});
 		document.body.innerHTML = HTML;
 
 		// makes all of the people references links
 		S.forEach(people.slice(1), function (person, index) {
-			S.forEach(S.getClass("p" + index), function (occurrence) {
+			S.forEach(S.getClass("p" + (index+1)), function (occurrence) {
 				let link = document.createElement("a");
 				link.className = "discreet";
-				link.href = "/journal/search?p=" + index;  // "/journal/" is included just in case the link is put in a weird place
+				link.href = "/journal/search?p=" + (index+1);  // "/journal/" is included just in case the link is put in a weird place
 				//// link.target = "_blank";  // This might not be necessary.
-				link.title = person.firstName + " " + person.lastName;
+				link.title = person.firstName + (person.lastName ? " "+person.lastName : "");
 				if (occurrence.textContent.trim() != "") {
 					link.textContent = occurrence.textContent;
 					occurrence.textContent = "";
@@ -72,8 +72,8 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 		});
 
 		// gives titles to mood and honesty indications
-		let emotions = [
-			{ c: ["1"], e: ["1", "2"], n: "Devastated" },
+		let emotions = [  // contentment, energy, name  (or designation, name)
+			{ c: ["1"], e: ["1", "2"], n: "Despairing" },  // devastated, desperate, overwhelmed, ashamed, hopeless, dejected, disconsolate, despondent
 			{ c: ["1"], e: ["7"], n: "Furious" },
 			{ c: ["2"], e: ["1", "2"], n: "Sad" },
 			{ c: ["2"], e: ["4", "5"], n: "Irritated" },
@@ -86,41 +86,128 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 			{ c: ["6"], e: ["5", "6", "7"], n: "Happy" },
 			{ c: ["6", "7"], e: ["1", "2"], n: "Relieved" },
 			{ c: ["7"], e: ["7"], n: "Ecstatic" },
-			{ c: ["-"], e: ["1"], n: "Worried" },
-			{ c: ["-"], e: ["2"], n: "Anxious" },
-			{ c: ["-"], e: ["3"], n: "Terrified" }
+			{ d: "a1", n: "Worried" },
+			{ d: "a2", n: "Anxious" },
+			{ d: "a3", n: "Terrified" },
+			{ d: "m1", n: "Slightly mischevious" },
+			{ d: "m2", n: "Moderately mischevious" },
+			{ d: "m3", n: "Highly mischevious" }
 		];
+		//// amused, fascinated, bored
+		//// aspects of emotion = contentment, energy, control, expectation
+
 		S.forEach(document.body.querySelectorAll("*[class]"), function (element) {  // for every element with a class
 			if (element.className.search(/(?:^| )e-?\d+/) > -1) {  // if the element has an emotion indication
 				if (!element.title == "") {
 					element.title += "\n";
 				}
-				let indication = element.className.match(/(?:^| )(e-?\d+)/)[1];
+				let indication = element.className.match(/(?:^| )(e(?:-\w)?\d+)/)[1];
 				if (indication.includes("-")) {
-					element.title += "Emotion = " + indication.slice(1);
+					element.title += "Emotion = " + indication.slice(2);
 				} else {
 					element.title += "Emotion = " + indication[1] + "," + indication[2];
 				}
-				emotions.forEach(function (set) {
-					if (set.c.includes(indication[1]) && set.e.includes(indication[2])) {
-						element.title += " (" + set.n + ")";
+				if (indication.includes("-")) {
+					emotions.forEach(function (set) {
+						if (set.d == indication.slice(2)) {
+							element.title += " (" + set.n + ")";
+						}
+					});
+				} else {
+					emotions.forEach(function (set) {
+						if (set.c.includes(indication[1]) && set.e.includes(indication[2])) {
+							element.title += " (" + set.n + ")";
+						}
+					});
+				}
+				if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {
+					indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
+					if (indication.includes("-")) {
+						element.title += "\nHonesty = " + indication.slice(2);
+					} else {
+						element.title += "\nHonesty = " + indication[1];
 					}
-				});
-				if (element.className.search(/(?:^| )h\d/) > -1) {
-					element.title += "\nHonesty = " + element.className.match(/(?:^| )h(\d)/)[1];
-				} else if (element.className.includes("understated")) {
-					element.title += "\nUnderstated = " + element.className.match(/understated(\d)/)[1];
+					switch (indication) {
+						case "h1":
+							element.title += " (Fanciful)";
+							break;
+						case "h2":
+							element.title += " (Suggestive)";
+							break;
+						case "h3":
+							element.title += " (Subtle)";
+							break;
+						case "h4":
+							element.title += " (Honest)";
+							break;
+						case "h5":
+							element.title += " (Sincere)";
+							break;
+						case "h-u1":
+							element.title += " (Mildly understated)";
+							break;
+						case "h-u2":
+							element.title += " (Moderately understated)";
+							break;
+						case "h-u3":
+							element.title += " (Greatly understated)";
+							break;
+						case "h-o1":
+							element.title += " (Mildly overstated)";
+							break;
+						case "h-o2":
+							element.title += " (Moderately overstated)";
+							break;
+						case "h-o3":
+							element.title += " (Greatly overstated)";
+							break;
+					}
 				}
-			} else if (element.className.search(/(?:^| )h\d/) > -1) {
+			} else if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {
 				if (!element.title == "") {
 					element.title += "\n";
 				}
-				element.title += "Honesty = " + element.className.match(/(?:^| )h(\d)/)[1];
-			} else if (element.className.includes("understated")) {
-				if (!element.title == "") {
-					element.title += "\n";
+				let indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
+				if (indication.includes("-")) {
+					element.title += "\nHonesty = " + indication.slice(2);
+				} else {
+					element.title += "\nHonesty = " + indication[1];
 				}
-				element.title += "Understated = " + element.className.match(/understated(\d)/)[1];
+				switch (indication) {
+					case "h1":
+						element.title += " (Fanciful)";
+						break;
+					case "h2":
+						element.title += " (Suggestive)";
+						break;
+					case "h3":
+						element.title += " (Subtle)";
+						break;
+					case "h4":
+						element.title += " (Honest)";
+						break;
+					case "h5":
+						element.title += " (Sincere)";
+						break;
+					case "h-u1":
+						element.title += " (Mildly understated)";
+						break;
+					case "h-u2":
+						element.title += " (Moderately understated)";
+						break;
+					case "h-u3":
+						element.title += " (Greatly understated)";
+						break;
+					case "h-o1":
+						element.title += " (Mildly overstated)";
+						break;
+					case "h-o2":
+						element.title += " (Moderately overstated)";
+						break;
+					case "h-o3":
+						element.title += " (Greatly overstated)";
+						break;
+				}
 			}
 		});
 	}

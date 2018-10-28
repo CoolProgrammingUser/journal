@@ -4,6 +4,11 @@
 		<base target="_parent">
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../formatting.css">
+		<style>
+			#contentsList li:nth-child(8) a:hover {
+				animation: none;
+			}
+		</style>
 	</head>
 	<body class="navigation">
 		<h2>
@@ -21,6 +26,7 @@
 				["sleeplessness", "Sleep deprivation"],
 				["addiction", "My addiction"],
 				["themysteryplant", "The Mystery Plant"],
+				["votingforthefuture", "Voting for the Future"],
 				["links", "External links"]
 			].forEach(function (pair) {
 				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";

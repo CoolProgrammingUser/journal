@@ -7,10 +7,12 @@
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="../behavior.js"></script>
 		<script>
-			var startingDate = new Date("2018 August 5");
-			S.forEach(S.getTag("ol")[0].children, function (listItem) {
-				listItem.title = startingDate.getMonth() + 1 + "/" + startingDate.getDay() + "/" + startingDate.getFullYear();
-				startingDate = new Date(startingDate.getTime() + 86400000);
+			S.onLoad(function () {
+				var startingDate = new Date("2018 August 5");
+				S.forEach(S.getTag("ol")[0].children, function (listItem) {
+					listItem.title = startingDate.getMonth() + 1 + "/" + startingDate.getDate() + "/" + startingDate.getFullYear();
+					startingDate = new Date(startingDate.getTime() + 86400000);
+				});
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
@@ -38,7 +40,43 @@
 				<li>made a compare function</li>
 				<li>
 					<ol>
-
+						<li>Dad telling me how to vote</li>
+						<li>voted</li>
+						<li>got some of my stuff from the old house</li>
+						<li>looked at Voting for the Future and Jumping to Victory</li>
+						<li>made journal searching better</li>
+					</ol>
+				</li>
+				<li>
+					<ol>
+						<li>got and tested my peltier coolers</li>
+						<li>made random list ordering and continual recurrence</li>
+						<li>tended to a bon fire</li>
+					</ol>
+				</li>
+				<li>
+					<ol>
+						<li>transferred my programming list items to their own list</li>
+						<li>played Pikmin 3</li>
+						<li>texted Shawny for her birthday</li>
+					</ol>
+				</li>
+				<li>
+					<ol>
+						<li>sorted through my school papers</li>
+						<li>Dad sold the house</li>
+						<li>played Pikmin 3</li>
+						<li>got the plug for my refrigerator</li>
+					</ol>
+				</li>
+				<li>
+					<ol>
+						<li>slept in (because my parents weren't around)</li>
+						<li>made my distraction timer work</li>
+						<li>continued my conversation with Shawny a little bit</li>
+						<li>made volume setting work in my alarm and to-do list</li>
+						<li>made a basic box for my refrigerator</li>
+						<li>decided that the cooler needs more resistance or something</li>
 					</ol>
 				</li>
 			</ol>

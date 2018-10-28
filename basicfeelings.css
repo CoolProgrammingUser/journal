@@ -1,56 +1,35 @@
 /* honesty indications */
-.h1 {
+.h1 {  /* fanciful */
 	border-bottom: .1em solid #000000;
 }
-.h2 {
-	border-bottom: .1em solid #002b00;
+.h2 {  /* suggestive */
+	border-bottom: .1em solid #004000;
 }
-.h3 {
-	border-bottom: .1em solid #005500;
-}
-.h4 {
+.h3 {  /* subtle */
 	border-bottom: .1em solid #008000;
 }
-.h5 {
-	border-bottom: .1em solid #00aa00;
+.h4 {  /* honest */
+	border-bottom: .1em solid #00bf00;
 }
-.h6 {
-	border-bottom: .1em solid #00d500;
-}
-.h7 {
+.h5 {  /* sincere */
 	border-bottom: .1em solid #00ff00;
 }
-.fanciful {
-	border-bottom: .1em solid #000000;
+.h-o1 {  /* least overstated */
+	border-bottom: .1em solid #ffff00;
 }
-.suggestive {
-	border-bottom: .1em solid #000000;
+.h-o2 {  /* moderately overstated */
+	border-bottom: .1em solid #ff8000;
 }
-.subtle {
-	border-bottom: .1em solid #000000;
+.h-o3 {  /* most overstated */
+	border-bottom: .1em solid #ff0000;
 }
-.honest {
-	border-bottom: .1em solid #000000;
-}
-.sinscere {
-	border-bottom: .1em solid #00ff00;
-}
-.exaggerated1 {
-	border-bottom: .1em solid #000000;
-}
-.exaggerated2 {
-	border-bottom: .1em solid #000000;
-}
-.exaggerated3 {
-	border-bottom: .1em solid #000000;
-}
-.understated1 {
+.h-u1 {  /* least understated */
 	border-bottom: .1em solid #aaaaff;
 }
-.understated2 {
+.h-u2 {  /* moderately understated */
 	border-bottom: .1em solid #5555ff;
 }
-.understated3 {
+.h-u3 {  /* most understated */
 	border-bottom: .1em solid #0000ff;
 }
 
@@ -224,13 +203,16 @@
 	background-image: linear-gradient(red, red 50%, pink 50%);
 }
 .e-m1 {  /* mischevious 1 */
-	background-color: #000000;
+	background-color: #aaaaaa;
+	color: white;
 }
 .e-m2 {  /* mischevious 2 */
-	background-color: #000000;
+	background-color: #555555;
+	color: white;
 }
 .e-m3 {  /* mischevious 3 */
 	background-color: #000000;
+	color: white;
 }
 
 /* exception handling */
