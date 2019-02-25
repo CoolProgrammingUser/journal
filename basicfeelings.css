@@ -14,22 +14,22 @@
 .h5 {  /* sincere */
 	border-bottom: .1em solid #00ff00;
 }
-.h-o1 {  /* least overstated */
+.h-o1 {  /* slightly overstated */
 	border-bottom: .1em solid #ffff00;
 }
 .h-o2 {  /* moderately overstated */
 	border-bottom: .1em solid #ff8000;
 }
-.h-o3 {  /* most overstated */
+.h-o3 {  /* greatly overstated */
 	border-bottom: .1em solid #ff0000;
 }
-.h-u1 {  /* least understated */
+.h-u1 {  /* slightly understated */
 	border-bottom: .1em solid #aaaaff;
 }
 .h-u2 {  /* moderately understated */
 	border-bottom: .1em solid #5555ff;
 }
-.h-u3 {  /* most understated */
+.h-u3 {  /* greatly understated */
 	border-bottom: .1em solid #0000ff;
 }
 
@@ -148,7 +148,7 @@
 .e63 {
 	background-color: #55d5aa;
 }
-.e64 {
+.e64 {  /* amused */
 	background-color: #80d580;
 }
 .e65 {  /* happy */
@@ -169,7 +169,7 @@
 .e73 {
 	background-color: #55ffaa;
 }
-.e74 {
+.e74 {  /* amused */
 	background-color: #80ff80;
 }
 .e75 {
@@ -202,17 +202,38 @@
 	background-image: -moz-linear-gradient(red, red 50%, pink 50%);
 	background-image: linear-gradient(red, red 50%, pink 50%);
 }
-.e-m1 {  /* mischevious 1 */
+.e-m1 {  /* slightly mischevious */
 	background-color: #aaaaaa;
 	color: white;
 }
-.e-m2 {  /* mischevious 2 */
+.e-m2 {  /* moderately mischevious */
 	background-color: #555555;
 	color: white;
 }
-.e-m3 {  /* mischevious 3 */
+.e-m3 {  /* highly mischevious */
 	background-color: #000000;
 	color: white;
+}
+.e-u1 {  /* embarrassed */
+	background-color: green;  /*********************/
+}
+.e-u2 {  /* awkward */
+	background-color: green;
+}
+.e-u3 {  /* sympathetic */
+	background-color: green;
+}
+.e-i1 {  /* bored */
+	background-color: none;  /*********************/
+}
+.e-i2 {  /* intrigued */
+	background-color: none;
+}
+.e-i3 {  /* fascinated */
+	background-color: none;
+}
+.e-o1 {  /* regretful */
+	background-color: none;  /*********************/
 }
 
 /* exception handling */

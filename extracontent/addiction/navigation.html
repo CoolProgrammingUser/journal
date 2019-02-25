@@ -13,12 +13,13 @@
 		<ul id="contentsList"></ul>
 		<script>
 			[  // [page URL, title]
-				["..", "Extra content"],
+				//// ["..", "Extra content"],
 				["../addiction/", "Home"],
 				["entries", "Entries"],
 				["attempts", "Attempts to quit"],
-				["advice", "Advice"],
-				["consolation", "Consolation"]
+				["plea", "Plea to myself"]
+				//// ["advice", "Advice"],
+				//// ["consolation", "Consolation"]
 			].forEach(function (pair) {
 				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
 			});

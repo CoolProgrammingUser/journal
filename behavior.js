@@ -85,19 +85,27 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 			{ c: ["5"], e: ["4", "5", "6"], n: "Content" },
 			{ c: ["6"], e: ["5", "6", "7"], n: "Happy" },
 			{ c: ["6", "7"], e: ["1", "2"], n: "Relieved" },
+			{ c: ["6", "7"], e: ["4"], n: "Amused" },
 			{ c: ["7"], e: ["7"], n: "Ecstatic" },
 			{ d: "a1", n: "Worried" },
 			{ d: "a2", n: "Anxious" },
 			{ d: "a3", n: "Terrified" },
 			{ d: "m1", n: "Slightly mischevious" },
 			{ d: "m2", n: "Moderately mischevious" },
-			{ d: "m3", n: "Highly mischevious" }
+			{ d: "m3", n: "Highly mischevious" },
+			{ d: "u1", n: "Embarrassed" },
+			{ d: "u2", n: "Awkward" },
+			{ d: "u3", n: "Sympathetic" },
+			{ d: "i1", n: "Bored" },
+			{ d: "i2", n: "Intrigued" },
+			{ d: "i3", n: "Fascinated" },
+			{ d: "o1", n: "Regretful" }
 		];
-		//// amused, fascinated, bored
+		//// awkward, regretful, embarrassed
 		//// aspects of emotion = contentment, energy, control, expectation
 
 		S.forEach(document.body.querySelectorAll("*[class]"), function (element) {  // for every element with a class
-			if (element.className.search(/(?:^| )e-?\d+/) > -1) {  // if the element has an emotion indication
+			if (element.className.search(/(?:^| )(e(?:-\w)?\d+)/) > -1) {  // if the element has an emotion indication
 				if (!element.title == "") {
 					element.title += "\n";
 				}

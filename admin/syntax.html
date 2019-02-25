@@ -97,6 +97,96 @@
 			</p>
 			<div class="page-jump-sections">
 				<h2>
+					Classes
+				</h2>
+				<table>
+					<tr>
+						<th>Class</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td>p<em>#</em></td>
+						<td>
+							Identifies a person in the person list. Can still be recognized as plain text (not as a class). Specific names can be chosen with data-use. Creates a link to a search of that person. "p0" designates an unknown person.
+						</td>
+					</tr>
+					<tr>
+						<td>t<em>#</em></td>
+						<td>
+							Identifies a topic in the topic list. "t0" designates an unclassified topic.
+						</td>
+					</tr>
+					<tr>
+						<td>h<em>#</em></td>
+						<td>
+							Identifies honesty. "h0" designates an unclassified form of truth.
+						</td>
+					</tr>
+					<tr>
+						<td>e<em>#</em></td>
+						<td>
+							Identifies emotions. "e0" designates an unclassified emotion.
+						</td>
+					</tr>
+					<tr>
+						<td>elaborate</td>
+						<td>
+							Allows triggering the appearance of asides by clicking the contained text. The aside to be triggered immediately follows this element.
+						</td>
+					</tr>
+				</table>
+				<h2>
+					Data attributes
+				</h2>
+				<table>
+					<tr>
+						<th>Attribute</th>
+						<th>Function</th>
+					</tr>
+					<tr>
+						<td>use</td>
+						<td>
+							Which of a person's names to use. Using "extra" followed by a number makes it possible to access the extraNames array (1-based index).
+						</td>
+					</tr>
+					<tr>
+						<td>heading</td>
+						<td>
+							The heading of an aside.
+						</td>
+					</tr>
+					<tr>
+						<td>importance</td>
+						<td>
+							How important something is. Currently 0-3. 0 is implied if importance isn't indicated.
+						</td>
+					</tr>
+					<tr>
+						<td>date</td>
+						<td>
+							The date of the element's contents. Format = year/month/day.
+						</td>
+					</tr>
+					<tr>
+						<td>currency</td>
+						<td>
+							The currency of a value.
+						</td>
+					</tr>
+					<tr>
+						<td>untranslatable?</td>
+						<td>
+							Something that can't be translated without corrupting the original message. Possibly set equal to a basic description of the problem.
+						</td>
+					</tr>
+					<tr>
+						<td>revisit</td>
+						<td>
+							Something that need to be revisited. Preferably set equal to a basic description of the problem.
+						</td>
+					</tr>
+				</table>
+				<h2>
 					Truth and emotion
 				</h2>
 				<p id="truthColor">
