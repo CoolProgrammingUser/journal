@@ -2,26 +2,41 @@
 <html>
 	<head>
 		<base target="_parent">
-		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="formatting.css">
-	</head>
-	<body class="navigation">
-		<h2>
-			Contents
-		</h2>
-		<ul id="contentsList"></ul>
+		<script src="https://epicenterprograms.github.io/standards/behavior/navigation.js"></script>
 		<script>
-			[  // [page URL, title]
-				["/journal/", "Home"],
+			Standards.navigation.contents = [
+				[".", "Home"],
 				["profile", "Profile"],
 				["indicators", "Indicators"],
 				["1998-2012", "1998-2012"],
 				["search", "Search"],
 				["phonetics", "Phonetics"],
-				["extracontent/", "Extra content"]
-			].forEach(function (pair) {
-				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
-			});
+				[
+					["extracontent/", "Extra content"],
+					["extracontent/evolution", "Why evolution is real"],
+					["extracontent/talking", "How to talk to people"],
+					["extracontent/conflicts", "Conflict resolution"],
+					["extracontent/girls", "Girls"],
+					["extracontent/sleeplessness", "Sleep deprivation"],
+					["extracontent/addiction", "My addiction"],
+					["extracontent/themysteryplant", "The Mystery Plant"],
+					["extracontent/votingforthefuture", "Voting for the Future"],
+					["extracontent/links", "External links"]
+				]
+			];
 		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="formatting.css">
+		<style>
+			#contentsList ul li:nth-child(6) a:hover {
+				animation: none;
+			}
+		</style>
+	</head>
+	<body class="navigation bigger">
+		<h2>
+			Contents
+		</h2>
+		<ul id="contentsList"></ul>
 	</body>
 </html>

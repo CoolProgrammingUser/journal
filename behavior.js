@@ -31,7 +31,7 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 					occurrence.textContent = "";
 				} else if (occurrence.dataset.use) {
 					if (occurrence.dataset.use.includes("extra")) {
-						link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/)) - 1];
+						link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/)) - 1];  //// match[0]?
 					} else {
 						link.textContent = person[occurrence.dataset.use];
 					}
@@ -42,10 +42,23 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 			});
 		});
 
-		//// handles special uses of p0 references
+		// handles special uses of p0 references
+		// (useful for associating people who are potentially the same)
 		S.forEach(S.getClass("p0"), function (occurrence) {
 			if (occurrence.dataset.hasOwnProperty("use")) {
-				//// use a different person's name
+				let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
+				if (occurrence.textContent.trim() != "") {
+					// do nothing
+				} else if (occurrence.dataset.use.includes(".")) {
+					// p#.nameToUse
+					if (occurrence.dataset.use.includes("extra")) {
+						occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
+					} else {
+						occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
+					}
+				} else {
+					occurrence.textContent = people[index].name;
+				}
 			}
 		});
 
@@ -101,12 +114,14 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 			{ d: "i3", n: "Fascinated" },
 			{ d: "o1", n: "Regretful" }
 		];
-		//// awkward, regretful, embarrassed
 		//// aspects of emotion = contentment, energy, control, expectation
 
 		S.forEach(document.body.querySelectorAll("*[class]"), function (element) {  // for every element with a class
+			if (element.parentNode.title != "" && element.title == "") {
+				element.title = element.parentNode.title;
+			}
 			if (element.className.search(/(?:^| )(e(?:-\w)?\d+)/) > -1) {  // if the element has an emotion indication
-				if (!element.title == "") {
+				if (element.title != "") {
 					element.title += "\n";
 				}
 				let indication = element.className.match(/(?:^| )(e(?:-\w)?\d+)/)[1];
@@ -123,8 +138,10 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 					});
 				} else {
 					emotions.forEach(function (set) {
-						if (set.c.includes(indication[1]) && set.e.includes(indication[2])) {
-							element.title += " (" + set.n + ")";
+						if (!set.d) {
+							if (set.c.includes(indication[1]) && set.e.includes(indication[2])) {
+								element.title += " (" + set.n + ")";
+							}
 						}
 					});
 				}
@@ -177,9 +194,9 @@ S.queue.add({  // This can't be S.onLoad since replacing the person references e
 				}
 				let indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
 				if (indication.includes("-")) {
-					element.title += "\nHonesty = " + indication.slice(2);
+					element.title += "Honesty = " + indication.slice(2);
 				} else {
-					element.title += "\nHonesty = " + indication[1];
+					element.title += "Honesty = " + indication[1];
 				}
 				switch (indication) {
 					case "h1":

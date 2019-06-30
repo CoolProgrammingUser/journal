@@ -215,25 +215,34 @@
 	color: white;
 }
 .e-u1 {  /* embarrassed */
-	background-color: green;  /*********************/
+	background-color: #005500;
+	color: white;
 }
 .e-u2 {  /* awkward */
-	background-color: green;
+	background-color: #00aa00;
 }
 .e-u3 {  /* sympathetic */
-	background-color: green;
+	background-color: #00ff00;
 }
 .e-i1 {  /* bored */
-	background-color: none;  /*********************/
+	background-color: #aaaaff;
+	color: white;
 }
 .e-i2 {  /* intrigued */
-	background-color: none;
+	background-color: #5555ff;
+	color: white;
 }
 .e-i3 {  /* fascinated */
-	background-color: none;
+	background-color: #0000ff;
+	color: white;
 }
 .e-o1 {  /* regretful */
-	background-color: none;  /*********************/
+	background-color: maroon;
+	background-image: -webkit-linear-gradient(gray, maroon);
+	background-image: -o-linear-gradient(gray, maroon);
+	background-image: -moz-linear-gradient(gray, maroon);
+	background-image: linear-gradient(gray, maroon);
+	color: white;
 }
 
 /* exception handling */

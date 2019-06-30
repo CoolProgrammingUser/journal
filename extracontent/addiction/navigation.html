@@ -2,27 +2,26 @@
 <html>
 	<head>
 		<base target="_parent">
+		<script src="https://epicenterprograms.github.io/standards/behavior/navigation.js"></script>
+		<script>
+			Standards.navigation.contents = [
+				["..", "Extra content"],
+				["../addiction/", "Home"],
+				["entries", "Entries"],
+				["attempts", "Attempts to quit"],
+				["plea", "Plea to myself"],
+				["advice", "Advice"],
+				["consolation", "Consolation"]
+			];
+		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../../formatting.css">
 		<link rel="stylesheet" href="formatting.css">
 	</head>
-	<body class="navigation">
+	<body class="navigation bigger">
 		<h2>
 			Contents
 		</h2>
 		<ul id="contentsList"></ul>
-		<script>
-			[  // [page URL, title]
-				//// ["..", "Extra content"],
-				["../addiction/", "Home"],
-				["entries", "Entries"],
-				["attempts", "Attempts to quit"],
-				["plea", "Plea to myself"]
-				//// ["advice", "Advice"],
-				//// ["consolation", "Consolation"]
-			].forEach(function (pair) {
-				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
-			});
-		</script>
 	</body>
 </html>

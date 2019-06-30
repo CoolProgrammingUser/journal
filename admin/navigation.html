@@ -2,17 +2,8 @@
 <html>
 	<head>
 		<base target="_parent">
-		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="../formatting.css">
-	</head>
-	<body class="navigation">
-		<h2>
-			Nope
-		</h2>
-		<!--
-		<ul id="contentsList"></ul>
 		<script>
-			[  // [page URL, title]
+			Standards.navigation.contents = [
 				["..", "Main website"],
 				["/journal/admin/", "Administrative home"],
 				["entries", "Planned entries"],
@@ -20,10 +11,15 @@
 				["dailylog", "Daily log"],
 				["notes", "Notes"],
 				["syntax", "Coding syntax"]
-			].forEach(function(pair) {
-				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
-			});
+			];
 		</script>
-		-->
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+	</head>
+	<body class="navigation bigger">
+		<h2>
+			Contents
+		</h2>
+		<ul id="contentsList"></ul>
 	</body>
 </html>

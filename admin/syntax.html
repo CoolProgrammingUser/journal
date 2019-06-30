@@ -4,6 +4,9 @@
 		<title>
 			Journal
 		</title>
+		<!--
+		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
+		-->
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="../behavior.js"></script>
 		<script>
@@ -81,8 +84,17 @@
 				});
 			});
 		</script>
+		<!--
+		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
+		-->
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../formatting.css">
+		<link rel="stylesheet" href="../basicfeelings.css">
+		<style>
+			table span {
+				border-bottom: none;
+			}
+		</style>
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
@@ -103,6 +115,30 @@
 					<tr>
 						<th>Class</th>
 						<th>Description</th>
+					</tr>
+					<tr>
+						<td>entry</td>
+						<td>
+							Surrounds individual entries.
+						</td>
+					</tr>
+					<tr>
+						<td>bce</td>
+						<td>
+							Before Current Events. Identifies entries which are reviewing past events.
+						</td>
+					</tr>
+					<tr>
+						<td>ce</td>
+						<td>
+							Current Events. Identifies entries which were written close to the time of the events discussed.
+						</td>
+					</tr>
+					<tr>
+						<td>nonsequitor?</td>
+						<td>
+							Identifies misordered entries.
+						</td>
 					</tr>
 					<tr>
 						<td>p<em>#</em></td>
@@ -164,7 +200,13 @@
 					<tr>
 						<td>date</td>
 						<td>
-							The date of the element's contents. Format = year/month/day.
+							The date the element's contents were written. Format = year/month/day.
+						</td>
+					</tr>
+					<tr>
+						<td>coolness</td>
+						<td>
+							How cool or funny something is. Currently 0-3. 0 is implied if coolness isn't indicated.
 						</td>
 					</tr>
 					<tr>
@@ -210,6 +252,31 @@
 						<td><input type="radio" name="truth" id="t5"></td>
 					</tr>
 				</table>
+				<table>
+					<tr>
+						<th colspan="4">
+							Extra truth
+						</th>
+					</tr>
+					<tr>
+						<th>Quality</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+					</tr>
+					<tr>
+						<td>Overstated</td>
+						<td><span class="h-o1">o1</span></td>
+						<td><span class="h-o2">o2</span></td>
+						<td><span class="h-o3">o3</span></td>
+					</tr>
+					<tr>
+						<td>Understated</td>
+						<td><span class="h-u1">u1</span></td>
+						<td><span class="h-u2">u2</span></td>
+						<td><span class="h-u3">u3</span></td>
+					</tr>
+				</table>
 				<p id="emotionColor">
 					Emotion color: <span>#</span>
 				</p>
@@ -243,6 +310,49 @@
 						<td><input type="radio" name="energy" id="e_5"></td>
 						<td><input type="radio" name="energy" id="e_6"></td>
 						<td><input type="radio" name="energy" id="e_7"></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<th colspan="4">
+							Extra emotions
+						</th>
+					</tr>
+					<tr>
+						<th>Quality</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+					</tr>
+					<tr>
+						<td>Anxiety</td>
+						<td><span class="e-a1">a1</span></td>
+						<td><span class="e-a2">a2</span></td>
+						<td><span class="e-a3">a3</span></td>
+					</tr>
+					<tr>
+						<td>Mischeviousness</td>
+						<td><span class="e-m1">m1</span></td>
+						<td><span class="e-m2">m2</span></td>
+						<td><span class="e-m3">m3</span></td>
+					</tr>
+					<tr>
+						<td>Uncomfortableness</td>
+						<td><span class="e-u1">u1</span></td>
+						<td><span class="e-u2">u2</span></td>
+						<td><span class="e-u3">u3</span></td>
+					</tr>
+					<tr>
+						<td>Interest</td>
+						<td><span class="e-i1">i1</span></td>
+						<td><span class="e-i2">i2</span></td>
+						<td><span class="e-i3">i3</span></td>
+					</tr>
+					<tr>
+						<td>Other</td>
+						<td><span class="e-o1">o1</span></td>
+						<td><span class=""></span></td>
+						<td><span class=""></span></td>
 					</tr>
 				</table>
 			</div>

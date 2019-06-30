@@ -2,6 +2,33 @@
 <html>
 	<head>
 		<base target="_parent">
+		<script src="https://epicenterprograms.github.io/standards/behavior/navigation.js"></script>
+		<script>
+			Standards.navigation.contents = [
+				["..", "Main website"],
+				[".", "Home"],
+				["evolution", "Why evolution is real"],
+				["talking", "How to talk to people"],
+				["conflicts", "Conflict resolution"],
+				[
+					["girls", "Girls"],
+					["girls/preferences", "Preferences"],
+					["girls/appearance", "Appearance"]
+				],
+				["sleeplessness", "Sleep deprivation"],
+				[
+					["addiction", "My addiction"],
+					["addiction/entries", "Entries"],
+					["addiction/attempts", "Attempts to quit"],
+					["addiction/plea", "Plea to myself"],
+					["addiction/advice", "Advice"],
+					["addiction/consolation", "Consolation"]
+				],
+				["themysteryplant", "The Mystery Plant"],
+				["votingforthefuture", "Voting for the Future"],
+				["links", "External links"]
+			];
+		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../formatting.css">
 		<style>
@@ -10,27 +37,10 @@
 			}
 		</style>
 	</head>
-	<body class="navigation">
+	<body class="navigation bigger">
 		<h2>
 			Contents
 		</h2>
 		<ul id="contentsList"></ul>
-		<script>
-			[  // [page URL, title]
-				["..", "Main website"],
-				[".", "Home"],
-				["evolution", "Why evolution is real"],
-				["talking", "How to talk to people"],
-				["conflicts", "Conflict resolution"],
-				["girls", "Girls"],
-				["sleeplessness", "Sleep deprivation"],
-				["addiction", "My addiction"],
-				["themysteryplant", "The Mystery Plant"],
-				["votingforthefuture", "Voting for the Future"],
-				["links", "External links"]
-			].forEach(function (pair) {
-				document.getElementById("contentsList").innerHTML += "<li><a href='" + pair[0] + "'>" + pair[1] + "</a></li>";
-			});
-		</script>
 	</body>
 </html>
