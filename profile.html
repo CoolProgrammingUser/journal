@@ -1,11 +1,13 @@
 <!doctype html>
 <html>
 	<head>
+		<link rel="icon" href="favicon.ico">
 		<title>
 			Journal
 		</title>
 		<base target="_blank">
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="people.js"></script>
 		<script src="behavior.js"></script>
 		<script>
 			function update() {
@@ -17,6 +19,8 @@
 			}
 			window.addEventListener("finished", function () {
 				// sets my age
+				S.getId("age").parentNode.parentNode.getElementsByClassName("boring")[0].textContent =
+					Math.floor((new Date().getTime() - new Date("March 11, 1998 4:00 GMT-0600").getTime()) / (365.25 * 86400000));
 				update();
 				setInterval(update, 1000);
 
@@ -47,6 +51,32 @@
 					}
 				});
 			});
+
+			S.listen("loser", "change", function () {
+				if (this.checked) {
+					S.forEach(S.getClass("cool"), function (item) {
+						item.style.display = "none";
+					});
+					S.forEach(S.getClass("boring"), function (item) {
+						if (item.tagName == "LI") {
+							item.style.display = "list-item";
+						} else {
+							item.style.display = "inline";
+						}
+					});
+				} else {
+					S.forEach(S.getClass("cool"), function (item) {
+						if (item.tagName == "LI") {
+							item.style.display = "list-item";
+						} else {
+							item.style.display = "inline";
+						}
+					});
+					S.forEach(S.getClass("boring"), function (item) {
+						item.style.display = "none";
+					});
+				}
+			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
@@ -64,6 +94,7 @@
 			Profile
 		</h1>
 		<main>
+			<input type="checkbox" id="loser"><label for="loser">I'm a loser and want normal information displayed.</label>
 			<h2>
 				General Information
 			</h2>
@@ -78,7 +109,7 @@
 					Birth place: Saint Charles, Missouri; United States
 				</li>
 				<li>
-					Parents: Robert William Benson and Barbara Mary Benson neé Dalpiaz
+					Parents: <span class="p1">Robert William Benson</span> and <span class="p2">Barbara Mary Benson neé Dalpiaz</span>
 				</li>
 				<li>
 					Half-sister: Shawny Green
@@ -86,16 +117,16 @@
 				<li>
 					Age:
 					<span class="cool"><a id="age" href="https://en.wikipedia.org/wiki/Second"></a></span>
-					<span class="boring">21</span>
+					<span class="boring"></span>
 				</li>
 				<li id="height">
 					Height:
 					<span class="cool"><a href="https://en.wikipedia.org/wiki/Smoot"></a></span>
-					<span class="boring">&asymp; 5 feet 7.75 inches</span>
+					<span class="boring">5 feet 7.75 inches</span>
 				</li>
 				<li id="weight">
 					<span class="cool">Mass: <a href="https://en.wikipedia.org/wiki/Unified_atomic_mass_unit"></a></span>
-					<span class="boring">Weight: &asymp; 135 pounds</span>
+					<span class="boring">Weight: 135 pounds</span>
 				</li>
 				<li>
 					<span style="color:#64320a">Hair color</span>:
@@ -116,7 +147,8 @@
 			</h2>
 			<ul>
 				<li>
-					<span style="animation:rainbow 1.5s linear 0s infinite normal forwards">Favorite color</span>: NONE!!!!
+					<span style="animation:rainbow 1.5s linear 0s infinite normal forwards">Favorite color</span>: <span class="elaborate discreet">NONE!!!!</span>
+					<aside data-heading="Partial admission">Although I have no color which I can specifically say is my favorite, I tend to like vibrant colors over duller ones. Lime green often has the vibrancy I like, but to say that it's my favorite color would be inaccurate. Furthermore, if I'm exposed to a certain color too much, I'll get bored with it and prefer a different color even if the original one was vibrant.</aside>
 				</li>
 				<li>
 					Favorite animal: <a href="https://en.wikipedia.org/wiki/Cuttlefish">cuttlefish</a>

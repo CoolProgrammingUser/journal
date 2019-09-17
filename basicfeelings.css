@@ -1,17 +1,14 @@
 /* honesty indications */
 .h1 {  /* fanciful */
-	border-bottom: .1em solid #000000;
-}
-.h2 {  /* suggestive */
 	border-bottom: .1em solid #004000;
 }
-.h3 {  /* subtle */
+.h2 {  /* suggestive */
 	border-bottom: .1em solid #008000;
 }
-.h4 {  /* honest */
+.h3 {  /* honest */
 	border-bottom: .1em solid #00bf00;
 }
-.h5 {  /* sincere */
+.h4 {  /* sincere */
 	border-bottom: .1em solid #00ff00;
 }
 .h-o1 {  /* slightly overstated */
@@ -42,12 +39,15 @@
 }
 .e13 {
 	background-color: #5500aa;
+	color: white;
 }
 .e14 {
 	background-color: #800080;
+	color: white;
 }
 .e15 {
 	background-color: #aa0055;
+	color: white;
 }
 .e16 {
 	background-color: #d5002b;
@@ -63,12 +63,15 @@
 }
 .e23 {
 	background-color: #552baa;
+	color: white;
 }
 .e24 {  /* irritated */
 	background-color: #802b80;
+	color: white;
 }
 .e25 {  /* irritated */
 	background-color: #aa2b55;
+	color: white;
 }
 .e26 {  /* angry */
 	background-color: #d52b2b;
@@ -214,15 +217,15 @@
 	background-color: #000000;
 	color: white;
 }
-.e-u1 {  /* embarrassed */
-	background-color: #005500;
-	color: white;
+.e-u1 {  /* sympathetic */
+	background-color: #00ff00;
 }
-.e-u2 {  /* awkward */
+.e-u2 {  /* embarrassed */
 	background-color: #00aa00;
 }
-.e-u3 {  /* sympathetic */
-	background-color: #00ff00;
+.e-u3 {  /* awkward */
+	background-color: #005500;
+	color: white;
 }
 .e-i1 {  /* bored */
 	background-color: #aaaaff;
@@ -243,6 +246,13 @@
 	background-image: -moz-linear-gradient(gray, maroon);
 	background-image: linear-gradient(gray, maroon);
 	color: white;
+}
+.e-o2 {  /* cynical */
+	background-color: darkcyan;
+	background-image: -webkit-linear-gradient(red, cyan);
+	background-image: -o-linear-gradient(red, cyan);
+	background-image: -moz-linear-gradient(red, cyan);
+	background-image: linear-gradient(red, cyan);
 }
 
 /* exception handling */

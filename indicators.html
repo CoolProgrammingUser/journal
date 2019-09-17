@@ -1,53 +1,38 @@
 <!doctype html>
 <html>
 	<head>
+		<link rel="icon" href="favicon.ico">
 		<title>
 			Journal
 		</title>
-		<!--
-		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
-		<script src="behavior.js"></script>
-		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="formatting.css">
-		<link rel="stylesheet" href="basicfeelings.css">
-		-->
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="behavior.js"></script>
+		<script src="people.js"></script>
 		<script>
 			var S = Standards.general;
+
+
 			S.onLoad(function () {
-				let emotions = [
-					{ c: [1], e: [1, 2], n: "Despairing" },
-					{ c: [1], e: [7], n: "Furious" },
-					{ c: [2], e: [1, 2], n: "Sad" },
-					{ c: [2], e: [4, 5], n: "Irritated" },
-					{ c: [2], e: [6, 7], n: "Angry" },
-					{ c: [3], e: [4, 5], n: "Annoyed" },
-					{ c: [3], e: [6, 7], n: "Frustrated" },
-					{ c: [3, 4, 5], e: [1, 2], n: "Exhausted" },
-					{ c: [4], e: [3, 4, 5], n: "Unfeeling" },
-					{ c: [5], e: [4, 5, 6], n: "Content" },
-					{ c: [6], e: [5, 6, 7], n: "Happy" },
-					{ c: [6, 7], e: [1, 2], n: "Relieved" },
-					{ c: [6, 7], e: [4], n: "Amused" },
-					{ c: [7], e: [7], n: "Ecstatic" }
-				];
+
 				S.forEach(S.getTag("input"), function(input) {
 					if (input.type == "radio") {
 						if (input.name == "truth") {
 							S.listen(input, "click", function() {
 								let color = S.getId("truthColor").getElementsByTagName("span")[0];
 								if (this.checked) {
-									let greenValue = "#00" + ("0" + Math.round(255/6*(Number(this.id[1])-1)).toString(16)).slice(-2) + "00";
+									let greenValue = "#00" + ("0" + Math.round(255/4*(Number(this.id[1]))).toString(16)).slice(-2) + "00";
 									color.textContent = greenValue;
-									color.style.borderBottom = ".1em solid " + greenValue;
-									color.title = "Honesty = " + this.id[1];
+									color.className = "h" + this.id[1];
+									color.title = "";
+									assignTone(color);
+									color.textContent += " " + color.title.match(/\((?:\w|\/)+\)/)[0];
 								} else {
 									color.textContent = "#";
-									color.style.borderBottom = "inherit";
+									color.className = "";
 									color.title = "";
+									color.style.borderBottom = "inherit";
 								}
-							});
+							}, { allowDefault: true });
 						} else if (input.name == "contentment") {
 							S.listen(input, "click", function() {
 								let text = S.getId("emotionColor").getElementsByTagName("span")[0];
@@ -59,23 +44,16 @@
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
 									text.textContent = color;
-									text.style.backgroundColor = color;
-									let matched = false;
-									emotions.forEach(function (set) {
-										if (set.c.includes(contentment+1) && set.e.includes(energy+1)) {
-											text.title = "Emotion = " + (contentment+1) + "," + (energy+1) + " (" + set.n + ")";
-											matched = true;
-										}
-									});
-									if (!matched) {
-										text.title = "Emotion = " + (contentment+1) + "," + (energy+1);
-									}
+									text.className = "e" + this.id[1] + S.getName("energy", true).id[2];
+									text.title = "";
+									assignTone(text);
 								} else {
 									text.textContent = "#";
-									text.style.backgroundColor = "none";
+									text.className = "";
 									text.title = "";
+									text.style.backgroundColor = "none";
 								}
-							});
+							}, { allowDefault: true });
 						} else if (input.name == "energy") {
 							S.listen(input, "click", function() {
 								let text = S.getId("emotionColor").getElementsByTagName("span")[0];
@@ -87,31 +65,57 @@
 									let blue = ("0" + Math.round(255/6*(6-energy)).toString(16)).slice(-2);
 									let color = "#" + red + green + blue;
 									text.textContent = color;
-									text.style.backgroundColor = color;
-									let matched = false;
-									emotions.forEach(function (set) {
-										if (set.c.includes(contentment+1) && set.e.includes(energy+1)) {
-											text.title = "Emotion = " + (contentment+1) + "," + (energy+1) + " (" + set.n + ")";
-											matched = true;
-										}
-									});
-									if (!matched) {
-										text.title = "Emotion = " + (contentment+1) + "," + (energy+1);
-									}
+									text.className = "e" + S.getName("contentment", true).id[1] + this.id[2];
+									text.title = "";
+									assignTone(text);
 								} else {
 									text.textContent = "#";
-									text.style.backgroundColor = "none";
+									text.className = "";
 									text.title = "";
+									text.style.backgroundColor = "none";
 								}
-							});
+							}, { allowDefault: true });
 						}
 					}
 				});
+
+				S.forEach(7, function (_, first) {
+					let row = S.getId("emotionTable").insertRow(-1);
+					S.forEach(8, function (__, second) {
+						let cell;
+						if (second == 0) {
+							cell = document.createElement("th");
+							cell.textContent = first + 1;
+						} else {
+							cell = document.createElement("td");
+							cell.innerHTML = "<span class='e" + (first + 1) + second + "'>e" + (first + 1) + second + "</span>";
+						}
+						row.appendChild(cell);
+					});
+				});
+				//// assignTone(S.getId("emotionTable").getElementsByTagName("span"));
+				setTimeout(function () {  //// a strange error in the site behavior necessitates this
+					S.forEach(S.getId("emotionTable").getElementsByTagName("span"), function (emotion) {
+						if (emotion.title.includes("(")) {
+							emotion.textContent = emotion.title.match(/\(\w+/)[0].slice(1);
+						}
+					});
+					S.forEach(S.getId("extraEmotions").getElementsByTagName("span"), function (emotion) {
+						if (emotion.title) {
+							emotion.textContent = emotion.title.match(/\((?:\w| )+/)[0].slice(1);
+						}
+					});
+				}, 0);
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<link rel="stylesheet" href="basicfeelings.css">
+		<style>
+			table span {
+				border-bottom: none;
+			}
+		</style>
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
@@ -121,44 +125,69 @@
 			Indicators
 		</h1>
 		<main>
-			<p>
-				This helps me format my entries.
-			</p>
+			<section>
+				<span class="h-o2">Although I demonstrate a mastery of English so remarkable that my intent could hardly be misunderstood in any of my exceptionally vivid recollections of my experiences,</span> I occasionally worry that my sense of humor or subtlety won't be apparent enough to the readers of this journal. In an effort to compensate for this, I've attempted to create ways to better express what I'm trying to say. Ideally, particularly with the emotion, I'd like to be able to represent everything with varying combinations of a small number of aspects, but in the interests of actually making some kind of progress in this journal, I've opted to throw together something and make any optimizations in the future. For the scales I do have established (and the ones which have a description), it's worth noting that, although close, the description isn't necessarily exact; some attention should be paid to the general trends I establish. Since it can be difficult discern exactly what shade a given color is, I made sure that color-dependent indicators display a written indication of the specific tone being expressed when hovered over or when touched and held. It's worth noting that any humor or subtlety I may be exhibiting at a given time <strong>will not</strong> be demonstrated in my indicators: The indicators don't do you much good if I may be joking with those too. Keep in mind, however, that I'm not always going to indicate a change in honesty or emotional state: I tried that at one point, and it only took me that one time to discover that I'd never be able to keep it up. Consequentially, I'm only likey to indicate things when I want to emphasize something or when I think there's a potential to be misunderstood.
+			</section>
 			<div class="page-jump-sections">
 				<h2>
 					Honesty
 				</h2>
-				<p id="truthColor">
+				<section>
+					Although I wouldn't say that I'm ever lying, there are times when I'm not really being serious, and you wouldn't be the first person to sometimes get confused about exactly when those times are. As such, I provided a way to indicate how seriously I expect you to take me. Of the honesty options I may choose, the one which most likely requires an explanation is "<span class="h2">suggestive</span>": I primarily use this when I'm implying that something might actually be true in an otherwise false statement or when I'm leaving out some important considerations which can influence what the reasonable conclusion is. My baseling honesty is <span class="h3">h3</span>.
+				</section>
+				<section id="truthColor">
 					Honesty color: <span>#</span>
-				</p>
+				</section>
 				<table class="organizational">
 					<tr>
 						<th></th>
-						<th>1</th>
-						<th>2</th>
-						<th>3</th>
-						<th>4</th>
-						<th>5</th>
-						<th>6</th>
-						<th>7</th>
+						<th><span class="h1">1</span></th>
+						<th><span class="h2">2</span></th>
+						<th><span class="h3">3</span></th>
+						<th><span class="h4">4</span></th>
 					</tr>
 					<tr>
-						<th>Truth value</th>
+						<th>Honesty value</th>
 						<td><input type="radio" name="truth" id="t1"></td>
 						<td><input type="radio" name="truth" id="t2"></td>
 						<td><input type="radio" name="truth" id="t3"></td>
 						<td><input type="radio" name="truth" id="t4"></td>
-						<td><input type="radio" name="truth" id="t5"></td>
-						<td><input type="radio" name="truth" id="t6"></td>
-						<td><input type="radio" name="truth" id="t7"></td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<th colspan="4">
+							Extra honesty
+						</th>
+					</tr>
+					<tr>
+						<th>Quality</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+					</tr>
+					<tr>
+						<td>Overstated</td>
+						<td><span class="h-o1">o1</span></td>
+						<td><span class="h-o2">o2</span></td>
+						<td><span class="h-o3">o3</span></td>
+					</tr>
+					<tr>
+						<td>Understated</td>
+						<td><span class="h-u1">u1</span></td>
+						<td><span class="h-u2">u2</span></td>
+						<td><span class="h-u3">u3</span></td>
 					</tr>
 				</table>
 				<h2>
 					Emotion
 				</h2>
-				<p id="emotionColor">
+				<section>
+					As you might guess, this shows you how I indicate my emotions in my writing. "Contentment" and "Energy" are my attempts to find the underlying components to emotion (and the extra emotions are what I do when those components fail me). For these purposes, "contentment" means how much I like something, and "energy" means how vigorous I feel while experiencing the emotion. You'll notice how not all of the emotions have a description. That's primarily a result of me not being certain what would be categorized as such an emotion; you shouldn't worry too much about those, though, because if I don't even know what would make me feel like that, I'm not likely to use that indicator. My baseline emotional state (and the generally assumed emotion with which I write) is objectively content or something like <span class="e54">e54</span> or <span class="e55">e55</span>.
+				</section>
+				<section id="emotionColor">
 					Emotion color: <span>#</span>
-				</p>
+				</section>
 				<table class="organizational">
 					<tr>
 						<th></th>
@@ -191,30 +220,209 @@
 						<td><input type="radio" name="energy" id="e_7"></td>
 					</tr>
 				</table>
-				<table class="organizational">
+				<table id="emotionTable">
 					<tr>
-						<th colspan="3">
-							Anxiety
+						<th></th>
+						<th colspan="8">Second #</th>
+					</tr>
+					<tr>
+						<th rowspan="8">First #</th>
+						<th>0</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+					</tr>
+				</table>
+				<table id="extraEmotions">
+					<tr>
+						<th colspan="4">
+							Extra emotions
 						</th>
 					</tr>
 					<tr>
-						<th><span class="e-1">1</span></th>
-						<th><span class="e-2">2</span></th>
-						<th><span class="e-3">3</span></th>
+						<th>Quality</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
 					</tr>
 					<tr>
-						<td><input type="radio" name="anxiety" id="a1"></td>
-						<td><input type="radio" name="anxiety" id="a2"></td>
-						<td><input type="radio" name="anxiety" id="a3"></td>
+						<td>Anxiety</td>
+						<td><span class="e-a1">a1</span></td>
+						<td><span class="e-a2">a2</span></td>
+						<td><span class="e-a3">a3</span></td>
+					</tr>
+					<tr>
+						<td>Mischeviousness</td>
+						<td><span class="e-m1">m1</span></td>
+						<td><span class="e-m2">m2</span></td>
+						<td><span class="e-m3">m3</span></td>
+					</tr>
+					<tr>
+						<td>Uncomfortableness</td>
+						<td><span class="e-u1">u1</span></td>
+						<td><span class="e-u2">u2</span></td>
+						<td><span class="e-u3">u3</span></td>
+					</tr>
+					<tr>
+						<td>Interest</td>
+						<td><span class="e-i1">i1</span></td>
+						<td><span class="e-i2">i2</span></td>
+						<td><span class="e-i3">i3</span></td>
+					</tr>
+					<tr>
+						<td>Other</td>
+						<td><span class="e-o1">o1</span></td>
+						<td><span class="e-o2">o2</span></td>
+						<td><span class=""></span></td>
 					</tr>
 				</table>
 				<h2>
-					Unseen indicators
+					Classes
 				</h2>
-				data-importance, data-awesomeness, data-topic<br>
-				data-dependencies &rarr; language, culture, time<br>
-				data-currency &rarr; USD<br>
-				data-relabel, data-revisit
+				<section>
+					In the programming language of HTML (and CSS), classes are ways of giving sections/elements of a website certain styling. There isn't much need to spend too much time trying to figure these out because they're fairly self-explanatory and/or unimportant. However, you may want to take notice of the fact that you can click on person references. Also, although it doesn't quite fit in this section (or any other), you may also like to know that you can click on just about anything with <span style="text-decoration: dotted underline">dotted underlines</span> or {braces}.
+				</section>
+				<table>
+					<tr>
+						<th>Class</th>
+						<th>Description</th>
+						<th>Example</th>
+					</tr>
+					<tr>
+						<td>entry</td>
+						<td>
+							Surrounds individual entries.
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>bce</td>
+						<td>
+							Before Current Events. Identifies entries which are reviewing past events.
+						</td>
+						<td><span class="bce">{Future}</span></td>
+					</tr>
+					<tr>
+						<td>ce</td>
+						<td>
+							Current Events. Identifies entries which were written close to the time of the events discussed.
+						</td>
+						<td><span class="ce">Present</span></td>
+					</tr>
+					<tr>
+						<td>afterthought</td>
+						<td>
+							Identifies sections that have been added at a different time than the rest of the entry.
+						</td>
+						<td><span class="afterthought">Oops</span></td>
+					</tr>
+					<tr>
+						<td>p<em>#</em></td>
+						<td>
+							Identifies a person in the person list. Can still be recognized as plain text (not as a class). Specific names can be chosen with data-use. Creates a link to a search of that person. "p0" designates an unknown person or intentionally hidden person.
+						</td>
+						<td>p1</td>
+					</tr>
+					<tr>
+						<td>t<em>#</em></td>
+						<td>
+							Identifies a topic in the topic list. "t0" designates an unclassified topic.
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>h<em>#</em></td>
+						<td>
+							Identifies honesty. "h0" designates an unclassified form of truth.
+						</td>
+						<td><span class="h3">h3</span></td>
+					</tr>
+					<tr>
+						<td>e<em>#</em></td>
+						<td>
+							Identifies emotions. "e0" designates an unclassified emotion.
+						</td>
+						<td><span class="e77">e77</span></td>
+					</tr>
+					<tr>
+						<td>elaborate</td>
+						<td>
+							Allows triggering the appearance of asides by clicking the contained text. The aside to be triggered immediately follows this element.
+						</td>
+						<td><span class="elaborate">RTB</span><aside data-heading="My initials">Robert Tour Benson</aside></td>
+					</tr>
+					<tr>
+						<td>discreet</td>
+						<td>
+							Hides an otherwise obvious link. May look like regular text until hovered over.
+						</td>
+						<td><span class="elaborate discreet">RTB</span><aside data-heading="My initials">Robert Tour Benson</aside></td>
+					</tr>
+				</table>
+				<h2>
+					Data attributes
+				</h2>
+				<section>
+					These primarily provide information used behind the scenes. You may see the effects of these things, but their purpose here is mainly just as a reminder to me.
+				</section>
+				<table>
+					<tr>
+						<th>Attribute</th>
+						<th>Function</th>
+					</tr>
+					<tr>
+						<td>use</td>
+						<td>
+							Which of a person's names to use. Using "extra" followed by a number makes it possible to access the extraNames array (1-based index).
+						</td>
+					</tr>
+					<tr>
+						<td>heading</td>
+						<td>
+							The heading of an aside.
+						</td>
+					</tr>
+					<tr>
+						<td>importance</td>
+						<td>
+							How important something is. Currently 0-3. 0 is implied if importance isn't indicated.
+						</td>
+					</tr>
+					<tr>
+						<td>date</td>
+						<td>
+							The date the element's contents were written (not the date they're written about). Format = year/month/day.
+						</td>
+					</tr>
+					<tr>
+						<td>coolness</td>
+						<td>
+							How cool or funny something is. Currently 0-3. 0 is implied if coolness isn't indicated.
+						</td>
+					</tr>
+					<tr>
+						<td>currency</td>
+						<td>
+							The currency of a value.
+						</td>
+					</tr>
+					<tr>
+						<td>untranslatable?</td>
+						<td>
+							Something that can't be translated without corrupting the original message. Possibly set equal to a basic description of the problem.
+						</td>
+					</tr>
+					<tr>
+						<td>revisit</td>
+						<td>
+							Something that need to be revisited. Preferably set equal to a basic description of the problem.
+						</td>
+					</tr>
+				</table>
 			</div>
 		</main>
 	</body>

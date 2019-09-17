@@ -1,8 +1,12 @@
+body {
+	background-color: #88aaff;
+	background-image: url("/journal/background.png"), repeating-linear-gradient(#0000ee, white 100vh, #0000ee 200vh);
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+}
 body.navigation {
 	font-family: cursive;
-}
-body.navigation a {
-	color: black;
 }
 @keyframes rainbow {
 	0% {
@@ -54,6 +58,11 @@ section {
 	margin: 1em 0em;
 }
 
+.entry {
+	display: block;
+	padding: .5em;
+}
+
 .trigger {
 	color: blue;
 	cursor: help;
@@ -77,8 +86,7 @@ section {
 	content: "}";
 }
 .elaborate.discreet {
-	/* color: inherit; */
-	text-decoration: none;
+	color: inherit;
 }
 .elaborate.discreet::before {
 	content: "";
@@ -87,7 +95,7 @@ section {
 	content: "";
 }
 .elaborate.discreet:hover {
-	font-weight: bold;
+	text-decoration: underline;
 }
 aside::before {
 	content: attr(data-heading);
@@ -110,21 +118,19 @@ button.hide-aside:hover {
 }
 
 .bce {  /* Before Current Events */
-	/*
 	border-width: .05rem;
 	border-color: green;
 	border-style: solid;
-	*/
 }
 
 .ce {  /* Current Events */
-
-}
-
-.nonsequitor {
-	/*
 	border-width: .05rem;
 	border-color: orange;
 	border-style: solid;
-	*/
+}
+
+.afterthought {
+	border-width: .05rem;
+	border-color: cyan;
+	border-style: solid;
 }
