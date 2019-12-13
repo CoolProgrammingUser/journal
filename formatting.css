@@ -76,7 +76,8 @@ section {
 	styles text that reveals an elaboration on click
 	*/
 	color: blue;
-	text-decoration: dotted underline;
+	text-decoration: underline;
+	text-decoration-style: dotted;
 	cursor: pointer;
 }
 .elaborate::before {
