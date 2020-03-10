@@ -135,3 +135,11 @@ button.hide-aside:hover {
 	border-color: cyan;
 	border-style: solid;
 }
+
+.revised {
+	background-color: rgba(255, 0, 0, .25);
+}
+
+.ask-permission {
+	background-color: rgba(255, 0, 255, .25);
+}

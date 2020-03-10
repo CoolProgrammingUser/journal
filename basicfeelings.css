@@ -254,6 +254,9 @@
 	background-image: -moz-linear-gradient(red, cyan);
 	background-image: linear-gradient(red, cyan);
 }
+.e-o3 {  /* resolute */
+	background-color: #ccc;
+}
 
 /* exception handling */
 a.e11 {

@@ -39,7 +39,8 @@ function assignTone(items) {
 		{ d: "i2", n: "Intrigued" },
 		{ d: "i3", n: "Fascinated" },
 		{ d: "o1", n: "Regretful" },
-		{ d: "o2", n: "Cynical" }
+		{ d: "o2", n: "Cynical" },
+		{ d: "o3", n: "Resolute" }
 	];
 	//// aspects of emotion = contentment, energy, control, expectation
 
@@ -184,93 +185,117 @@ function assignTone(items) {
 	});
 }
 
-S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).
-	runOrder: "first",
-	function: function () {
-		// fills all of the empty person references with people
-		let HTML = document.body.innerHTML;
-		HTML = HTML.replace(/([^'"“])(p\d+)([^"”])/g, function (match, leftCharacter, person, rightCharacter) {
-			return leftCharacter + '<span class="' + person + '"></span>' + rightCharacter;
-		});
-		document.body.innerHTML = HTML;
 
-		// makes all of the people references links
-		S.forEach(people.slice(1), function (person, index) {
-			S.forEach(S.getClass("p" + (index + 1)), function (occurrence) {
-				let link = document.createElement("a");
-				link.className = "discreet";
+function enableSpecialBehavior(place) {
+	// makes sure there's a place
+	switch (S.getType(place)) {
+		case "undefined":
+			place = document.body;
+			break;
+		case "String":
+			place = S.getId(place);
+			break;
+		case "HTMLElement":
+			// do nothing
+			break;
+		default:
+			console.error(new TypeError("The place requesting special behavior is of an incorrect type."));
+			return;
+	}
+	// fills all of the empty person references with people
+	let HTML = place.innerHTML;
+	HTML = HTML.replace(/([^'"“])(p\d+)([^"”])/g, function (match, leftCharacter, person, rightCharacter) {
+		return leftCharacter + '<span class="' + person + '"></span>' + rightCharacter;
+	});
+	place.innerHTML = HTML;
+
+	// makes all of the people references links
+	S.forEach(people.slice(1), function (person, index) {
+		S.forEach(place.getElementsByClassName("p" + (index + 1)), function (occurrence) {
+			let link = document.createElement("a");
+			link.className = "discreet";
+			if (window.location.protocol == "file:") {
+				link.href = "file:///C:/Users/Robert/Documents/GitHub/journal/search.html?p=" + (index + 1);
+			} else {
 				link.href = "/journal/search?p=" + (index + 1);  // "/journal/" is included just in case the link is put in a weird place
-				//// link.target = "_blank";  // This might not be necessary.
-				link.title = person.firstName + (person.lastName ? " " + person.lastName : "");
-				if (occurrence.textContent.trim() != "") {
-					link.textContent = occurrence.textContent;
-					occurrence.textContent = "";
-				} else if (occurrence.dataset.use) {
-					if (occurrence.dataset.use.includes("extra")) {
-						link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/)) - 1];  //// match[0]?
-					} else {
-						link.textContent = person[occurrence.dataset.use];
-					}
+			}
+			//// link.target = "_blank";  // This might not be necessary.
+			link.title = person.firstName + (person.lastName ? " " + person.lastName : "");
+			if (occurrence.textContent.trim() != "") {
+				link.textContent = occurrence.textContent;
+				occurrence.textContent = "";
+			} else if (occurrence.dataset.use) {
+				if (occurrence.dataset.use.includes("extra")) {
+					link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/)) - 1];  //// match[0]?
 				} else {
-					link.textContent = person.name;
+					link.textContent = person[occurrence.dataset.use];
 				}
-				occurrence.appendChild(link);
-			});
+			} else {
+				link.textContent = person.name;
+			}
+			occurrence.appendChild(link);
 		});
+	});
 
-		// handles special uses of p0 references
-		// (useful for associating people who are potentially the same)
-		S.forEach(S.getClass("p0"), function (occurrence) {
-			if (occurrence.dataset.hasOwnProperty("use")) {
-				let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
-				if (occurrence.textContent.trim() != "") {
-					// do nothing
-				} else if (occurrence.dataset.use.includes(".")) {
-					// p#.nameToUse
-					if (occurrence.dataset.use.includes("extra")) {
-						occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
-					} else {
-						occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
-					}
+	// handles special uses of p0 references
+	// (useful for associating people who are potentially the same)
+	S.forEach(place.getElementsByClassName("p0"), function (occurrence) {
+		if (occurrence.dataset.hasOwnProperty("use")) {
+			let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
+			if (occurrence.textContent.trim() != "") {
+				// do nothing
+			} else if (occurrence.dataset.use.includes(".")) {
+				// p#.nameToUse
+				if (occurrence.dataset.use.includes("extra")) {
+					occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
 				} else {
-					occurrence.textContent = people[index].name;
+					occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
 				}
+			} else {
+				occurrence.textContent = people[index].name;
 			}
-		});
+		}
+	});
 
-		// enables making use of elaborations
-		S.forEach(S.getTag("aside"), function (section) {
-			if (!section.dataset.hasOwnProperty("heading")) {
-				section.dataset.heading = "Elaboration";
-			}
-			if (section.textContent.trim() == "") {  // if I forgot to fill the aside
-				section.textContent = "Oops, I forgot to fill this.";
-			}
-			let button = document.createElement("button");
-			button.className = "hide-aside";
-			button.textContent = "[Hide]";
-			button.addEventListener("click", function () {
-				section.style.left = "100%";
-			});
-			section.appendChild(button);
+	// enables making use of elaborations
+	S.forEach(place.getElementsByTagName("aside"), function (section) {
+		if (!section.dataset.hasOwnProperty("heading")) {
+			section.dataset.heading = "Elaboration";
+		}
+		if (section.textContent.trim() == "") {  // if I forgot to fill the aside
+			section.textContent = "Oops, I forgot to fill this.";
+		}
+		let button = document.createElement("button");
+		button.className = "hide-aside";
+		button.textContent = "[Hide]";
+		button.addEventListener("click", function () {
+			section.style.left = "100%";
 		});
-		S.forEach(S.getClass("elaborate"), function (trigger) {
-			trigger.addEventListener("click", function () {
-				let aside = trigger;
+		section.appendChild(button);
+	});
+	S.forEach(place.getElementsByClassName("elaborate"), function (trigger) {
+		trigger.addEventListener("click", function () {
+			let aside = trigger;
+			while (aside.nextSibling && aside.tagName != "ASIDE") {
+				aside = aside.nextSibling;
+			}
+			if (aside.tagName != "ASIDE" && aside.parentNode) {
+				aside = aside.parentNode;
 				while (aside.nextSibling && aside.tagName != "ASIDE") {
 					aside = aside.nextSibling;
 				}
-				if (aside.tagName != "ASIDE" && aside.parentNode) {
-					aside = aside.parentNode;
-					while (aside.nextSibling && aside.tagName != "ASIDE") {
-						aside = aside.nextSibling;
-					}
-				}
-				if (aside.tagName == "ASIDE") {
-					aside.style.left = "60%";
-				}
-			});
+			}
+			if (aside.tagName == "ASIDE") {
+				aside.style.left = "60%";
+			}
 		});
+	});
+}
+
+S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).
+	runOrder: "first",
+	function: function () {
+		enableSpecialBehavior();
 	}
 });
 S.queue.add({

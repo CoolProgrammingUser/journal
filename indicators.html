@@ -107,6 +107,16 @@
 					});
 				}, 0);
 			});
+
+
+			S.listen("emojisToHTML", "change", function () {
+				S.getId("emojiHTML").textContent = "";
+				if (this.value.trim() != "") {
+					S.forEach(this.value.trim(), function (emoji) {
+						S.getId("emojiHTML").textContent += "&#" + emoji.codePointAt(0) + ";";
+					});
+				}
+			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
@@ -133,7 +143,7 @@
 					Honesty
 				</h2>
 				<section>
-					Although I wouldn't say that I'm ever lying, there are times when I'm not really being serious, and you wouldn't be the first person to sometimes get confused about exactly when those times are. As such, I provided a way to indicate how seriously I expect you to take me. Of the honesty options I may choose, the one which most likely requires an explanation is "<span class="h2">suggestive</span>": I primarily use this when I'm implying that something might actually be true in an otherwise false statement or when I'm leaving out some important considerations which can influence what the reasonable conclusion is. My baseling honesty is <span class="h3">h3</span>.
+					Although I wouldn't say that I'm ever lying, there are times when I'm not really being serious, and you wouldn't be the first person to sometimes get confused about exactly when those times are. As such, I provided a way to indicate how seriously I expect you to take me. Of the honesty options I may choose, the one which most likely requires an explanation is "<span class="h2">suggestive</span>": I primarily use this when I'm implying that something might actually be true in an otherwise false statement or when I'm leaving out some important considerations which can influence what the reasonable conclusion is. My baseline honesty is <span class="h3">h3</span>.
 				</section>
 				<section id="truthColor">
 					Honesty color: <span>#</span>
@@ -277,7 +287,7 @@
 						<td>Other</td>
 						<td><span class="e-o1">o1</span></td>
 						<td><span class="e-o2">o2</span></td>
-						<td><span class=""></span></td>
+						<td><span class="e-o3">o3</span></td>
 					</tr>
 				</table>
 				<h2>
@@ -321,6 +331,13 @@
 						<td><span class="afterthought">Oops</span></td>
 					</tr>
 					<tr>
+						<td>revised</td>
+						<td>
+							Identifies an entry which has been revised since its original creation. This primarily applies when I said a little too much of something personal to someone else and they ask me to dial it back. All revised content is still true mostly to the extent that it's stated, and I don't edit out extremely important things (although I may be vague).
+						</td>
+						<td><div class="revised">Revised</div></td>
+					</tr>
+					<tr>
 						<td>p<em>#</em></td>
 						<td>
 							Identifies a person in the person list. Can still be recognized as plain text (not as a class). Specific names can be chosen with data-use. Creates a link to a search of that person. "p0" designates an unknown person or intentionally hidden person.
@@ -361,6 +378,13 @@
 							Hides an otherwise obvious link. May look like regular text until hovered over.
 						</td>
 						<td><span class="elaborate discreet">RTB</span><aside data-heading="My initials">Robert Tour Benson</aside></td>
+					</tr>
+					<tr>
+						<td>ask-permission</td>
+						<td>
+							You won't ever see anything like this, but for my reference, this identifies content which I want to get permission to add in this journal before I include it.
+						</td>
+						<td></td>
 					</tr>
 				</table>
 				<h2>
@@ -411,6 +435,12 @@
 						</td>
 					</tr>
 					<tr>
+						<td>name</td>
+						<td>
+							For use in password-protected entries. Indicates who needs to read the entry before the decoded version is added to the journal. Only applies to entries with the "ask-permission" class.
+						</td>
+					</tr>
+					<tr>
 						<td>untranslatable?</td>
 						<td>
 							Something that can't be translated without corrupting the original message. Possibly set equal to a basic description of the problem.
@@ -423,6 +453,76 @@
 						</td>
 					</tr>
 				</table>
+				<h2>
+					Miscellaneous
+				</h2>
+				<h3>
+					Emojis
+				</h3>
+				<input type="text" id="emojisToHTML" placeholder="Enter emoji(s)">
+				= <span id="emojiHTML"></span>
+				<table>
+					<tr>
+						<th>Emoji</th>
+						<th>HTML</th>
+					</tr>
+					<tr>
+						<td title="Angry face with horns">&#128127;</td>
+						<td>&amp;#128127;</td>
+					</tr>
+					<tr>
+						<td title="Face with tears of joy">&#128514;</td>
+						<td>&amp;#128514;</td>
+					</tr>
+					<tr>
+						<td title="Smiling face with horns">&#128520;</td>
+						<td>&amp;#128520;</td>
+					</tr>
+					<tr>
+						<td title="Smirking face">&#128527;</td>
+						<td>&amp;#128527;</td>
+					</tr>
+					<tr>
+						<td title="Unamused face">&#128530;</td>
+						<td>&amp;#128530;</td>
+					</tr>
+					<tr>
+						<td title="Angry face">&#128544;</td>
+						<td>&amp;#128544;</td>
+					</tr>
+					<tr>
+						<td title="Crying face">&#128546;</td>
+						<td>&amp;#128546;</td>
+					</tr>
+					<tr>
+						<td title="Loudly crying face">&#128557;</td>
+						<td>&amp;#128557;</td>
+					</tr>
+					<tr>
+						<td title="Face with rolling eyes">&#128580;</td>
+						<td>&amp;#128580;</td>
+					</tr>
+					<tr>
+						<td title="Thinking face">&#129300;</td>
+						<td>&amp;#129300;</td>
+					</tr>
+					<tr>
+						<td title="Man facepalming">&#129318;&#8205;&#9794;&#65039;</td>
+						<td>&amp;#129318;&amp;#8205;&amp;#9794;&amp;#65039;</td>
+					</tr>
+					<tr>
+						<td title="Man shrugging">&#129335;&#8205;&#9794;&#65039;</td>
+						<td>&amp;#129335;&amp;#8205;&amp;#9794;&amp;#65039;</td>
+					</tr>
+					<tr>
+						<td title="Man shrugging: light skin tone">&#129335;&#127995;&#8205;&#9794;&#65039;</td>
+						<td>&amp;#129335;&amp;#127995;&amp;#8205;&amp;#9794;&amp;#65039;</td>
+					</tr>
+				</table>
+				<h3>
+					Days of the week
+				</h3>
+				<input type="date">
 			</div>
 		</main>
 	</body>
