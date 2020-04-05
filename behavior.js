@@ -180,7 +180,7 @@ function assignTone(items) {
 		if (element.title) {
 			S.listen(element, "touchhold", function () {
 				S.makeDialog(element.title.replace("\n", "<br>"), "Done");
-			}, { allowDefault: false });
+			}, { allowDefault: true });
 		}
 	});
 }
@@ -204,7 +204,7 @@ function enableSpecialBehavior(place) {
 	}
 	// fills all of the empty person references with people
 	let HTML = place.innerHTML;
-	HTML = HTML.replace(/([^'"ì])(p\d+)([^"î])/g, function (match, leftCharacter, person, rightCharacter) {
+	HTML = HTML.replace(/([^'"‚Äú])(p\d+)([^"‚Äù])/g, function (match, leftCharacter, person, rightCharacter) {
 		return leftCharacter + '<span class="' + person + '"></span>' + rightCharacter;
 	});
 	place.innerHTML = HTML;
