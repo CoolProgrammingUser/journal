@@ -256,6 +256,42 @@ function enableSpecialBehavior(place) {
 			}
 		}
 	});
+
+	// enables making use of elaborations
+	//// (Standards doesn't work because listeners are erased while creating person links)
+	Standards.general.forEach(document.getElementsByTagName("aside"), function (section) {
+		if (!section.dataset.hasOwnProperty("heading")) {
+			section.dataset.heading = "Elaboration";
+		}
+		if (section.textContent.trim() == "") {  // if I forgot to fill the aside
+			section.textContent = "Oops, I forgot to fill this.";
+		}
+		let button = document.createElement("button");
+		button.className = "hide-aside";
+		button.addEventListener("click", function () {
+			let classes = section.className.split(" ");
+			classes.splice(classes.indexOf("displayed"), 1);
+			section.className = classes.join(" ");
+		});
+		section.appendChild(button);
+	});
+	Standards.general.forEach(document.getElementsByClassName("elaborate"), function (trigger) {
+		trigger.addEventListener("click", function () {
+			let aside = trigger;
+			while (aside.nextSibling && aside.tagName != "ASIDE") {
+				aside = aside.nextSibling;
+			}
+			if (aside.tagName != "ASIDE" && aside.parentNode) {
+				aside = aside.parentNode;
+				while (aside.nextSibling && aside.tagName != "ASIDE") {
+					aside = aside.nextSibling;
+				}
+			}
+			if (aside.tagName == "ASIDE") {
+				aside.className += " displayed";
+			}
+		});
+	});
 }
 
 S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).
