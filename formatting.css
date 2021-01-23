@@ -98,25 +98,6 @@ section {
 .elaborate.discreet:hover {
 	text-decoration: underline;
 }
-aside::before {
-	content: attr(data-heading);
-	display: block;
-	margin-bottom: 1em;
-	text-align: center;
-	font-size: 1.5em;
-	font-weight: bold;
-}
-button.hide-aside {
-	position: absolute;
-	right: .5rem;
-	top: .5rem;
-	border: none;
-	background: none;
-	color: blue;
-}
-button.hide-aside:hover {
-	text-decoration: underline;
-}
 
 .bce {  /* Before Current Events */
 	border-width: .05rem;
