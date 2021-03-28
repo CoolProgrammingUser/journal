@@ -92,7 +92,7 @@ function assignTone(items) {
 					}
 				});
 			}
-			if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {
+			if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {  // if the element has an honesty indication as well
 				indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
 				if (indication.includes("-")) {
 					element.title += "\nHonesty = " + indication.slice(2);
@@ -132,7 +132,7 @@ function assignTone(items) {
 						break;
 				}
 			}
-		} else if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {
+		} else if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {  // if the element has an honesty indication
 			if (!element.title == "") {
 				element.title += "\n";
 			}
@@ -178,9 +178,18 @@ function assignTone(items) {
 
 		// allows the display of "titles" on mobile devices
 		if (element.title) {
-			S.listen(element, "touchhold", function () {
-				S.makeDialog(element.title.replace("\n", "<br>"), "Done");
-			}, { allowDefault: true });
+			if (element.className.search(/(?:^|\W)p\d/) > -1) {
+				S.listen(element, "touchhold", function () {
+					S.makeDialog(element.title.replace("\n", "<br>") + "<br><br>Search this person in a new tab?",
+						["Yes", element.click],
+						"No"
+					);
+				}, { allowDefault: true });
+			} else {
+				S.listen(element, "touchhold", function () {
+					S.makeDialog(element.title.replace("\n", "<br>"), "Done");
+				}, { allowDefault: true });
+			}
 		}
 	});
 }
@@ -233,6 +242,7 @@ function enableSpecialBehavior(place) {
 			} else {
 				link.textContent = person.name;
 			}
+			link.target = "_blank";
 			occurrence.appendChild(link);
 		});
 	});
@@ -258,7 +268,7 @@ function enableSpecialBehavior(place) {
 	});
 
 	// enables making use of elaborations
-	//// (Standards doesn't work because listeners are erased while creating person links)
+	//// (Standards.general doesn't work because listeners are erased while creating person links)
 	Standards.general.forEach(document.getElementsByTagName("aside"), function (section) {
 		if (!section.dataset.hasOwnProperty("heading")) {
 			section.dataset.heading = "Elaboration";
