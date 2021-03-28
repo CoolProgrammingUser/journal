@@ -18,7 +18,7 @@
 			M.server.defaultLocation = "/journal/admin/savedcode";
 
 
-			function textToHTML(text) {
+			function textToHTML(text) { //// range.surroundContents();
 				text = text.replace(/    /g, "\t");
 				text = text.replace(/&nbsp; &nbsp; /g, "\t");
 				text = text.replace(/&/g, "&amp;");

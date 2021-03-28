@@ -1,33 +1,33 @@
 /* honesty indications */
 .h1 {  /* fanciful */
-	border-bottom: .1em solid #004000;
+	border-bottom: .15em solid #004000;
 }
 .h2 {  /* suggestive */
-	border-bottom: .1em solid #008000;
+	border-bottom: .15em solid #008000;
 }
 .h3 {  /* honest */
-	border-bottom: .1em solid #00bf00;
+	border-bottom: .15em solid #00bf00;
 }
 .h4 {  /* sincere */
-	border-bottom: .1em solid #00ff00;
+	border-bottom: .15em solid #00ff00;
 }
 .h-o1 {  /* slightly overstated */
-	border-bottom: .1em solid #ffff00;
+	border-bottom: .15em solid #ffff00;
 }
 .h-o2 {  /* moderately overstated */
-	border-bottom: .1em solid #ff8000;
+	border-bottom: .15em solid #ff8000;
 }
 .h-o3 {  /* greatly overstated */
-	border-bottom: .1em solid #ff0000;
+	border-bottom: .15em solid #ff0000;
 }
 .h-u1 {  /* slightly understated */
-	border-bottom: .1em solid #aaaaff;
+	border-bottom: .15em solid #aaaaff;
 }
 .h-u2 {  /* moderately understated */
-	border-bottom: .1em solid #5555ff;
+	border-bottom: .15em solid #5555ff;
 }
 .h-u3 {  /* greatly understated */
-	border-bottom: .1em solid #0000ff;
+	border-bottom: .15em solid #0000ff;
 }
 
 /* emotion indications */
@@ -220,7 +220,7 @@
 .e-u1 {  /* sympathetic */
 	background-color: #00ff00;
 }
-.e-u2 {  /* embarrassed */
+.e-u2 {  /* embarrassed, bashful */
 	background-color: #00aa00;
 }
 .e-u3 {  /* awkward */
