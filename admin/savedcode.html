@@ -75,7 +75,7 @@
 					M.session.store("entries", this.textContent);
 					this.innerHTML = textToHTML(this.textContent);
 					// puts the caret in the correct spot
-					newRange = document.createRange();
+					let newRange = document.createRange();
 					newRange.setStart(this.childNodes[containerNumber], offset);
 					newRange.collapse(true);
 					selection.removeAllRanges();
