@@ -128,3 +128,10 @@ section {
 [data-revisit="finish"]::after, [data-revisit="unfinished"]::after {
 	content: "[Unfinished]";
 }
+
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: black;
+		background-image: url("/journal/background.png"), repeating-linear-gradient(black, black 24vh, red 25vh, black 26vh, black 49vh, green 50vh, black 51vh, black 74vh, blue 75vh, black 76vh, black 100vh);
+	}
+}
