@@ -7,6 +7,9 @@ var placeholders = [];
 
 
 function identifyPeople(placeForPeople) {
+	let originalServerStorageLocation = Standards.storage.server.defaultLocation;
+	server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
+	server.requireSignIn = false;
 
 	// makes sure there's a place
 	switch (S.getType(placeForPeople)) {
@@ -40,8 +43,7 @@ function identifyPeople(placeForPeople) {
 		placeForPeople.innerHTML = HTML;
 	}
 
-	server.requireSignIn = false;
-	server.recall("^websites/journal/people").then(function (list) {
+	server.recall("people").then(function (list) {
 
 		people = list;
 
@@ -96,16 +98,14 @@ function identifyPeople(placeForPeople) {
 			});
 		}
 
-		server.requireSignIn = true;
 		window.dispatchEvent(new Event("loadedPeople"));
 	}).catch(function (error) {
 		S.makeDialog("The people couldn't be loaded.");
 		console.error("The people list couldn't be loaded.");
 		console.error(error);
-		server.requireSignIn = true;
 	});
 
-	server.recall("^websites/journal/placeholders").then(function (list) {
+	server.recall("placeholders").then(function (list) {
 		placeholders = list;
 		if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 			// makes all of the placeholder references pseudolinks
@@ -134,11 +134,13 @@ function identifyPeople(placeForPeople) {
 		}
 		window.dispatchEvent(new Event("loadedPlaceholders"));
 	}).catch(function (error) {
-		S.makeDialog("The placeholders couldn't be loaded.");
+		S.makeDialog("The people placeholders couldn't be loaded.");
 		console.error("The placeholders list couldn't be loaded.");
 		console.error(error);
-		server.requireSignIn = true;
 	});
+
+	server.defaultLocation = originalServerStorageLocation;
+	server.requireSignIn = true;
 }
 
 // identifying the people needs to come after the document finishes loading

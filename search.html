@@ -10,11 +10,6 @@
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
-		<!--
-		<script>
-			Standards.storage.server.defaultLocation = "^websites/journal/";  // allows editing from a local file
-		</script>
-		-->
 		<script src="loadpeople.js"></script>
 		<script src="topics.js"></script>
 		<script src="behavior.js"></script>
@@ -40,22 +35,36 @@
 				S.getId("heading").textContent = "Results:";
 				S.getId("result").innerHTML = "";
 				let table = document.createElement("table");
-				table.className = "conversation";
+				table.className = "labeled-list";
 				S.forEach(people.slice(1), function (person, index) {
 					let row = table.insertRow(-1);
 					row.appendChild(document.createElement("td"));
 					row.appendChild(document.createElement("td"));
 					row.children[0].textContent = "p" + (index+1);
-					row.children[1].innerHTML = '<a href="?p=' + (index+1) + '">' + person.firstName + " " + person.lastName + "</a>";
+                    row.children[1].innerHTML = '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>";
 				});
 				S.getId("result").appendChild(table);
+            });
+			S.listen("peopleLister", ["contextmenu", "touchhold"], function () {  // when trying to list people placeholders
+                S.getId("heading").textContent = "Results:";
+                S.getId("result").innerHTML = "";
+                let table = document.createElement("table");
+                table.className = "labeled-list";
+                S.forEach(placeholders.slice(1), function (person, index) {
+                    let row = table.insertRow(-1);
+                    row.appendChild(document.createElement("td"));
+                    row.appendChild(document.createElement("td"));
+                    row.children[0].textContent = "p0" + (index + 1);
+                    row.children[1].innerHTML = '<a href="?p=0' + (index + 1) + '">' + person.name + (person.lastName ? " " + person.lastName : "") + "</a>";
+                });
+                S.getId("result").appendChild(table);
 			});
 
 			S.listen("topicLister", "click", function () {
 				S.getId("heading").textContent = "Results:";
 				S.getId("result").innerHTML = "";
 				let table = document.createElement("table");
-				table.className = "conversation";
+				table.className = "labeled-list";
 				S.forEach(topics.slice(1), function (topic, index) {
 					let row = table.insertRow(-1);
 					row.appendChild(document.createElement("td"));
@@ -77,8 +86,11 @@
 					window.addEventListener("loadedPeople", function () {
 						let query = window.location.href.slice(window.location.href.indexOf("?") + 1).split("=");
 						if (query[0] == "p") {
-							let person = people[query[1]];
-							if (typeof person === undefined || person == {}) {
+							let person;
+							if (query[1][0] !== "0") {  // if it's not a person placeholder
+								person = people[query[1]];
+							}
+							if (typeof person === "undefined" || person == {}) {
 								S.getId("heading").textContent = "Error";
 								S.getId("result").textContent = "This person doesn't exist.";
 							} else {
