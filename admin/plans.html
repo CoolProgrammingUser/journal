@@ -6,7 +6,17 @@
 			Journal
 		</title>
 		<base target="_blank">
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<!--
+		<script>
+			Standards.storage.server.defaultLocation = "^websites/journal/";
+		</script>
+		-->
+		<script src="../loadpeople.js"></script>
 		<script src="../behavior.js"></script>
 		<script>
 			people[0] = { name: "Robert", fullName: "Robert Benson" };

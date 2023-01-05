@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="icon" href="../favicon.ico">
+		<title>
+			Journal
+		</title>
+		<base target="_blank">
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script>
+			Standards.storage.server.defaultLocation = "^websites/journal/";  // allows editing from a local file
+		</script>
+		<script src="../loadpeople.js"></script>
+		<script src="../behavior.js"></script>
+		<script>
+			var originalPeople = [];  // holds onto the original people list just in case things go awry
+			
+			
+			
+			function makePersonRow(information) {
+				let row = S.getId("personList").insertRow(-1);
+				let x = document.createElement("th");
+				x.className = "x";
+				row.appendChild(x);
+				x.addEventListener("click", function () {
+					let pNum = this.nextSibling.textContent;
+					S.makeDialog("Are you sure you want to delete " + pNum + "?",
+						["Yes", function () {
+							people.splice(pNum.match(/\d+/)[0], 1);
+							S.removeSelf(x.parentNode);
+							let updatedPeople = [{}];
+							S.forEach(S.getId("personList").getElementsByTagName("td"), function (info) {
+								updatedPeople.push(JSON.parse("{" + info.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+							});
+							/// prevents updating the actual people list until everything has been successfully parsed
+							people = updatedPeople;
+							fillPeopleTable();
+							S.makeDialog(pNum + " successfully deleted.");
+						}],
+						"No"
+					);
+				});
+				let p = document.createElement("th");
+				p.className = "p";
+				p.textContent = "p" + (S.getId("personList").rows.length - 1);
+				row.appendChild(p);
+				let info = document.createElement("td");
+				info.contentEditable = true;
+				info.textContent = information;
+				row.appendChild(info);
+			}
+			
+			function fillPeopleTable() {
+				S.getId("personList").innerHTML = "<tr><th></th><th>p#</th><th>Information</th></tr>";
+				S.forEach(people.slice(1), function (person) {
+					makePersonRow(JSON.stringify(person).slice(1, -1).replace(/,/g, ", ").replace(/"?(\w+)"?:/g, "$1: "));
+				});
+			}
+
+
+            function fillPlaceholders() {
+                let html = JSON.stringify(placeholders);
+				html = html.replace(/"?(\w+)"?:/g, "$1: ");
+				html = html.replace(/,/g, ", ");
+                html = html.replace(/\}, /g, "},\n");
+                S.getId("placeholderList").value = html;
+                let designation = "";
+                S.forEach(html.match(/\n/g), function (_, index) {
+                    designation += "<br>p0" + (index + 1);
+                });
+                S.getId("placeholderNumber").innerHTML = designation;
+			}
+			
+			
+			
+			S.listen("newPerson", "click", function () {
+				makePersonRow();
+			});
+			
+			S.listen("savePeople", "click", function () {
+				let updatedPeople = [{}];
+				S.forEach(S.getId("personList").getElementsByTagName("td"), function (info) {
+					updatedPeople.push(JSON.parse("{" + info.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+				});
+				/// prevents updating the actual people list until everything has been successfully parsed
+				people = updatedPeople;
+				server.requireSignIn = false;
+				server.store("^websites/journal/people", people).then(function () {
+					S.makeDialog("People sucessfully saved.");
+					server.requireSignIn = true;
+				}).catch(function (error) {
+					S.makeDialog("The people couldn't be saved.");
+					console.error("The was a problem saving the people.");
+					console.error(error);
+					server.requireSignIn = true;
+				});
+            });
+
+            S.listen("savePlaceholders", "click", function () {
+				let updatedPlaceholders = JSON.parse(S.getId("placeholderList").value.replace(/\w+(?=:)/g, '"$&"'));
+                /// prevents updating the actual placeholder list until everything has been successfully parsed
+                placeholders = updatedPlaceholders;
+                server.requireSignIn = false;
+                server.store("^websites/journal/placeholders", placeholders).then(function () {
+                    S.makeDialog("Placeholders sucessfully saved.");
+                    server.requireSignIn = true;
+                }).catch(function (error) {
+                    S.makeDialog("The placeholders couldn't be saved.");
+                    console.error("The was a problem saving the placeholders.");
+                    console.error(error);
+                    server.requireSignIn = true;
+				});
+				fillPlaceholders();
+            });
+			
+			S.listen("resetPeople", "click", function () {
+				people = JSON.parse(JSON.stringify(originalPeople));
+				fillPeopleTable();
+			});
+
+			S.listen(window, "error", function (error) {
+				S.makeDialog("There was an error.<br><br>" + error.message);
+			});
+
+
+			S.listen("placeholderList", ["focus", "input"], function () {
+				//// this.style.height = "";
+				this.style.height = this.scrollHeight + "px";
+			});
+			
+			
+			
+			S.listen("makeCopy", "click", function () {
+				let text = "var people = [{}];";
+				S.forEach(S.getId("personList").getElementsByTagName("td"), function (info, index) {
+					text += "<br>people[" + (index + 1) + "] = { " + info.textContent.trim().replace(/"(\w+)":/g, "$1:") + " };";
+				});
+				text += "<br>";
+				S.getId("listToCopy").innerHTML = text;
+			});
+			
+			S.listen("copyList", "click", function () {
+				navigator.clipboard.writeText(S.getId("listToCopy").innerHTML.replace(/<br>/g, "\n")).then(function () {
+					S.makeDialog("Copied to clipboard.");
+				});
+			});
+			
+			
+			
+			S.onLoad(function () {
+				S.makeDialog('Enter the password.<br><br><input type="password" id="peopleEditorPassword">',
+					["Submit",
+						function () {
+							if (S.getId("peopleEditorPassword").value == "Let me in!") {
+								S.getId("editor").style.display = "block";
+								S.makeDialog("The password was correct.");
+							} else {
+								S.makeDialog("The password was incorrect.");
+							}
+						}
+					]
+				);
+			});
+			
+			window.addEventListener("loadedPeople", function () {  // S.listen doesn't work for some reason
+				originalPeople = JSON.parse(JSON.stringify(people));
+				fillPeopleTable();
+			});
+
+
+			window.addEventListener("loadedPlaceholders", function () {  // S.listen doesn't work for some reason
+				fillPlaceholders();
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+		<link rel="stylesheet" href="../basicfeelings.css">
+		<style>
+			#editor {
+				display: none;
+			}
+
+			#personList th:first-child {
+				border: none;
+				background: none;
+			}
+			#personList .x::before {
+				content: "X";
+				color: red;
+				font-family: sans-serif;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			#personList .p {
+				text-align: left;
+			}
+			#personList td {
+				text-align: left;
+				font-family: monospace;
+			}
+
+			#listToCopy {
+				min-width: 4em;
+				max-width: 100%;
+				min-height: 2em;
+				padding: .5em;
+				text-align: left;
+				font-family: monospace;
+				white-space: nowrap;
+				overflow: auto;
+			}
+
+			#placeholderNumber {
+				float: left;
+				padding: .5em;
+				font-family: monospace;
+			}
+			#placeholderList {
+				float: left;
+				width: 90%;
+				padding: .5em;
+				text-align: left;
+				font-family: monospace;
+				white-space: nowrap;
+				overflow: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
+		<h1 class="main-title">
+			People editor
+		</h1>
+		<main>
+			<section>
+				This allows you to view and edit the people references.
+			</section>
+			<div id="editor">
+				<table id="personList">
+					<tr>
+						<th></th>
+						<th>p#</th>
+						<th>Information</th>
+					</tr>
+				</table>
+				<br>
+				<button id="newPerson">
+					Add a person
+				</button>
+				<br>
+				<button id="savePeople">
+					Save
+				</button>
+				<button id="resetPeople">
+					Reset to original
+				</button>
+				<br>
+				<button id="makeCopy">
+					Generate list
+				</button>
+				<button id="copyList">
+					Copy list
+				</button>
+				<br>
+				<div class="generic-background" id="listToCopy"></div>
+				<br>
+				<h3>
+					Placeholders
+				</h3>
+				<div style="width:100%">
+					<div class="generic-background" id="placeholderNumber"></div>
+					<textarea id="placeholderList"></textarea>
+				</div>
+				<br>
+				<button id="savePlaceholders">
+					Save
+				</button>
+			</div>
+		</main>
+	</body>
+</html>

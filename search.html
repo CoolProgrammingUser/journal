@@ -5,11 +5,17 @@
 		<title>
 			Journal
 		</title>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
 		<!--
-		<script src="file:///C:/Users/Robert/Documents/GitHub/standards/behavior/general.js"></script>
+		<script>
+			Standards.storage.server.defaultLocation = "^websites/journal/";  // allows editing from a local file
+		</script>
 		-->
-		<script src="people.js"></script>
+		<script src="loadpeople.js"></script>
 		<script src="topics.js"></script>
 		<script src="behavior.js"></script>
 		<script>
@@ -68,80 +74,97 @@
 
 			S.onLoad(function () {
 				if (window.location.href.includes("?")) {
-					let query = window.location.href.slice(window.location.href.indexOf("?")+1).split("=");
-					if (query[0] == "p") {
-						let person = people[query[1]];
-						if (typeof person === undefined || person == {}) {
-							S.getId("heading").textContent = "Error";
-							S.getId("result").textContent = "This person doesn't exist.";
-						} else {
-							S.getId("heading").textContent = person.firstName + " " + person.lastName;
-							addListItem("Common name: " + person.name);
-							addListItem("Full name pronunciation: " + person.pronunciation);
-							if (person.hasOwnProperty("dateOfBirth")) {
-								let date = person.dateOfBirth.split("/");
-								addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
-							}
-							addListItem("Numerical designation: " + query[1]);
-						}
-					} else if (query[0] == "t") {
-						let topic = topics[query[1]];
-						if (typeof topic === undefined || topic == {}) {
-							S.getId("heading").textContent = "Error";
-							S.getId("result").textContent = "This topic doesn't exist.";
-						} else {
-							S.getId("heading").textContent = topic.title;
-							addListItem("Summary: " + topic.summary);
-						}
-					} else if (query[0] == "hint") {
-						let hint = decodeURIComponent(query[1]);
-						let results = {};
-						// checks for matches with people
-						S.forEach(people.slice(1), function (person, index) {
-							let personComparison = Math.min(S.compare(person.name, hint) * 1.5, S.compare(person.firstName, hint), S.compare(person.lastName, hint), S.compare(person.firstName+" "+person.lastName, hint), S.compare(person.name+" "+person.lastName, hint));
-							if (personComparison <= 3) {
-								if (results.hasOwnProperty(personComparison)) {
-									results[Math.round(personComparison*10)].push({ type: "person", item: person, index: index });
-								} else {
-									results[Math.round(personComparison*10)] = [{ type: "person", item: person, index: index }];
+					window.addEventListener("loadedPeople", function () {
+						let query = window.location.href.slice(window.location.href.indexOf("?") + 1).split("=");
+						if (query[0] == "p") {
+							let person = people[query[1]];
+							if (typeof person === undefined || person == {}) {
+								S.getId("heading").textContent = "Error";
+								S.getId("result").textContent = "This person doesn't exist.";
+							} else {
+								S.getId("heading").textContent = person.firstName + " " + person.lastName;
+								addListItem("Common name: " + person.name);
+								addListItem("Full name pronunciation: " + person.pronunciation);
+								if (person.hasOwnProperty("dateOfBirth")) {
+									let date = person.dateOfBirth.split("/");
+									addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
 								}
+								addListItem("Numerical designation: " + query[1]);
 							}
-						});
-						// checks for matches with topics
-						S.forEach(topics.slice(1), function (topic, index) {
-							let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint) / 1.5);
-							if (topicComparison <= 4) {
-								if (results.hasOwnProperty(topicComparison)) {
-									results[Math.round(topicComparison*10)].push({ type: "topic", item: topic, index: index });
-								} else {
-									results[Math.round(topicComparison*10)] = [{ type: "topic", item: topic, index: index }];
+						} else if (query[0] == "t") {
+							let topic = topics[query[1]];
+							if (typeof topic === undefined || topic == {}) {
+								S.getId("heading").textContent = "Error";
+								S.getId("result").textContent = "This topic doesn't exist.";
+							} else {
+								S.getId("heading").textContent = topic.title;
+								addListItem("Summary: " + topic.summary);
+							}
+						} else if (query[0] == "hint") {
+							let hint = decodeURIComponent(query[1]);
+							let results = {};
+							// checks for matches with people
+							S.forEach(people.slice(1), function (person, index) {
+								let personComparison = Math.min(S.compare(person.name, hint) * 1.5, S.compare(person.firstName, hint), S.compare(person.lastName, hint), S.compare(person.firstName + " " + person.lastName, hint), S.compare(person.name + " " + person.lastName, hint));
+								if (person.extraNames) {
+									person.extraNames.forEach(function (name) {
+										personComparison = Math.min(S.compare(name, hint), personComparison);
+									});
 								}
-							}
-						});
-						// displays results
-						S.forEach(results, function (set) {
-							S.forEach(set, function (result) {
-								if (result.type == "person") {
-									addListItem('<a href="?p='+result.index+'">'+result.item.name+"</a><br>("+result.item.firstName+" "+result.item.lastName+")");
-								} else if (result.type == "topic") {
-									addListItem('<a href="?t=' + result.index + '">' + result.item.title + "</a><br>(" + result.item.summary + ")");
+								if (personComparison <= 3) {
+									if (results.hasOwnProperty(personComparison)) {
+										results[Math.round(personComparison * 10)].push({ type: "person", item: person, index: index + 1 });
+									} else {
+										results[Math.round(personComparison * 10)] = [{ type: "person", item: person, index: index + 1 }];
+									}
 								}
 							});
-						});
-						// accounts for no results
-						if (S.getId("result").textContent == "") {
-							S.getId("result").textContent = "No result was found.";
+							// checks for matches with topics
+							S.forEach(topics.slice(1), function (topic, index) {
+								let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint) / 1.5);
+								/*
+								if (topicComparison <= 4) {
+									if (results.hasOwnProperty(topicComparison)) {
+										results[Math.round(topicComparison * 10)].push({ type: "topic", item: topic, index: index + 1 });
+									} else {
+										results[Math.round(topicComparison * 10)] = [{ type: "topic", item: topic, index: index + 1 }];
+									}
+                                }
+								*/
+                                if (topic.title.toLowerCase().includes(hint.toLowerCase()) || topic.summary.toLowerCase().includes(hint.toLowerCase())) {
+                                    if (results.hasOwnProperty(topicComparison)) {
+                                        results[Math.round(topicComparison * 10)].push({ type: "topic", item: topic, index: index + 1 });
+                                    } else {
+                                        results[Math.round(topicComparison * 10)] = [{ type: "topic", item: topic, index: index + 1 }];
+                                    }
+                                }
+							});
+							// displays results
+							S.forEach(results, function (set) {
+								S.forEach(set, function (result) {
+									if (result.type == "person") {
+										addListItem('<a href="?p=' + result.index + '">' + result.item.name + "</a><br>(" + result.item.firstName + " " + result.item.lastName + ")");
+									} else if (result.type == "topic") {
+										addListItem('<a href="?t=' + result.index + '">' + result.item.title + "</a><br>(" + result.item.summary + ")");
+									}
+								});
+							});
+							// accounts for no results
+							if (S.getId("result").textContent == "") {
+								S.getId("result").textContent = "No result was found.";
+							}
+						} else {
+							S.getId("result").textContent = "An invalid type of search was attempted.";
 						}
-					} else {
-						S.getId("result").textContent = "An invalid type of search was attempted.";
-					}
+					});
 				}
+			});
+
+			window.addEventListener("loadedPeople", function () {
+
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<!--
-		<link rel="stylesheet" href="file:///C:/Users/Robert/Documents/GitHub/standards/formatting/foundation.css">
-		-->
 		<link rel="stylesheet" href="formatting.css">
 		<style>
 			#result li {

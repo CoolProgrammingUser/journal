@@ -1,10 +1,57 @@
 var S = Standards.general;
+// doesn't require Standards.storage
 
 if (typeof people == "undefined") {
 	var people = [];
 }
 if (typeof topics == "undefined") {
 	var topics = [];
+}
+
+
+
+function describeHonesty(element) {
+	if (element.title != "") {
+		element.title += "\n";
+	}
+	let indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
+	if (indication.includes("-")) {
+		element.title += "Honesty = " + indication.slice(2);
+	} else {
+		element.title += "Honesty = " + indication[1];
+	}
+	switch (indication) {
+		case "h1":
+			element.title += " (Fanciful)";
+			break;
+		case "h2":
+			element.title += " (Suggestive)";
+			break;
+		case "h3":
+			element.title += " (Honest)";
+			break;
+		case "h4":
+			element.title += " (Sincere)";
+			break;
+		case "h-u1":
+			element.title += " (Mildly understated)";
+			break;
+		case "h-u2":
+			element.title += " (Moderately understated)";
+			break;
+		case "h-u3":
+			element.title += " (Greatly understated)";
+			break;
+		case "h-o1":
+			element.title += " (Mildly overstated)";
+			break;
+		case "h-o2":
+			element.title += " (Moderately overstated)";
+			break;
+		case "h-o3":
+			element.title += " (Greatly overstated)";
+			break;
+	}
 }
 
 function assignTone(items) {
@@ -93,87 +140,10 @@ function assignTone(items) {
 				});
 			}
 			if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {  // if the element has an honesty indication as well
-				indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
-				if (indication.includes("-")) {
-					element.title += "\nHonesty = " + indication.slice(2);
-				} else {
-					element.title += "\nHonesty = " + indication[1];
-				}
-				switch (indication) {
-					case "h1":
-						element.title += " (Fanciful)";
-						break;
-					case "h2":
-						element.title += " (Suggestive)";
-						break;
-					case "h3":
-						element.title += " (Honest)";
-						break;
-					case "h4":
-						element.title += " (Sincere)";
-						break;
-					case "h-u1":
-						element.title += " (Mildly understated)";
-						break;
-					case "h-u2":
-						element.title += " (Moderately understated)";
-						break;
-					case "h-u3":
-						element.title += " (Greatly understated)";
-						break;
-					case "h-o1":
-						element.title += " (Mildly overstated)";
-						break;
-					case "h-o2":
-						element.title += " (Moderately overstated)";
-						break;
-					case "h-o3":
-						element.title += " (Greatly overstated)";
-						break;
-				}
+				describeHonesty(element);
 			}
 		} else if (element.className.search(/(?:^| )(h(?:-\w)?\d)/) > -1) {  // if the element has an honesty indication
-			if (!element.title == "") {
-				element.title += "\n";
-			}
-			let indication = element.className.match(/(?:^| )(h(?:-\w)?\d)/)[1];
-			if (indication.includes("-")) {
-				element.title += "Honesty = " + indication.slice(2);
-			} else {
-				element.title += "Honesty = " + indication[1];
-			}
-			switch (indication) {
-				case "h1":
-					element.title += " (Fanciful)";
-					break;
-				case "h2":
-					element.title += " (Suggestive)";
-					break;
-				case "h3":
-					element.title += " (Honest)";
-					break;
-				case "h4":
-					element.title += " (Sincere)";
-					break;
-				case "h-u1":
-					element.title += " (Mildly understated)";
-					break;
-				case "h-u2":
-					element.title += " (Moderately understated)";
-					break;
-				case "h-u3":
-					element.title += " (Greatly understated)";
-					break;
-				case "h-o1":
-					element.title += " (Mildly overstated)";
-					break;
-				case "h-o2":
-					element.title += " (Moderately overstated)";
-					break;
-				case "h-o3":
-					element.title += " (Greatly overstated)";
-					break;
-			}
+			describeHonesty(element);
 		}
 
 		// allows the display of "titles" on mobile devices
@@ -195,77 +165,10 @@ function assignTone(items) {
 }
 
 
-function enableSpecialBehavior(place) {
-	// makes sure there's a place
-	switch (S.getType(place)) {
-		case "undefined":
-			place = document.body;
-			break;
-		case "String":
-			place = S.getId(place);
-			break;
-		case "HTMLElement":
-			// do nothing
-			break;
-		default:
-			console.error(new TypeError("The place requesting special behavior is of an incorrect type."));
-			return;
-	}
-	// fills all of the empty person references with people
-	let HTML = place.innerHTML;
-	HTML = HTML.replace(/([^'"“])(p\d+)([^"”])/g, function (match, leftCharacter, person, rightCharacter) {
-		return leftCharacter + '<span class="' + person + '"></span>' + rightCharacter;
-	});
-	place.innerHTML = HTML;
 
-	// makes all of the people references links
-	S.forEach(people.slice(1), function (person, index) {
-		S.forEach(place.getElementsByClassName("p" + (index + 1)), function (occurrence) {
-			let link = document.createElement("a");
-			link.className = "discreet";
-			if (window.location.protocol == "file:") {
-				link.href = "file:///C:/Users/Robert/Documents/GitHub/journal/search.html?p=" + (index + 1);
-			} else {
-				link.href = "/journal/search?p=" + (index + 1);  // "/journal/" is included just in case the link is put in a weird place
-			}
-			//// link.target = "_blank";  // This might not be necessary.
-			link.title = person.firstName + (person.lastName ? " " + person.lastName : "");
-			if (occurrence.textContent.trim() != "") {
-				link.textContent = occurrence.textContent;
-				occurrence.textContent = "";
-			} else if (occurrence.dataset.use) {
-				if (occurrence.dataset.use.includes("extra")) {
-					link.textContent = person.extraNames[Number(occurrence.dataset.use.match(/\d+/)) - 1];  //// match[0]?
-				} else {
-					link.textContent = person[occurrence.dataset.use];
-				}
-			} else {
-				link.textContent = person.name;
-			}
-			link.target = "_blank";
-			occurrence.appendChild(link);
-		});
-	});
+function enableSpecialBehavior() {
 
-	// handles special uses of p0 references
-	// (useful for associating people who are potentially the same)
-	S.forEach(place.getElementsByClassName("p0"), function (occurrence) {
-		if (occurrence.dataset.hasOwnProperty("use")) {
-			let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
-			if (occurrence.textContent.trim() != "") {
-				// do nothing
-			} else if (occurrence.dataset.use.includes(".")) {
-				// p#.nameToUse
-				if (occurrence.dataset.use.includes("extra")) {
-					occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
-				} else {
-					occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
-				}
-			} else {
-				occurrence.textContent = people[index].name;
-			}
-		}
-	});
+	//// setting people references used to be here
 
 	// enables making use of elaborations
 	//// (Standards.general doesn't work because listeners are erased while creating person links)
