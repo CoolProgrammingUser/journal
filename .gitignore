@@ -1,0 +1,3 @@
+# Ignore the backup people list on my computer
+# The preceding slash targets the location of the one file rather than all people.js files
+/people.js
