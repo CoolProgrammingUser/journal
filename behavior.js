@@ -207,10 +207,10 @@ function enableSpecialBehavior() {
 	});
 }
 
-S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).
+S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).  //// update
 	runOrder: "first",
 	function: function () {
-		enableSpecialBehavior();
+		//// enableSpecialBehavior();
 	}
 });
 S.queue.add({

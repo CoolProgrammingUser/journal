@@ -6,6 +6,7 @@
 			Journal
 		</title>
 		<base target="_blank">
+		<script src="../preformatting.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
@@ -62,17 +63,17 @@
 			}
 
 
-            function fillPlaceholders() {
-                let html = JSON.stringify(placeholders);
+			function fillPlaceholders() {
+				let html = JSON.stringify(placeholders);
 				html = html.replace(/"?(\w+)"?:/g, "$1: ");
 				html = html.replace(/,/g, ", ");
-                html = html.replace(/\}, /g, "},\n");
-                S.getId("placeholderList").value = html;
-                let designation = "";
-                S.forEach(html.match(/\n/g), function (_, index) {
-                    designation += "<br>p0" + (index + 1);
-                });
-                S.getId("placeholderNumber").innerHTML = designation;
+				html = html.replace(/\}, /g, "},\n");
+				S.getId("placeholderList").value = html;
+				let designation = "";
+				S.forEach(html.match(/\n/g), function (_, index) {
+					designation += "<br>p0" + (index + 1);
+				});
+				S.getId("placeholderNumber").innerHTML = designation;
 			}
 			
 			
@@ -98,24 +99,24 @@
 					console.error(error);
 					server.requireSignIn = true;
 				});
-            });
+			});
 
-            S.listen("savePlaceholders", "click", function () {
+			S.listen("savePlaceholders", "click", function () {
 				let updatedPlaceholders = JSON.parse(S.getId("placeholderList").value.replace(/\w+(?=:)/g, '"$&"'));
-                /// prevents updating the actual placeholder list until everything has been successfully parsed
-                placeholders = updatedPlaceholders;
-                server.requireSignIn = false;
-                server.store("^websites/journal/placeholders", placeholders).then(function () {
-                    S.makeDialog("Placeholders sucessfully saved.");
-                    server.requireSignIn = true;
-                }).catch(function (error) {
-                    S.makeDialog("The placeholders couldn't be saved.");
-                    console.error("The was a problem saving the placeholders.");
-                    console.error(error);
-                    server.requireSignIn = true;
+				/// prevents updating the actual placeholder list until everything has been successfully parsed
+				placeholders = updatedPlaceholders;
+				server.requireSignIn = false;
+				server.store("^websites/journal/placeholders", placeholders).then(function () {
+					S.makeDialog("Placeholders sucessfully saved.");
+					server.requireSignIn = true;
+				}).catch(function (error) {
+					S.makeDialog("The placeholders couldn't be saved.");
+					console.error("The was a problem saving the placeholders.");
+					console.error(error);
+					server.requireSignIn = true;
 				});
 				fillPlaceholders();
-            });
+			});
 			
 			S.listen("resetPeople", "click", function () {
 				people = JSON.parse(JSON.stringify(originalPeople));

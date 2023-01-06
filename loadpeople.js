@@ -28,21 +28,7 @@ function identifyPeople(placeForPeople) {
 			return;
 	}
 
-	// fills all of the empty person references with people
-
-	if (placeForPeople !== null) {  // if more is desired than just filling the people variable
-		// replaces p# placeholders with <span> elements
-		let HTML = placeForPeople.innerHTML;
-		HTML = HTML.replace(/([^'"“])(p0?\d+(?:\.\w+)?)([^"”])/g, function (match, leftCharacter, person, rightCharacter) {
-			if (person.includes(".")) {
-				return leftCharacter + '<span class="person ' + person.slice(0, person.indexOf(".")) + '" data-use="' + person.slice(person.indexOf(".") + 1) + '"></span>' + rightCharacter;
-			} else {
-				return leftCharacter + '<span class="person ' + person + '"></span>' + rightCharacter;
-			}
-		});
-		placeForPeople.innerHTML = HTML;
-	}
-
+	// loads the people
 	server.recall("people").then(function (list) {
 
 		people = list;
@@ -74,6 +60,9 @@ function identifyPeople(placeForPeople) {
 					}
 					link.target = "_blank";
 					occurrence.appendChild(link);
+					S.listen(link, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
+						S.makeDialog(person.name + "<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
+					});
 				});
 			});
 
@@ -113,7 +102,11 @@ function identifyPeople(placeForPeople) {
 				S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
 					let link = document.createElement("a");
 					link.className = "discreet";
-					link.href = "";
+					if (window.location.protocol == "file:") {
+						link.href = "file:///C:/Users/rtben/Documents/GitHub/journal/search.html?p=0" + (index + 1);
+					} else {
+						link.href = "/journal/search?p=0" + (index + 1);  // "/journal/" is included just in case the link is put in a weird place
+					}
 					link.target = "_blank";
 					link.title = person.firstName + (person.lastName ? " " + person.lastName : "");  // adds a last name in the title if availible
 					if (occurrence.textContent.trim() != "") {  // if the person reference already has text (if a name shouldn't be filled in)
@@ -129,6 +122,9 @@ function identifyPeople(placeForPeople) {
 						link.textContent = person.name;
 					}
 					occurrence.appendChild(link);
+					S.listen(link, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
+						S.makeDialog(person.name + "<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
+					});
 				});
 			});
 		}

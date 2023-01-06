@@ -5,6 +5,7 @@
 		<title>
 			Journal
 		</title>
+		<script src="preformatting.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
@@ -132,8 +133,9 @@
 								}
 							});
 							// checks for matches with topics
+							hint = hint.toLowerCase();
 							S.forEach(topics.slice(1), function (topic, index) {
-								let topicComparison = Math.min(S.compare(topic.title, hint), S.compare(topic.summary, hint) / 1.5);
+								let topicComparison = Math.min(S.compare(topic.title.toLowerCase(), hint), S.compare(topic.summary.toLowerCase(), hint) / 1.5);
 								/*
 								if (topicComparison <= 4) {
 									if (results.hasOwnProperty(topicComparison)) {
@@ -143,7 +145,7 @@
 									}
                                 }
 								*/
-                                if (topic.title.toLowerCase().includes(hint.toLowerCase()) || topic.summary.toLowerCase().includes(hint.toLowerCase())) {
+                                if (topic.title.toLowerCase().includes(hint) || topic.summary.includes(hint.toLowerCase())) {
                                     if (results.hasOwnProperty(topicComparison)) {
                                         results[Math.round(topicComparison * 10)].push({ type: "topic", item: topic, index: index + 1 });
                                     } else {
