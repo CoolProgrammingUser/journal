@@ -61,7 +61,7 @@ function identifyPeople(placeForPeople) {
 					link.target = "_blank";
 					occurrence.appendChild(link);
 					S.listen(link, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
-						S.makeDialog(person.name + "<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
+						S.makeDialog(person.name + " (p" + (index + 1) + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
 					});
 				});
 			});
@@ -123,7 +123,7 @@ function identifyPeople(placeForPeople) {
 					}
 					occurrence.appendChild(link);
 					S.listen(link, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
-						S.makeDialog(person.name + "<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
+						S.makeDialog(person.name + " (p0" + (index + 1) + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
 					});
 				});
 			});
