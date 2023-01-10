@@ -43,19 +43,12 @@ a.discreet:hover {
 	/*font-style: italic;*/
 }
 
+/*
 span {
 	border-bottom: inherit;
 	background-color: inherit;
 }
-
-section {
-	/**
-	This is a paragraph tag replacement.
-	Paragraph tags can't be used because they can't handle imbedded <div>s (like in notes).
-	*/
-	display: block;
-	margin: 1em 0em;
-}
+*/
 
 .entry {
 	display: block;
@@ -71,31 +64,17 @@ section {
 }
 
 .elaborate {
-	/**
-	styles text that reveals an elaboration on click
-	*/
-	color: blue;
 	text-decoration: underline;
 	text-decoration-style: dotted;
-	cursor: pointer;
 }
-.elaborate::before {
+.elaborate.obvious {
+	color: blue;
+}
+.elaborate.obvious::before {
 	content: "{";
 }
-.elaborate::after {
+.elaborate.obvious::after {
 	content: "}";
-}
-.elaborate.discreet {
-	color: inherit;
-}
-.elaborate.discreet::before {
-	content: "";
-}
-.elaborate.discreet::after {
-	content: "";
-}
-.elaborate.discreet:hover {
-	text-decoration: underline;
 }
 
 .bce {  /* Before Current Events */
@@ -132,5 +111,8 @@ section {
 	body {
 		background-color: black;
 		background-image: url("/journal/background.png"), repeating-linear-gradient(black, black 24vh, red 25vh, black 26vh, black 49vh, green 50vh, black 51vh, black 74vh, blue 75vh, black 76vh, black 100vh);
+	}
+	.elaborate.obvious {
+		color: yellow;
 	}
 }

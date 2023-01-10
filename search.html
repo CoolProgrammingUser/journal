@@ -16,6 +16,7 @@
 		<script src="behavior.js"></script>
 		<script>
 			var months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+			var pagesToCheck = ["first"];
 
 			S.listen("searchButton", "click", function () {
 				if (S.getId("searchText").value.trim()) {
@@ -35,56 +36,49 @@
 			S.listen("peopleLister", "click", function () {
 				S.getId("heading").textContent = "Results:";
 				S.getId("result").innerHTML = "";
-				let table = document.createElement("table");
-				table.className = "labeled-list";
 				S.forEach(people.slice(1), function (person, index) {
-					let row = table.insertRow(-1);
-					row.appendChild(document.createElement("td"));
-					row.appendChild(document.createElement("td"));
-					row.children[0].textContent = "p" + (index+1);
-                    row.children[1].innerHTML = '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>";
+                    addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>");
 				});
-				S.getId("result").appendChild(table);
             });
 			S.listen("peopleLister", ["contextmenu", "touchhold"], function () {  // when trying to list people placeholders
                 S.getId("heading").textContent = "Results:";
                 S.getId("result").innerHTML = "";
-                let table = document.createElement("table");
-                table.className = "labeled-list";
                 S.forEach(placeholders.slice(1), function (person, index) {
-                    let row = table.insertRow(-1);
-                    row.appendChild(document.createElement("td"));
-                    row.appendChild(document.createElement("td"));
-                    row.children[0].textContent = "p0" + (index + 1);
-                    row.children[1].innerHTML = '<a href="?p=0' + (index + 1) + '">' + person.name + (person.lastName ? " " + person.lastName : "") + "</a>";
+                    addListItem("p0" + (index + 1), '<a href="?p=0' + (index + 1) + '">' + person.name + (person.lastName ? " " + person.lastName : "") + "</a>");
                 });
-                S.getId("result").appendChild(table);
 			});
 
 			S.listen("topicLister", "click", function () {
 				S.getId("heading").textContent = "Results:";
 				S.getId("result").innerHTML = "";
-				let table = document.createElement("table");
-				table.className = "labeled-list";
 				S.forEach(topics.slice(1), function (topic, index) {
-					let row = table.insertRow(-1);
-					row.appendChild(document.createElement("td"));
-					row.appendChild(document.createElement("td"));
-					row.children[0].textContent = "t" + (index + 1);
-					row.children[1].innerHTML = '<a href="?t=' + (index + 1) + '">' + topic.title + "</a>";
+                    addListItem("t" + (index + 1), '<a href="?t=' + (index + 1) + '">' + topic.title + "</a>");
 				});
-				S.getId("result").appendChild(table);
 			});
 
-			function addListItem(HTML) {
-				let listItem = document.createElement("li");
-				listItem.innerHTML = HTML;
-				S.getId("result").appendChild(listItem);
+            function addListItem(heading, information) {
+				let row = S.getId("result").insertRow(-1);
+				if (heading.search(/: |<br>/) > -1) {  // if all of the information was bunched into the heading
+					heading = heading.split(/: |<br>/);
+					let label = document.createElement("th");
+					label.innerHTML = heading[0] + ":";
+					row.appendChild(label);
+					let item = document.createElement("td");
+					item.innerHTML = heading[1];
+					row.appendChild(item);
+                } else {
+                    let label = document.createElement("th");
+                    label.innerHTML = heading;
+                    row.appendChild(label);
+                    let item = document.createElement("td");
+                    item.innerHTML = information;
+                    row.appendChild(item);
+				}
 			}
 
 			S.onLoad(function () {
 				if (window.location.href.includes("?")) {
-					window.addEventListener("loadedPeople", function () {
+					window.addEventListener("loadedAllPeople", function () {
 						let query = window.location.href.slice(window.location.href.indexOf("?") + 1).split("=");
 						if (query[0] == "p") {
 							let person;
@@ -93,14 +87,20 @@
 							}
 							if (typeof person === "undefined" || person == {}) {
 								S.getId("heading").textContent = "Error";
-								S.getId("result").textContent = "This person doesn't exist.";
+								S.getId("result").innerHTML = "This person doesn't exist.";
 							} else {
-								S.getId("heading").textContent = person.firstName + " " + person.lastName;
+                                S.getId("heading").textContent = person.firstName + (person.lastName ? " " + person.lastName : "");
 								addListItem("Common name: " + person.name);
-								addListItem("Full name pronunciation: " + person.pronunciation);
+								if (person.pronunciation) {
+									addListItem("Full name pronunciation: " + person.pronunciation);
+								}
 								if (person.hasOwnProperty("dateOfBirth")) {
 									let date = person.dateOfBirth.split("/");
-									addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
+									if (date.length > 2) {  // if the year is listed
+										addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
+                                    } else {
+                                        addListItem("Date of birth: " + months[date[0]] + " " + date[1]);
+									}
 								}
 								addListItem("Numerical designation: " + query[1]);
 							}
@@ -108,10 +108,11 @@
 							let topic = topics[query[1]];
 							if (typeof topic === undefined || topic == {}) {
 								S.getId("heading").textContent = "Error";
-								S.getId("result").textContent = "This topic doesn't exist.";
+								S.getId("result").innerHTML = "This topic doesn't exist.";
 							} else {
 								S.getId("heading").textContent = topic.title;
-								addListItem("Summary: " + topic.summary);
+								addListItem("Summary:", topic.summary);
+								addListItem("Keywords:", topic.keywords.join(", "));
 							}
 						} else if (query[0] == "hint") {
 							let hint = decodeURIComponent(query[1]);
@@ -164,18 +165,19 @@
 								});
 							});
 							// accounts for no results
-							if (S.getId("result").textContent == "") {
-								S.getId("result").textContent = "No result was found.";
+							if (S.getId("result").innerHTML == "") {
+								S.getId("result").innerHTML = "No result was found.";
 							}
 						} else {
-							S.getId("result").textContent = "An invalid type of search was attempted.";
+							S.getId("result").innerHTML = "An invalid type of search was attempted.";
 						}
 					});
 				}
 			});
 
-			window.addEventListener("loadedPeople", function () {
-
+			window.addEventListener("loadedAllPeople", function () {
+				S.getId("searchButton").disabled = false;
+				S.getId("peopleLister").disabled = false;
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
@@ -196,13 +198,13 @@
 		</h1>
 		<main>
 			<input type="text" id="searchText" placeholder="Type something to search">
-			<button id="searchButton">
+			<button id="searchButton" disabled>
 				Search
 			</button>
 			<p>
 				This will allow you to find things.
 			</p>
-			<button id="peopleLister">
+			<button id="peopleLister" disabled>
 				List people
 			</button>
 			<button id="topicLister">
@@ -211,7 +213,7 @@
 			<h2 id="heading">
 				Results:
 			</h2>
-			<ul id="result"></ul>
+			<table class="labeled-list" id="result"></table>
 		</main>
 	</body>
 </html>
