@@ -58,14 +58,12 @@ function replacePersonReference(location, options) {
 	}
 
 	if (location instanceof Element) {  // if modifying an HTML element
-		options.makeLink = options.makeLink === undefined ? true : options.makeLink;
 
 		let link = document.createElement("a");
-		link.className = "discreet";
 		if (window.location.protocol == "file:") {
 			link.href = "file:///C:/Users/rtben/Documents/GitHub/journal/search.html?p=" + number;
 		} else {
-			link.href = "/journal/search?p=" + number;  // "/journal/" is included just in case the link is put in a weird place
+			link.href = "/journal/search?p=" + number;  // "/journal/" is included to make sure the link navigates correctly no matter where it is
 		}
 		//// link.target = "_blank";  // This might not be necessary.
 		link.title = person.firstName + (person.lastName ? " " + person.lastName : "");  // adds a last name in the title if availible
@@ -83,18 +81,13 @@ function replacePersonReference(location, options) {
 		}
 		link.target = "_blank";
 
-		if (options.makeLink) {
-			location.appendChild(link);
-			S.listen(link, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
-				S.makeDialog(person.name + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
-			});
-		} else {
-			location.textContent = link.textContent;
-			location.title = link.title;
-			S.listen(location, ["contextmenu", "touchhold"], function () {  // makes a dialog about the person on right click or touch hold
-				S.makeDialog(person.name + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
-			});
-		}
+		location.textContent = link.textContent;
+		location.title = link.title;
+		link.textContent = person.name;
+		link.title = "";
+		S.listen(location, "click", function () {  // makes a dialog about the person on click
+			S.makeDialog(link.outerHTML + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
+		});
 	} else {  // if returning a modified string
 		S.forEach(location.match(/p\d+(?:\.\w+)?/g), function (match) {
 			if (match[1] == "0") {  // if wanting to replace a person placeholder (p0#)

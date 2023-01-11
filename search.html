@@ -103,6 +103,9 @@
 									}
 								}
 								addListItem("Numerical designation: " + query[1]);
+
+								//// add snippets of text from each entry where the name is used
+								//// use text fragment linking to link to the location
 							}
 						} else if (query[0] == "t") {
 							let topic = topics[query[1]];
@@ -112,8 +115,12 @@
 							} else {
 								S.getId("heading").textContent = topic.title;
 								addListItem("Summary:", topic.summary);
-								addListItem("Keywords:", topic.keywords.join(", "));
-							}
+                                addListItem("Keywords:", topic.keywords.join(", "));
+                                addListItem("Topic number: " + query[1]);
+                            }
+
+							//// add snippets of text where the topic is found
+							//// use text fragment linking to link to the location?
 						} else if (query[0] == "hint") {
 							let hint = decodeURIComponent(query[1]);
 							let results = {};

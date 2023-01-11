@@ -55,6 +55,13 @@ span {
 	padding: .5em;
 }
 
+.person {
+	cursor: pointer;
+}
+.person:hover {
+	text-decoration: underline;
+}
+
 .trigger {
 	color: blue;
 	cursor: help;
