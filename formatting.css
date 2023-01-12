@@ -6,7 +6,7 @@ body {
 	background-size: cover;
 }
 body.navigation {
-	font-family: cursive;
+	font-family: "Comic Sans MS";
 }
 @keyframes rainbow {
 	0% {
@@ -85,19 +85,19 @@ span {
 }
 
 .bce {  /* Before Current Events */
-	border-width: .05rem;
+	border-width: .1rem;
 	border-color: green;
 	border-style: solid;
 }
 
 .ce {  /* Current Events */
-	border-width: .05rem;
+	border-width: .1rem;
 	border-color: orange;
 	border-style: solid;
 }
 
 .afterthought {
-	border-width: .05rem;
+	border-width: .1rem;
 	border-color: cyan;
 	border-style: solid;
 }
