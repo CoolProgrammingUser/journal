@@ -6,7 +6,7 @@ body {
 	background-size: cover;
 }
 body.navigation {
-	font-family: "Comic Sans MS";
+	font-family: "Comic Sans MS", serif;
 }
 @keyframes rainbow {
 	0% {
