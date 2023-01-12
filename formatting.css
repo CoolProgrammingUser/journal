@@ -85,27 +85,31 @@ span {
 }
 
 .bce {  /* Before Current Events */
-	border-width: .1rem;
+	border-width: .15rem;
 	border-color: green;
 	border-style: solid;
 }
 
 .ce {  /* Current Events */
-	border-width: .1rem;
+	border-width: .15rem;
 	border-color: orange;
 	border-style: solid;
 }
 
 .afterthought {
-	border-width: .1rem;
+	border-width: .15rem;
 	border-color: cyan;
 	border-style: solid;
+	border-radius: .4em;
 }
 section.afterthought {
 	padding: .5em;
 }
 section.afterthought::after {
 	content: " (" attr(data-date) ")";
+}
+aside.afterthought {
+	border-radius: 0em;
 }
 aside.afterthought::after {
 	content: "(" attr(data-date) ")";
