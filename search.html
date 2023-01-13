@@ -23,9 +23,10 @@
 
 
 
-            function resetPage() {
-                S.getId("heading").textContent = "Results:";
+			function resetPage() {
+				S.getId("heading").textContent = "";
 				S.getId("result").innerHTML = "";
+				S.getId("numberOfEntries").textContent = "";
 				S.getId("entryDisplay").innerHTML = "";
 			}
 
@@ -43,33 +44,41 @@
 					window.location.href = query;
 				}
 			});
+			S.listen("searchText", "keydown", function (event) {
+				if (event.key == "Enter") {
+					S.getId("searchButton").click();
+				}
+			});
 
 			S.listen("peopleLister", "click", function () {
 				resetPage();
+				S.getId("heading").textContent = (people.length - 1) + " results found:";
 				S.forEach(people.slice(1), function (person, index) {
-                    addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>");
+					addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>");
 				});
-            });
+			});
 			S.listen("peopleLister", ["contextmenu", "touchhold"], function () {  // when trying to list people placeholders
 				resetPage();
-                S.forEach(placeholders.slice(1), function (person, index) {
-                    addListItem("p0" + (index + 1), '<a href="?p=0' + (index + 1) + '">' + person.name + (person.lastName ? " " + person.lastName : "") + "</a>");
-                });
+				S.getId("heading").textContent = ((placeholders.length - 1) + " results found:").replace(/^1 results/, "1 result");
+				S.forEach(placeholders.slice(1), function (person, index) {
+					addListItem("p0" + (index + 1), '<a href="?p=0' + (index + 1) + '">' + person.name + (person.lastName ? " " + person.lastName : "") + "</a>");
+				});
 			});
 
 			S.listen("topicLister", "click", function () {
 				resetPage();
+				S.getId("heading").textContent = (topics.length - 1) + " results found:";
 				S.forEach(topics.slice(1), function (topic, index) {
-                    addListItem("t" + (index + 1), '<a href="?t=' + (index + 1) + '">' + topic.title + "</a>");
+					addListItem("t" + (index + 1), '<a href="?t=' + (index + 1) + '">' + topic.title + "</a>");
 				});
 			});
 
-            S.listen("pageTitle", ["contextmenu", "touchhold"], function () {  // when trying to include "snapshots.html" in pagesToCheck
+			S.listen("pageTitle", ["contextmenu", "touchhold"], function () {  // when trying to include "snapshots.html" in pagesToCheck
 				session.store("admin", true);
 				window.location.reload();
-            });
+			});
 
-            function addListItem(heading, information) {
+			function addListItem(heading, information) {
 				let row = S.getId("result").insertRow(-1);
 				if (heading.search(/: |<br>/) > -1) {  // if all of the information was bunched into the heading
 					heading = heading.split(/: |<br>/);
@@ -79,13 +88,13 @@
 					let item = document.createElement("td");
 					item.innerHTML = heading[1];
 					row.appendChild(item);
-                } else {
-                    let label = document.createElement("th");
-                    label.innerHTML = heading;
-                    row.appendChild(label);
-                    let item = document.createElement("td");
-                    item.innerHTML = information;
-                    row.appendChild(item);
+				} else {
+					let label = document.createElement("th");
+					label.innerHTML = heading;
+					row.appendChild(label);
+					let item = document.createElement("td");
+					item.innerHTML = information;
+					row.appendChild(item);
 				}
 			}
 
@@ -109,7 +118,7 @@
 								S.getId("heading").textContent = "Error";
 								S.getId("result").innerHTML = "This person doesn't exist.";
 							} else {
-                                S.getId("heading").textContent = person.firstName + (person.lastName ? " " + person.lastName : "");
+								S.getId("heading").textContent = person.firstName + (person.lastName ? " " + person.lastName : "");
 								addListItem("Common name: " + person.name);
 								if (person.pronunciation) {
 									addListItem("Full name pronunciation: " + person.pronunciation);
@@ -118,8 +127,8 @@
 									let date = person.dateOfBirth.split("/");
 									if (date.length > 2) {  // if the year is listed
 										addListItem("Date of birth: " + months[date[1]] + " " + date[2] + ", " + date[0]);
-                                    } else {
-                                        addListItem("Date of birth: " + months[date[0]] + " " + date[1]);
+									} else {
+										addListItem("Date of birth: " + months[date[0]] + " " + date[1]);
 									}
 								}
 								addListItem("Numerical designation: " + query[1]);
@@ -132,8 +141,8 @@
 										journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
 										pagesToLoad--;
 										if (pagesToLoad == 0) {  // if all of the pages have loaded
-                                            let entryList = [];
-                                            // find all of the entries where the person appears
+											let entryList = [];
+											// find all of the entries where the person appears
 											S.forEach(journalPages, function (page, pagePath) {
 												S.forEach(page.getElementsByClassName("p" + query[1]), function (occurrence) {
 													let entry = findEntry(occurrence);
@@ -145,14 +154,14 @@
 														if (info.url.includes("snapshots")) {
 															info.url += "?show=" + info.date;
 														}
-                                                        let beforeText = "";
-                                                        let beforeNode = occurrence;
-                                                        do {
-                                                            if (beforeNode.previousSibling === null) {  // if the next sibling doesn't exist
-                                                                beforeNode = beforeNode.parentElement;  // move to the parent
-                                                                beforeText = " " + beforeText;
-                                                            } else {
-                                                                beforeNode = beforeNode.previousSibling;
+														let beforeText = "";
+														let beforeNode = occurrence;
+														do {
+															if (beforeNode.previousSibling === null) {  // if the next sibling doesn't exist
+																beforeNode = beforeNode.parentElement;  // move to the parent
+																beforeText = " " + beforeText;
+															} else {
+																beforeNode = beforeNode.previousSibling;
 																if (beforeNode.textContent.trim() != "") {  // if there's content in the node
 																	if (beforeNode.nodeType == 1) {  // if the node is an element
 																		if (["ASIDE", "H2"].includes(beforeNode.tagName)) {
@@ -164,36 +173,36 @@
 																			break;
 																		}
 																	}
-                                                                    let match = beforeNode.textContent.match(/ ?(?:[^ ]+ ){0,25}[^ ]*$/);
-                                                                    if (match !== null) {  // if words could be found
-                                                                        beforeText = match[0] + beforeText;
-                                                                    }
+																	let match = beforeNode.textContent.match(/ ?(?:[^ ]+ ){0,25}[^ ]*$/);
+																	if (match !== null) {  // if words could be found
+																		beforeText = match[0] + beforeText;
+																	}
 																	if (beforeText.length > 80) {  // if the snippet has gotten long enough
 																		beforeText = "... " + beforeText;
-                                                                        break;
-                                                                    }
-                                                                }
-                                                            }
-                                                        } while (beforeNode !== null);  // while there are still parent nodes
+																		break;
+																	}
+																}
+															}
+														} while (beforeNode !== null);  // while there are still parent nodes
 														let afterText = "";
 														let afterNode = occurrence;
 														do {
 															if (afterNode.nextSibling === null) {  // if the next sibling doesn't exist
 																afterNode = afterNode.parentElement;  // move to the parent
 																afterText += " ";
-                                                            } else {
-                                                                afterNode = afterNode.nextSibling;
-                                                                if (afterNode.textContent.trim() != "") {  // if there's content in the node
-                                                                    if (afterNode.nodeType == 1) {  // if the node is an element
-                                                                        if (["ASIDE", "H2"].includes(afterNode.tagName)) {
-                                                                            // skip asides and headings
-                                                                            continue;
-                                                                        } else if (afterNode.className.includes("entry")) {
-                                                                            // don't include anything outside of the entry
-                                                                            // also prevents adding " ..." after the text
-                                                                            break;
-                                                                        }
-                                                                    }
+															} else {
+																afterNode = afterNode.nextSibling;
+																if (afterNode.textContent.trim() != "") {  // if there's content in the node
+																	if (afterNode.nodeType == 1) {  // if the node is an element
+																		if (["ASIDE", "H2"].includes(afterNode.tagName)) {
+																			// skip asides and headings
+																			continue;
+																		} else if (afterNode.className.includes("entry")) {
+																			// don't include anything outside of the entry
+																			// also prevents adding " ..." after the text
+																			break;
+																		}
+																	}
 																	let match = afterNode.textContent.match(/^[^ ]*(?: [^ ]+){0,25} ?/);
 																	if (match !== null) {  // if words could be found
 																		afterText += match[0];
@@ -211,6 +220,7 @@
 													}
 												});
 											});
+											S.getId("numberOfEntries").textContent = (entryList.length + " entries found").replace(/^1 entries/, "1 entry");
 											// display the entries
 											S.forEach(entryList, function (entry) {
 												let heading = document.createElement("h2");
@@ -221,6 +231,7 @@
 												S.getId("entryDisplay").appendChild(snippet);
 											});
 											//// use text fragment linking to link to the location?
+											//// use text fragment linking only when clicking on the snippet?
 										}
 									});
 								});
@@ -233,55 +244,110 @@
 							} else {
 								S.getId("heading").textContent = topic.title;
 								addListItem("Summary:", topic.summary);
-                                addListItem("Keywords:", topic.keywords.join(", "));
-                                addListItem("Topic number: " + query[1]);
-                            }
+								addListItem("Keywords:", topic.keywords.join(", "));
+								addListItem("Topic number: " + query[1]);
+
+								// shows which entries the topic appears in
+								let pagesToLoad = pagesToCheck.length;
+								let journalPages = {};
+								S.forEach(pagesToCheck, function (path) {
+									S.getFile(path, function (content) {
+										journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
+										pagesToLoad--;
+										if (pagesToLoad == 0) {  // if all of the pages have loaded
+											let entryList = [];
+											// find all of the entries where the topic appears
+											S.forEach(journalPages, function (page, pagePath) {
+												S.forEach(page.getElementsByClassName("t" + query[1]), function (occurrence) {
+													let entry = findEntry(occurrence);
+													if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {
+														let info = {};
+														info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
+														info.date = entry.dataset.date;
+														info.url = pagePath + "#" + encodeURIComponent(info.heading);
+														if (info.url.includes("snapshots")) {
+															info.url += "?show=" + info.date;
+														}
+														info.snippet = occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/) + " ...";
+														info.HTML = entry;
+														entryList.push(info);
+													}
+												});
+											});
+											S.getId("numberOfEntries").textContent = (entryList.length + " entries found").replace(/^1 entries/, "1 entry");
+											// display the entries
+											S.forEach(entryList, function (entry) {
+												let heading = document.createElement("h2");
+												heading.innerHTML = "<a href='" + entry.url + "'>" + entry.heading + "</a>";
+												S.getId("entryDisplay").appendChild(heading);
+												let snippet = document.createElement("section");
+												snippet.textContent = entry.snippet;
+												S.getId("entryDisplay").appendChild(snippet);
+											});
+											//// add titles of asides?
+											//// indicate where an aside is hidden?
+											//// use text fragment linking to link to the location?
+											//// use text fragment linking only when clicking on the snippet?
+										}
+									});
+								});
+							}
 
 							//// add snippets of text where the topic is found
 							//// use text fragment linking to link to the location?
 						} else if (query[0] == "hint") {
-							let hint = decodeURIComponent(query[1]);
+							let hint = decodeURIComponent(query[1]).toLowerCase();
 							let results = {};
 							// checks for matches with people
 							S.forEach(people.slice(1), function (person, index) {
-								let personComparison = Math.min(S.compare(person.name, hint) * 1.5, S.compare(person.firstName, hint), S.compare(person.lastName, hint), S.compare(person.firstName + " " + person.lastName, hint), S.compare(person.name + " " + person.lastName, hint));
+								let personComparison = 100;
+								S.forEach(["name", "firstName", "lastName", "firstName lastName", "name lastName"], function (key) {
+									let name = "";
+									if (key.includes(" ")) {
+										key.split(" ").forEach(function (subkey) {
+											name += person[subkey] + " ";
+										});
+										name = name.trim().toLowerCase();
+									} else {
+										name = person[key].toLowerCase();
+									}
+									personComparison = Math.min(S.compare(name, hint) / name.length * 100, personComparison);
+								})
 								if (person.extraNames) {
 									person.extraNames.forEach(function (name) {
-										personComparison = Math.min(S.compare(name, hint), personComparison);
+										personComparison = Math.min(S.compare(name.toLowerCase(), hint) / name.length * 100, personComparison);
 									});
 								}
-								if (personComparison <= 3) {
-									if (results.hasOwnProperty(personComparison)) {
-										results[Math.round(personComparison * 10)].push({ type: "person", item: person, index: index + 1 });
+								if (personComparison <= 33.3) {
+									if (results.hasOwnProperty(Math.round(personComparison))) {
+										results[Math.round(personComparison)].push({ type: "person", item: person, index: index + 1 });
 									} else {
-										results[Math.round(personComparison * 10)] = [{ type: "person", item: person, index: index + 1 }];
+										results[Math.round(personComparison)] = [{ type: "person", item: person, index: index + 1 }];
 									}
 								}
 							});
 							// checks for matches with topics
-							hint = hint.toLowerCase();
 							S.forEach(topics.slice(1), function (topic, index) {
-								let topicComparison = Math.min(S.compare(topic.title.toLowerCase(), hint), S.compare(topic.summary.toLowerCase(), hint) / 1.5);
-								/*
-								if (topicComparison <= 4) {
-									if (results.hasOwnProperty(topicComparison)) {
-										results[Math.round(topicComparison * 10)].push({ type: "topic", item: topic, index: index + 1 });
+								let topicComparison = Math.min(
+									S.compare(topic.title.toLowerCase(), hint) / topic.title.length * 100,
+									S.compare(topic.summary.toLowerCase(), hint) / topic.summary.length * 50
+								);
+								topic.keywords.forEach(function (word) {
+									topicComparison = Math.min(S.compare(word, hint) / word.length * 100, topicComparison);
+								});
+								if (topicComparison <= 33.3) {
+									if (results.hasOwnProperty(Math.round(topicComparison))) {
+										results[Math.round(topicComparison)].push({ type: "topic", item: topic, index: index + 1 });
 									} else {
-										results[Math.round(topicComparison * 10)] = [{ type: "topic", item: topic, index: index + 1 }];
+										results[Math.round(topicComparison)] = [{ type: "topic", item: topic, index: index + 1 }];
 									}
-                                }
-								*/
-                                if (topic.title.toLowerCase().includes(hint) || topic.summary.includes(hint.toLowerCase())) {
-                                    if (results.hasOwnProperty(topicComparison)) {
-                                        results[Math.round(topicComparison * 10)].push({ type: "topic", item: topic, index: index + 1 });
-                                    } else {
-                                        results[Math.round(topicComparison * 10)] = [{ type: "topic", item: topic, index: index + 1 }];
-                                    }
-                                }
+								}
 							});
 							// displays results
+							let numberOfResults = 0;
 							S.forEach(results, function (set) {
 								S.forEach(set, function (result) {
+									numberOfResults++;
 									if (result.type == "person") {
 										addListItem('<a href="?p=' + result.index + '">' + result.item.name + "</a><br>(" + result.item.firstName + " " + result.item.lastName + ")");
 									} else if (result.type == "topic") {
@@ -289,6 +355,7 @@
 									}
 								});
 							});
+							S.getId("heading").textContent = (numberOfResults + " results found:").replace(/^1 results/, "1 result");
 							// accounts for no results
 							if (S.getId("result").innerHTML == "") {
 								S.getId("result").innerHTML = "No result was found.";
@@ -335,10 +402,9 @@
 			<button id="topicLister">
 				List topics
 			</button>
-			<h2 id="heading">
-				Results:
-			</h2>
+			<h2 id="heading"></h2>
 			<table class="labeled-list" id="result"></table>
+			<section id="numberOfEntries"></section>
 			<div id="entryDisplay"></div>
 		</main>
 	</body>
