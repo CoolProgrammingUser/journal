@@ -126,7 +126,7 @@ aside.afterthought::after {
 	background-color: rgba(255, 0, 255, .25);
 }
 
-[data-revisit="finish"]::after, [data-revisit="unfinished"]::after {
+[data-revisit="finish"]::after, [data-revisit="unfinished"]::after, [data-revisit="expand"]::after {
 	content: "[Unfinished]";
 }
 

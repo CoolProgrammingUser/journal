@@ -111,11 +111,7 @@ function replacePersonReference(location, options) {
 	}
 }
 
-function identifyPeople(placeForPeople) {
-	let originalServerStorageLocation = Standards.storage.server.defaultLocation;
-	server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
-	server.requireSignIn = false;
-
+function identifyPeople(placeForPeople, options) {
 	// makes sure there's a place
 	switch (S.getType(placeForPeople)) {
 		case "undefined":
@@ -133,66 +129,87 @@ function identifyPeople(placeForPeople) {
 			return;
 	}
 
-	// loads the people
-	server.recall("people").then(function (list) {
+	if (!options) {
+		options = {};
+	}
+	options.loadPeople = (options.loadPeople === undefined ? true : options.loadPeople);
 
-		people = list;
-
-		if (placeForPeople !== null) {  // if more is desired than just filling the people variable
-			// makes all of the people references links
-			S.forEach(people.slice(1), function (person, index) {
-				S.forEach(placeForPeople.getElementsByClassName("p" + (index + 1)), function (occurrence) {
-					replacePersonReference(occurrence);
-				});
+	function replacePeople() {
+		// makes all of the people references pseudolinks
+		S.forEach(people.slice(1), function (person, index) {
+			S.forEach(placeForPeople.getElementsByClassName("p" + (index + 1)), function (occurrence) {
+				replacePersonReference(occurrence);
 			});
+		});
 
-			// handles special uses of p0 references
-			// (useful for associating people who are potentially the same)
-			S.forEach(placeForPeople.getElementsByClassName("p0"), function (occurrence) {
-				if (occurrence.dataset.hasOwnProperty("use")) {
-					let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
-					if (occurrence.textContent.trim() != "") {
-						// do nothing
-					} else if (occurrence.dataset.use.includes(".")) {
-						// p#.nameToUse
-						if (occurrence.dataset.use.includes("extra")) {
-							occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
-						} else {
-							occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
-						}
+		// handles special uses of p0 references
+		// (useful for associating people who are potentially the same)
+		S.forEach(placeForPeople.getElementsByClassName("p0"), function (occurrence) {
+			if (occurrence.dataset.hasOwnProperty("use")) {
+				let index = Number(occurrence.dataset.use.match(/^p(\d+)/)[1]);
+				if (occurrence.textContent.trim() != "") {
+					// do nothing
+				} else if (occurrence.dataset.use.includes(".")) {
+					// p#.nameToUse
+					if (occurrence.dataset.use.includes("extra")) {
+						occurrence.textContent = people[index].extraNames[Number(occurrence.dataset.use.match(/\.extras?(\d+)/)[1]) - 1];
 					} else {
-						occurrence.textContent = people[index].name;
+						occurrence.textContent = people[index][occurrence.dataset.use.match(/\.(\w+)/)[1]];
 					}
+				} else {
+					occurrence.textContent = people[index].name;
 				}
+			}
+		});
+	}
+
+	function replacePlaceholders() {
+		// makes all of the placeholder references pseudolinks
+		S.forEach(placeholders.slice(1), function (person, index) {
+			S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
+				replacePersonReference(occurrence);
 			});
-		}
+		});
+	}
 
-		window.dispatchEvent(new Event("loadedPeople"));
-	}).catch(function (error) {
-		S.makeDialog("The people couldn't be loaded.");
-		console.error("The people list couldn't be loaded.");
-		console.error(error);
-	});
+	if (options.loadPeople) {
+		let originalServerStorageLocation = Standards.storage.server.defaultLocation;
+		server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
+		server.requireSignIn = false;
 
-	server.recall("placeholders").then(function (list) {
-		placeholders = list;
-		if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
-			// makes all of the placeholder references pseudolinks
-			S.forEach(placeholders.slice(1), function (person, index) {
-				S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
-					replacePersonReference(occurrence);
-				});
-			});
-		}
-		window.dispatchEvent(new Event("loadedPlaceholders"));
-	}).catch(function (error) {
-		S.makeDialog("The people placeholders couldn't be loaded.");
-		console.error("The placeholders list couldn't be loaded.");
-		console.error(error);
-	});
+		// loads the people
+		server.recall("people").then(function (list) {
+			people = list;
+			if (placeForPeople !== null) {  // if more is desired than just filling the people variable
+				replacePeople();
+			}
+			window.dispatchEvent(new Event("loadedPeople"));
+		}).catch(function (error) {
+			S.makeDialog("The people couldn't be loaded.");
+			console.error("The people list couldn't be loaded.");
+			console.error(error);
+		});
 
-	server.defaultLocation = originalServerStorageLocation;
-	server.requireSignIn = true;
+		server.recall("placeholders").then(function (list) {
+			placeholders = list;
+			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
+				replacePlaceholders();
+			}
+			window.dispatchEvent(new Event("loadedPlaceholders"));
+		}).catch(function (error) {
+			S.makeDialog("The people placeholders couldn't be loaded.");
+			console.error("The placeholders list couldn't be loaded.");
+			console.error(error);
+		});
+
+		server.defaultLocation = originalServerStorageLocation;
+		server.requireSignIn = true;
+
+	} else {
+		replacePeople();
+		replacePlaceholders();
+		return placeForPeople;
+	}
 }
 
 addEventListener("loadedAllPeople", function () {
@@ -204,7 +221,7 @@ addEventListener("loadedAllPeople", function () {
 });
 
 // identifying the people needs to come after the document finishes loading
-S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML).
+S.queue.add({  // This can't be S.onLoad since replacing the person references eliminates any listeners (due to replacing the HTML). ////
 	runOrder: "first",
 	function: identifyPeople
 });

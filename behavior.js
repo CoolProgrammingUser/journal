@@ -164,6 +164,27 @@ function assignTone(items) {
 	});
 }
 
+function findEntry(element) {
+	/**
+	Finds the entry containing the element
+	*/
+	if (S.getType(element) != "HTMLElement") {
+		throw "An HTML element must be provided to find its containing entry.";
+	}
+	/*
+	while (element && !element.className.includes("entry")) {
+		element = element.parentNode;
+	}
+	*/
+	element = element.closest(".entry");
+	if (element) {  // if the entry was found
+		return element;
+	} else {
+		console.error("The entry containing the entry couldn't be found.");
+		return;
+	}
+}
+
 
 
 function enableSpecialBehavior() {
