@@ -61,6 +61,9 @@ span {
 .person:hover {
 	text-decoration: underline;
 }
+.person.noindex:hover {
+	text-decoration: inherit;
+}
 
 .trigger {
 	color: blue;

@@ -118,10 +118,19 @@
 								S.getId("heading").textContent = "Error";
 								S.getId("result").innerHTML = "This person doesn't exist.";
 							} else {
-								S.getId("heading").textContent = person.firstName + (person.lastName ? " " + person.lastName : "");
+								S.getId("heading").textContent = person.firstName + (person.middleName ? " " + person.middleName : "") + (person.lastName ? " " + person.lastName : "");
 								addListItem("Common name: " + person.name);
 								if (person.pronunciation) {
 									addListItem("Full name pronunciation: " + person.pronunciation);
+								}
+								if (person.maidenName && person.maidenName != person.lastName) {
+									addListItem("Maiden name: " + person.maidenName);
+								}
+								if (person.marriedName && person.marriedName != person.lastName) {
+									addListItem("Married name: " + person.marriedName);
+								}
+								if (person.extraNames) {
+									addListItem("Extra names: " + person.extraNames.join(", "));
 								}
 								if (person.hasOwnProperty("dateOfBirth")) {
 									let date = person.dateOfBirth.split("/");
@@ -145,78 +154,83 @@
 											// find all of the entries where the person appears
 											S.forEach(journalPages, function (page, pagePath) {
 												S.forEach(page.getElementsByClassName("p" + query[1]), function (occurrence) {
-													let entry = findEntry(occurrence);
-													if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {
-														let info = {};
-														info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
-														info.date = entry.dataset.date;
-														info.url = pagePath + "#" + encodeURIComponent(info.heading);
-														if (info.url.includes("snapshots")) {
-															info.url += "?show=" + info.date;
+													/// for every time the person's p# shows up on each page of the journal...
+													if (!occurrence.className.includes("noindex")) {  // if the occurrence should be indexed
+														let entry = findEntry(occurrence);
+														if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {  // if the entry hasn't already been added
+															let info = {};
+															info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
+															info.date = entry.dataset.date;
+															info.url = pagePath + "#" + encodeURIComponent(info.heading);
+															if (info.url.includes("snapshots")) {
+																info.url += "?show=" + info.date;
+															}
+															// finds the text before the occurrence of the person
+															let beforeText = "";
+															let beforeNode = occurrence;
+															do {
+																if (beforeNode.previousSibling === null) {  // if the next sibling doesn't exist
+																	beforeNode = beforeNode.parentElement;  // move to the parent
+																	beforeText = " " + beforeText;
+																} else {
+																	beforeNode = beforeNode.previousSibling;
+																	if (beforeNode.textContent.trim() != "" || beforeNode.textContent == " ") {  // if there's content in the node
+																		if (beforeNode.nodeType == 1) {  // if the node is an element
+																			if (["ASIDE", "H2"].includes(beforeNode.tagName)) {
+																				// skip asides and headings
+																				continue;
+																			} else if (beforeNode.className.includes("entry")) {
+																				// don't include anything outside of the entry
+																				// also prevents adding "... " before the text
+																				break;
+																			}
+																		}
+																		let match = beforeNode.textContent.match(/ ?(?:[^ ]+ ){0,25}[^ ]*$/);
+																		if (match !== null) {  // if words could be found
+																			beforeText = match[0] + beforeText;
+																		}
+																		if (beforeText.length > 80) {  // if the snippet has gotten long enough
+																			beforeText = "... " + beforeText;
+																			break;
+																		}
+																	}
+																}
+															} while (beforeNode !== null);  // while there are still parent nodes
+															// finds the text after the occurrence of the person
+															let afterText = "";
+															let afterNode = occurrence;
+															do {
+																if (afterNode.nextSibling === null) {  // if the next sibling doesn't exist
+																	afterNode = afterNode.parentElement;  // move to the parent
+																	afterText += " ";
+																} else {
+																	afterNode = afterNode.nextSibling;
+																	if (afterNode.textContent.trim() != "" || afterNode.textContent == " ") {  // if there's content in the node
+																		if (afterNode.nodeType == 1) {  // if the node is an element
+																			if (["ASIDE", "H2"].includes(afterNode.tagName)) {
+																				// skip asides and headings
+																				continue;
+																			} else if (afterNode.className.includes("entry")) {
+																				// don't include anything outside of the entry
+																				// also prevents adding " ..." after the text
+																				break;
+																			}
+																		}
+																		let match = afterNode.textContent.match(/^[^ ]*(?: [^ ]+){0,25} ?/);
+																		if (match !== null) {  // if words could be found
+																			afterText += match[0];
+																		}
+																		if (afterText.length > 80) {  // if the snippet has gotten long enough
+																			afterText += " ...";
+																			break;
+																		}
+																	}
+																}
+															} while (afterNode !== null);  // while there are still parent nodes
+															// puts together the snippet
+															info.snippet = beforeText + occurrence.textContent + afterText;
+															entryList.push(info);
 														}
-														let beforeText = "";
-														let beforeNode = occurrence;
-														do {
-															if (beforeNode.previousSibling === null) {  // if the next sibling doesn't exist
-																beforeNode = beforeNode.parentElement;  // move to the parent
-																beforeText = " " + beforeText;
-															} else {
-																beforeNode = beforeNode.previousSibling;
-																if (beforeNode.textContent.trim() != "") {  // if there's content in the node
-																	if (beforeNode.nodeType == 1) {  // if the node is an element
-																		if (["ASIDE", "H2"].includes(beforeNode.tagName)) {
-																			// skip asides and headings
-																			continue;
-																		} else if (beforeNode.className.includes("entry")) {
-																			// don't include anything outside of the entry
-																			// also prevents adding "... " before the text
-																			break;
-																		}
-																	}
-																	let match = beforeNode.textContent.match(/ ?(?:[^ ]+ ){0,25}[^ ]*$/);
-																	if (match !== null) {  // if words could be found
-																		beforeText = match[0] + beforeText;
-																	}
-																	if (beforeText.length > 80) {  // if the snippet has gotten long enough
-																		beforeText = "... " + beforeText;
-																		break;
-																	}
-																}
-															}
-														} while (beforeNode !== null);  // while there are still parent nodes
-														let afterText = "";
-														let afterNode = occurrence;
-														do {
-															if (afterNode.nextSibling === null) {  // if the next sibling doesn't exist
-																afterNode = afterNode.parentElement;  // move to the parent
-																afterText += " ";
-															} else {
-																afterNode = afterNode.nextSibling;
-																if (afterNode.textContent.trim() != "") {  // if there's content in the node
-																	if (afterNode.nodeType == 1) {  // if the node is an element
-																		if (["ASIDE", "H2"].includes(afterNode.tagName)) {
-																			// skip asides and headings
-																			continue;
-																		} else if (afterNode.className.includes("entry")) {
-																			// don't include anything outside of the entry
-																			// also prevents adding " ..." after the text
-																			break;
-																		}
-																	}
-																	let match = afterNode.textContent.match(/^[^ ]*(?: [^ ]+){0,25} ?/);
-																	if (match !== null) {  // if words could be found
-																		afterText += match[0];
-																	}
-																	if (afterText.length > 80) {  // if the snippet has gotten long enough
-																		afterText += " ...";
-																		break;
-																	}
-																}
-															}
-														} while (afterNode !== null);  // while there are still parent nodes
-														info.snippet = beforeText + occurrence.textContent + afterText;
-														info.HTML = entry;
-														entryList.push(info);
 													}
 												});
 											});
@@ -244,7 +258,6 @@
 							} else {
 								S.getId("heading").textContent = topic.title;
 								addListItem("Summary:", topic.summary);
-								addListItem("Keywords:", topic.keywords.join(", "));
 								addListItem("Topic number: " + query[1]);
 
 								// shows which entries the topic appears in
@@ -312,9 +325,19 @@
 										name = person[key].toLowerCase();
 									}
 									personComparison = Math.min(S.compare(name, hint) / name.length * 100, personComparison);
-								})
+								});
+								let nameList = [];
 								if (person.extraNames) {
-									person.extraNames.forEach(function (name) {
+									nameList = person.extraNames;
+								}
+								if (person.maidenName) {
+									nameList.push(person.maidenName);
+								}
+								if (person.marriedName) {
+									nameList.push(person.marriedName);
+								}
+								if (nameList) {
+									nameList.forEach(function (name) {
 										personComparison = Math.min(S.compare(name.toLowerCase(), hint) / name.length * 100, personComparison);
 									});
 								}
@@ -393,9 +416,9 @@
 			<button id="searchButton" disabled>
 				Search
 			</button>
-			<p>
-				This will allow you to find things.
-			</p>
+			<section>
+				This allows you to find things scattered thoughout my entries and shows you consolidated information about a person or topic. Searching for something other than a person or topic is currently unsupported.
+			</section>
 			<button id="peopleLister" disabled>
 				List people
 			</button>
