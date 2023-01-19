@@ -175,10 +175,9 @@ function identifyPeople(placeForPeople, options) {
 	if (options.loadPeople) {
 		let originalServerStorageLocation = Standards.storage.server.defaultLocation;
 		server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
-		server.requireSignIn = false;
 
 		// loads the people
-		server.recall("people").then(function (list) {
+		server.recall("people", null, { requireSignIn: false }).then(function (list) {
 			people = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the people variable
 				replacePeople();
@@ -190,7 +189,7 @@ function identifyPeople(placeForPeople, options) {
 			console.error(error);
 		});
 
-		server.recall("placeholders").then(function (list) {
+		server.recall("placeholders", null, { requireSignIn: false }).then(function (list) {
 			placeholders = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 				replacePlaceholders();
@@ -203,7 +202,6 @@ function identifyPeople(placeForPeople, options) {
 		});
 
 		server.defaultLocation = originalServerStorageLocation;
-		server.requireSignIn = true;
 
 	} else {
 		replacePeople();
