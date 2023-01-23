@@ -88,19 +88,19 @@ span {
 }
 
 .bce {  /* Before Current Events */
-	border-width: .15rem;
+	border-width: .15em;
 	border-color: green;
 	border-style: solid;
 }
 
 .ce {  /* Current Events */
-	border-width: .15rem;
+	border-width: .15em;
 	border-color: orange;
 	border-style: solid;
 }
 
 .afterthought {
-	border-width: .15rem;
+	border-width: .15em;
 	border-color: cyan;
 	border-style: solid;
 	border-radius: .4em;
