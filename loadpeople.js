@@ -71,11 +71,66 @@ function replacePersonReference(location, options) {
 			link.textContent = location.textContent;
 			location.textContent = "";
 		} else if (location.dataset.use) {  // if a certain name of the person should be used
-			if (location.dataset.use.includes("extra")) {
-				link.textContent = person.extraNames[Number(location.dataset.use.match(/\d+/)[0]) - 1];
-			} else {
-				link.textContent = person[location.dataset.use];
+			let text;
+			if (location.dataset.use.indexOf("extra") == 0) { // if one of the extra names should be used
+				text = person.extraNames[Number(location.dataset.use.match(/\d+/)[0]) - 1];
+			} else {  // if one of the other designated names should be used
+				text = person[location.dataset.use.match(/\w+/)[0]];
 			}
+			if (location.dataset.use.search(/\.(?:s|str|string)\./) > -1) {  // if the string should be modified
+				location.dataset.use.match(/\.(?:s|str|string)((?:\.\w+(?:\([^)]*\))?)+)/)[1].slice(1).split(".").forEach(function (mod) {
+					switch (mod.match(/^\w+/)[0]) {
+						case "toUpperCase":
+							text = text.toUpperCase();
+							break;
+						case "toSentenceCase":
+							text = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+							break;
+						case "toLowerCase":
+							text = text.toLowerCase();
+							break;
+						case "length":
+							text = text.length;
+							break;
+						case "0":
+							text = text.charAt(0);
+							break;
+						case "itemAt":
+							if (mod.search(/\([^)]+\)/) > -1) {  // if there's something in parentheses
+								text = S.itemAt(text, mod.match(/-?\d+/)[0]);
+							}
+							break;
+						case "slice":
+							if (mod.search(/\([^)]+\)/) > -1) {  // if there's something in parentheses
+								if (mod.includes(",")) {
+									text = text.slice(mod.match(/-?\d+/)[0], mod.match(/, ?(-?\d+)/)[1]);
+								} else {
+									text = text.slice(mod.match(/-?\d+/)[0]);
+								}
+							}
+							break;
+						case "match":
+							if (mod.search(/\([^)]+\)/) > -1) {  // if there's something in parentheses
+								if (mod.search(/\/.+\//) > -1) {  // if it has a regular expression
+									if (mod.search(/\/.+\/\w+/) > -1) {  // if the regular expression has flags
+										text = text.match(new RegExp(mod.match(/\/(.+)\//)[1], mod.match(/\/.+\/(\w+)/)[1]));
+									} else {
+										text = text.match(new RegExp(mod.match(/\/(.+)\//)[1]));
+									}
+								} else {
+									text = text.match(mod.match(/\(([^)]+)\)/)[1]);
+								}
+							}
+							break;
+						case "split":
+							if (mod.search(/\([^)]+\)/) > -1) {  // if there's something in parentheses
+								text = text.split(mod.match(/\(([^)]+)\)/)[1]);
+							}
+							break;
+					}
+				});
+			}
+			link.textContent = text
 		} else {  // if the person's common name should be used
 			link.textContent = person.name;
 		}

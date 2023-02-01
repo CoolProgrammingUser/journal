@@ -105,11 +105,14 @@ span {
 	border-style: solid;
 	border-radius: .4em;
 }
-section.afterthought {
+section.afterthought, p.afterthought, div.afterthought {
 	padding: .5em;
 }
-section.afterthought::after {
+section.afterthought::after, p.afterthought::after, div.afterthought::after {
 	content: " (" attr(data-date) ")";
+}
+div.afterthought section:first-child, div.afterthought p:first-child {
+	margin-top: 0em;
 }
 aside.afterthought {
 	border-radius: 0em;

@@ -59,7 +59,11 @@ function assignTone(items) {
 	gives titles to mood and honesty indications
 	*/
 	let emotions = [  // contentment, energy, name  (or designation, name)
-		{ c: ["1"], e: ["1", "2"], n: "Despairing" },  // devastated, desperate, overwhelmed, ashamed, hopeless, dejected, disconsolate, despondent
+		{ c: ["1"], e: ["1"], n: "Despairing" },  // devastated, desperate, overwhelmed, ashamed, hopeless, dejected, disconsolate, despondent
+		{ c: ["1"], e: ["2"], n: "Hopeless" },
+		{ c: ["1"], e: ["4"], n: "Loathing" },
+		{ c: ["1"], e: ["5"], n: "Seething" },
+		{ c: ["1"], e: ["6"], n: "Fuming" },
 		{ c: ["1"], e: ["7"], n: "Furious" },
 		{ c: ["2"], e: ["1", "2"], n: "Sad" },
 		{ c: ["2"], e: ["4", "5"], n: "Irritated" },
@@ -89,7 +93,7 @@ function assignTone(items) {
 		{ d: "o2", n: "Cynical" },
 		{ d: "o3", n: "Resolute" }
 	];
-	//// aspects of emotion = contentment, energy, control, expectation
+	//// aspects of emotion = contentment, energy, control, expectation, appreciation
 
 	let iterator;
 	if (items) {

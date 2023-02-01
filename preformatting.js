@@ -4,8 +4,8 @@
 function reformatPersonNumbers(location) {
 	// replaces p# placeholders with <span> elements
 	let HTML = location.innerHTML;
-	HTML = HTML.replace(/<.+?>|p0?\d+(?:\.\w+)?/g, function (person) {
-		if (person[0] == "<" || person.search(/p0[^\d]|p0$/) > -1) {  // if an HTML tag was captured (prevents matching people number classes within tags)
+	HTML = HTML.replace(/<.+?>|p0?\d+(?:\.\w+(?:\.(?:s|str|string)(?:\.\w+(?:\([^)]*\))?)+)?)?/g, function (person) {
+		if (person[0] == "<" || person.search(/p0[^\d]|p0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
 			return person;
 		} else if (person.indexOf(".") > -1) {  // if a special name should be used
 			return '<span class="person ' + person.slice(0, person.indexOf(".")) + '" data-use="' + person.slice(person.indexOf(".") + 1) + '"></span>';
@@ -25,7 +25,7 @@ function reformatPersonNumbers(location) {
 		if (tag[0] == "<") {
 			return tag;
 		} else {
-			return '<span class="person p1">My mom</span>';
+			return '<span class="person p2">My mom</span>';
 		}
 	});
 	// replaces the location's HTML

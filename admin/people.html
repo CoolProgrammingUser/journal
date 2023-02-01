@@ -34,8 +34,11 @@
 							people.splice(pNum.match(/\d+/)[0], 1);
 							S.removeSelf(x.parentNode);
 							let updatedPeople = [{}];
-							S.forEach(S.getId("personList").getElementsByTagName("td"), function (info) {
-								updatedPeople.push(JSON.parse("{" + info.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+							S.forEach(S.getId("personList").getElementsByTagName("tr"), function (row, index) {
+								if (index > 0) {
+									let sinfo = row.getElementsByTagName("td")[0];
+									updatedPeople.push(JSON.parse("{" + sinfo.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+								}
 							});
 							/// prevents updating the actual people list until everything has been successfully parsed
 							people = updatedPeople;
@@ -49,14 +52,18 @@
 				p.className = "p";
 				p.textContent = "p" + (S.getId("personList").rows.length - 1);
 				row.appendChild(p);
-				let info = document.createElement("td");
-				info.contentEditable = true;
-				info.textContent = information;
-				row.appendChild(info);
+				let sinfo = document.createElement("td");
+				sinfo.contentEditable = true;
+				sinfo.textContent = information;
+				row.appendChild(sinfo);
+				let hinfo = document.createElement("td");  // hidden info
+				hinfo.contentEditable = true;
+				hinfo.textContent = "";  ////
+				row.appendChild(hinfo);
 			}
 			
 			function fillPeopleTable() {
-				S.getId("personList").innerHTML = "<tr><th></th><th>p#</th><th>Information</th></tr>";
+				S.getId("personList").innerHTML = "<tr><th></th><th>p#</th><th>Shown info</th><th>Hidden info</th></tr>";
 				S.forEach(people.slice(1), function (person) {
 					makePersonRow(JSON.stringify(person).slice(1, -1).replace(/,/g, ", ").replace(/"?(\w+)"?:/g, "$1: "));
 				});
@@ -84,20 +91,20 @@
 			
 			S.listen("savePeople", "click", function () {
 				let updatedPeople = [{}];
-				S.forEach(S.getId("personList").getElementsByTagName("td"), function (info) {
-					updatedPeople.push(JSON.parse("{" + info.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+				S.forEach(S.getId("personList").getElementsByTagName("tr"), function (row, index) {
+					if (index > 0) {
+						let sinfo = row.getElementsByTagName("td")[0];
+						updatedPeople.push(JSON.parse("{" + sinfo.textContent.replace(/\w+(?=:)/g, '"$&"') + "}"));
+					}
 				});
 				/// prevents updating the actual people list until everything has been successfully parsed
 				people = updatedPeople;
-				server.requireSignIn = false;
-				server.store("^websites/journal/people", people).then(function () {
+				server.store("^websites/journal/people", people, null, { requireSignIn: false }).then(function () {
 					S.makeDialog("People sucessfully saved.");
-					server.requireSignIn = true;
 				}).catch(function (error) {
 					S.makeDialog("The people couldn't be saved.");
 					console.error("The was a problem saving the people.");
 					console.error(error);
-					server.requireSignIn = true;
 				});
 			});
 
@@ -105,15 +112,12 @@
 				let updatedPlaceholders = JSON.parse(S.getId("placeholderList").value.replace(/\w+(?=:)/g, '"$&"'));
 				/// prevents updating the actual placeholder list until everything has been successfully parsed
 				placeholders = updatedPlaceholders;
-				server.requireSignIn = false;
-				server.store("^websites/journal/placeholders", placeholders).then(function () {
+				server.store("^websites/journal/placeholders", placeholders, null, { requireSignIn: false }).then(function () {
 					S.makeDialog("Placeholders sucessfully saved.");
-					server.requireSignIn = true;
 				}).catch(function (error) {
 					S.makeDialog("The placeholders couldn't be saved.");
 					console.error("The was a problem saving the placeholders.");
 					console.error(error);
-					server.requireSignIn = true;
 				});
 				fillPlaceholders();
 			});
@@ -137,8 +141,11 @@
 			
 			S.listen("makeCopy", "click", function () {
 				let text = "var people = [{}];";
-				S.forEach(S.getId("personList").getElementsByTagName("td"), function (info, index) {
-					text += "<br>people[" + (index + 1) + "] = { " + info.textContent.trim().replace(/"(\w+)":/g, "$1:") + " };";
+				S.forEach(S.getId("personList").getElementsByTagName("tr"), function (row, index) {
+					if (index > 0) {
+						let sinfo = row.getElementsByTagName("td")[0];
+						text += "<br>people[" + index + "] = { " + sinfo.textContent.trim().replace(/"(\w+)":/g, "$1:") + " };";
+					}
 				});
 				text += "<br>";
 				S.getId("listToCopy").innerHTML = text;
@@ -205,9 +212,9 @@
 			}
 
 			#listToCopy {
-				min-width: 4em;
+				min-width: 10em;
 				max-width: 100%;
-				min-height: 2em;
+				min-height: 5em;
 				padding: .5em;
 				text-align: left;
 				font-family: monospace;
