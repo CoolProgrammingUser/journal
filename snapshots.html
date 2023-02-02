@@ -15,6 +15,8 @@
 		<script src="loadpeople.js"></script>
 		<script src="behavior.js"></script>
 		<script>
+			Standards.storage.local.defaultLocation = "/journal/snapshots/";
+
 			/*
 			people[1]  = { name: "Emily", firstName: "Emily", lastName: "Hammer", extraNames: ["Hobo Hannah"], pronunciation: "Emuhlee hAmrr", gender: "female" };
 			people[2]  = { name: "Trudy", firstName: "Trudy", lastName: "Burnham", gender: "female" };
@@ -86,7 +88,10 @@
 		<h1 class="main-title">
 			Planned Entries
 		</h1>
-		<main>
+		<main class="bookmark-padding">
+			<div id="bookmarksBar">
+				<div id="viewBookmarks"></div>
+			</div>
 			<section>
 				This is where I keep my entries that I plan on adding but don't yet have a place for on the main website. I've also built in the ability to display only certain entries, so this is useful for targeting certain things to show people. In case this is the first you'll hear about it, words with a dotted underline or encased in curly braces ({}) can be clicked on to show additional content. People's names can also be clicked on to make a pop-up appear with slightly more information, but I'd rather you didn't follow the link on the pop-up at this time.
 			</section>

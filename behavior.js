@@ -1,5 +1,11 @@
 var S = Standards.general;
-// doesn't require Standards.storage
+// doesn't require Standards.storage except for optional bookmarking
+if (Standards.storage) {
+	// sets a slightly more specific default storage location just in case I forget to specify one when I should
+	Standards.storage.session.defaultLocation = "/journal/";
+	Standards.storage.local.defaultLocation = "/journal/";
+	Standards.storage.server.defaultLocation = "/journal/";
+}
 
 if (typeof people == "undefined") {
 	var people = [];
@@ -246,5 +252,132 @@ S.queue.add({
 		/// The HTML of the page doesn't update until the script finishes executing,
 		//- so the HTML modifications for the people references eliminate any listeners
 		//- created before the end of this code block.
+	}
+});
+
+S.onLoad(function () {
+	if (S.getTag("main")[0].className.includes("bookmark-padding")) {  // if the page should have bookmarks
+		let bookmarkNumber = 1;
+		function addBookmark(mark, shouldSave) {
+			if (S.getType(mark) == "Number") {  // if only the location of the bookmark was provided
+				mark = {
+					number: bookmarkNumber,
+					text: "Place " + bookmarkNumber++,
+					location: mark,
+					color: "yellow"
+				};
+			}
+			let bookmark = document.createElement("div");
+			bookmark.className = "bookmark";
+			bookmark.id = "bookmark" + mark.number;
+			bookmark.textContent = mark.text;
+			bookmark.style.top = mark.location + "px";
+			S.getId("bookmarksBar").appendChild(bookmark);
+			if (shouldSave) {
+				let list = Standards.storage.local.recall("bookmarks");
+				list.push(mark);
+				Standards.storage.local.store("bookmarks", list);
+			}
+			S.listen(bookmark, "click", function (e) {
+				e.stopPropagation();  // prevents the bookmarksBar listener from being triggered
+				S.makeDialog("Select an action.", {
+					"Edit bookmark": function () {
+						S.makeDialog('Title<br><input type="text"" value="' + bookmark.textContent + '">', {
+							"Done": function () {
+								let newText = S.getClass("dialog")[0].getElementsByTagName("input")[0].value.trim();
+								if (newText !== "") {
+									bookmark.textContent = newText;
+									let list = Standards.storage.local.recall("bookmarks");
+									mark.text = newText;
+									list.splice(list.findIndex(function (i) { return i.number == mark.number; }), 1, mark);
+									Standards.storage.local.store("bookmarks", list);
+								}
+							}
+						});
+					},
+					"Remove bookmark": function () {
+						S.removeSelf(bookmark);
+						let list = Standards.storage.local.recall("bookmarks");
+						list.splice(list.findIndex(function (i) { return i.number == mark.number; }), 1);
+						Standards.storage.local.store("bookmarks", list);
+					},
+					"Cancel": function () {}
+				});
+			});
+		}
+
+		if (S.getType(Standards.storage.local.recall("bookmarks")) == "Error") {  // if the page hasn't been loaded before (with bookmarking)
+			Standards.storage.local.store("bookmarks", []);
+			/// the default location should be set per page
+		} else {
+			let bookmarks = Standards.storage.local.recall("bookmarks");
+			/*
+			bookmarks = [
+				{
+					number: 1,
+					text: "Bookmark text",
+					location: 1234,
+					color: "yellow"
+				}
+			]
+			*/
+			S.forEach(bookmarks, function (bookmark) {
+				// makes sure the bookmark number is higher than the highest bookmark number
+				// (prevents ID conflicts)
+				if (bookmark.number >= bookmarkNumber) {
+					bookmarkNumber = bookmark.number + 1;
+				}
+				addBookmark(bookmark);
+			});
+		}
+
+		function viewBookmarks() {
+			let bookmarks = Standards.storage.local.recall("bookmarks");
+			if (bookmarks.length > 0) {
+				let list = document.createElement("ul");
+				list.innerHTML = "<li><a target='_self' href='#'>Top of page</a></li>";
+				bookmarks.sort(function (a, b) { return a.location - b.location; });
+				S.forEach(bookmarks, function (bookmark) {
+					let li = document.createElement("li");
+					let a = document.createElement("a");
+					a.href = "#bookmark" + bookmark.number;
+					a.target = "_self";
+					a.textContent = bookmark.text;
+					li.appendChild(a);
+					list.appendChild(li);
+				});
+				S.makeDialog(list);
+				list.addEventListener("click", function () {
+					this.parentElement.parentElement.getElementsByTagName("button")[0].click();  // makes sure the dialog disappears when a link is clicked
+				});
+			} else {
+				S.makeDialog("This page doesn't contain any bookmarks saved to your device. Click the side bar to add some.");
+			}
+		}
+		S.listen("viewBookmarks", "click", function (e) {
+			e.stopPropagation();  // prevents the bookmarksBar listener from being triggered
+			viewBookmarks();
+		});
+		S.listen("bookmarksBar", "click", function (event) {
+			S.makeDialog("Select an action.", {
+				"View bookmarks": viewBookmarks,
+				"Add a bookmark": function () {
+					let bookmarkHeight = window.getComputedStyle(document.documentElement).getPropertyValue("--bookmarks-bar-width");
+					bookmarkHeight = Math.round(Number(bookmarkHeight.match(/\d+/)[0]) * parseFloat(getComputedStyle(document.documentElement).fontSize));
+					addBookmark(event.clientY - S.getId("bookmarksBar").getBoundingClientRect().top - bookmarkHeight / 2, true);
+				},
+				"Help": function () {
+					S.makeDialog(
+						"Clicking on this side bar to the left of the content will give you the option to place a bookmark at the location of your click. " +
+						"Alternatively, selecting the button to view bookmarks will show you a list of your saved bookmarks. " +
+						"If you add a bookmark, you'll be able to quickly find and navigate to that part of the page from the list of bookmarks. " +
+						"However, take note that the bookmark will only be saved to the device you're currently using. " +
+						"Linking bookmarks to an account is planned but not yet implemented. " +
+						"Once you have a bookmark, you can click on it to edit or remove it."
+					);
+				},
+				"Cancel": function () {}
+			});
+		});
 	}
 });

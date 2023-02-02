@@ -1,3 +1,7 @@
+:root {
+	--bookmarks-bar-width: 6rem;
+}
+
 body {
 	background-color: #88aaff;
 	background-image: url("/journal/background.png"), repeating-linear-gradient(#0000ee, white 100vh, #0000ee 200vh);
@@ -34,6 +38,57 @@ body.navigation {
 body.navigation a:hover {
 	font-weight: bold;
 	animation: rainbow 1s linear 0s infinite normal forwards;
+}
+
+main.bookmark-padding {
+	position: relative;
+	padding-left: 13%;
+	padding-left: calc(5% + var(--bookmarks-bar-width));
+}
+.bookmark {
+	display: flex;
+	justify-content: center;  /* Align horizontal */
+	align-items: center;  /* Align vertical */
+	position: absolute;
+	left: 0em;
+	border-width: .05em 0em;
+	border-style: solid;
+	border-color: black;
+	width: var(--bookmarks-bar-width);
+	height: calc(var(--bookmarks-bar-width) * 3 / 4);
+	background: yellow;
+	color: black;
+	cursor: pointer;
+}
+.bookmark::after {
+	content: "";
+	position: absolute;
+	left: 100%;
+	top: 0%;
+	border-width: calc(var(--bookmarks-bar-width) * 3 / 8);
+	border-style: solid;
+	border-color: transparent transparent transparent yellow;
+}
+#bookmarksBar {
+	position: absolute;
+	left: 0em;
+	top: 0em;
+	width: var(--bookmarks-bar-width);
+	height: 100%;
+	background: red;
+	font-size: .9em;
+	cursor: pointer;
+}
+#viewBookmarks {
+	display: flex;
+	justify-content: center;  /* Align horizontal */
+	align-items: center;  /* Align vertical */
+	width: var(--bookmarks-bar-width);
+	height: var(--bookmarks-bar-width);
+	background-color: indianred;
+}
+#viewBookmarks::before {
+	content: "View bookmarks";
 }
 
 a.discreet {
@@ -143,5 +198,11 @@ aside.afterthought::after {
 	}
 	.elaborate.obvious {
 		color: yellow;
+	}
+}
+
+@media (max-width: 1000px) {
+	#bookmarksBar, #bookmarksBar div {
+		font-size: 1.8rem;
 	}
 }
