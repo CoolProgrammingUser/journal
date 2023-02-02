@@ -203,6 +203,6 @@ aside.afterthought::after {
 
 @media (max-width: 1000px) {
 	#bookmarksBar, #bookmarksBar div {
-		font-size: 1.8rem;
+		font-size: 1.5rem;
 	}
 }
