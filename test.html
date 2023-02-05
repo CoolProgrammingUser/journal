@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="icon" href="favicon.ico">
+		<title>
+			Journal
+		</title>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="formatting.css">
+		<style>
+			#logDisplay {
+				text-align: left;
+				text-align-last: left;
+				white-space: pre;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 class="main-title">
+			Test 1
+		</h1>
+		<main>
+			<section id="result">Original text</section>
+		</main>
+		<script>
+			window.addEventListener("error", function (error) {
+				let log = document.createElement("div");
+				log.id = "logDisplay";
+				log.textContent = error.filename + ":" + error.lineno + ":" + error.colno + "\n";
+				if (error.error === null) {
+					log.textContent += "null";
+				} else {
+					log.textContent += error.error.stack.replace(/    /g, "\t\t");
+				}
+				console.log(error);
+				document.getElementsByTagName("main")[0].appendChild(log);
+			});
+		</script>
+		<script src="preformatting.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished preformatting";
+		</script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished loading Firebase";
+		</script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished initializing Firebase";
+		</script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished loading general behavior";
+		</script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished loading storage behavior";
+		</script>
+		<script src="loadpeople.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished loading people";
+		</script>
+		<script src="behavior.js"></script>
+		<script>
+			document.getElementById("result").textContent = "Finished everything";
+		</script>
+	</body>
+</html>
