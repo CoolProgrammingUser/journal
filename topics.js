@@ -4,3 +4,4 @@ topics[2] = { title: "Recipes", summary: "How to make certain delectable foods",
 topics[3] = { title: "Quietness", summary: "When I'm reserved and not particularly out-going", keywords: ["quiet", "shy", "reserved", "introverted", "awkward", "timid"] };
 topics[4] = { title: "Honesty", summary: "How I don't lie to anyone", keywords: ["honest", "truth", "lie", "lying"] };
 topics[5] = { title: "Sneakiness", summary: "When I hide my master plan behind a convincing fascade of innocence", keywords: ["sneaky", "mischevious", "evil", "plotting", "scheming", "guilty", "innocent", "orchestrating", "masterminding", "secret"] };
+topics[6] = { title: "Homework", summary: "The misery that is doing school work outside of class", keywords: ["school", "home", "work", "class", "highschool", "college", "awful", "miserable", "consuming", "time-consuming", "forever", "slow"] };
