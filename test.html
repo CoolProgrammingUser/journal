@@ -8,7 +8,11 @@
 		<script>
 			var logText = "";
 			console.log = function (text) {
-				logText += text + "\n";
+				if (text instanceof String) {
+					logText += text + "\n";
+				} else {
+					logText += JSON.stringify(text) + "\n";
+				}
 			};
 		</script>
 		<script src="preformatting.js"></script>
@@ -42,11 +46,6 @@
 				document.getElementsByTagName("main")[0].appendChild(log);
 				logText = "";
 			});
-			S.onLoad(function () {
-				let span = document.createElement("span");
-				span.textContent = "Text added";
-				S.getId("result1").appendChild(span);
-			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
@@ -61,7 +60,7 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 4
+			Test 5
 		</h1>
 		<main>
 			<section>p024</section>

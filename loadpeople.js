@@ -11,7 +11,6 @@ var placeholders = [];
 	let incrementProgress = function () {
 		listsToLoad--;
 		if (listsToLoad == 0) {
-			console.log("Recalled people and placeholders");
 			window.dispatchEvent(new Event("loadedAllPeople"));
 		}
 	};
@@ -20,6 +19,7 @@ var placeholders = [];
 })();
 
 function replacePersonReference(location, options) {
+	console.log("Replacing reference");
 	let number;
 	let person;
 	switch (S.getType(location)) {
@@ -59,7 +59,7 @@ function replacePersonReference(location, options) {
 	}
 
 	if (location instanceof Element) {  // if modifying an HTML element
-
+		console.log("Modifying an element");
 		let link = document.createElement("a");
 		if (window.location.protocol == "file:") {
 			link.href = "file:///C:/Users/rtben/Documents/GitHub/journal/search.html?p=" + number;
@@ -139,12 +139,14 @@ function replacePersonReference(location, options) {
 
 		location.textContent = link.textContent;
 		location.title = link.title;
+		console.log(location.outerHTML);
 		link.textContent = person.name;
 		link.title = "";
 		S.listen(location, "click", function () {  // makes a dialog about the person on click
 			S.makeDialog(link.outerHTML + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
 		});
 	} else {  // if returning a modified string
+		console.log("Returning string");
 		S.forEach(location.match(/p\d+(?:\.\w+)?/g), function (match) {
 			if (match[1] == "0") {  // if wanting to replace a person placeholder (p0#)
 				person = placeholders[Number(match.match(/p0(\d+)/)[1])];
@@ -168,7 +170,6 @@ function replacePersonReference(location, options) {
 }
 
 function identifyPeople(placeForPeople, options) {
-	console.log("Starting to identify people");
 	// makes sure there's a place
 	switch (S.getType(placeForPeople)) {
 		case "undefined":
@@ -221,22 +222,23 @@ function identifyPeople(placeForPeople, options) {
 	}
 
 	function replacePlaceholders() {
+		console.log("Replacing placeholders");
 		// makes all of the placeholder references pseudolinks
 		S.forEach(placeholders.slice(1), function (person, index) {
+			console.log(index);
 			S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
+				console.log(occurrence);
 				replacePersonReference(occurrence);
 			});
 		});
 	}
 
 	if (options.loadPeople) {
-		console.log("Waiting for people to load");
 		let originalServerStorageLocation = Standards.storage.server.defaultLocation;
 		server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
 
 		// loads the people
 		server.recall("people", null, { requireSignIn: false }).then(function (list) {
-			console.log("Recalled regular people");
 			people = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the people variable
 				replacePeople();
@@ -249,8 +251,8 @@ function identifyPeople(placeForPeople, options) {
 		});
 
 		server.recall("placeholders", null, { requireSignIn: false }).then(function (list) {
-			console.log("Recalled placeholders");
 			placeholders = list;
+			console.log(placeholders);
 			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 				replacePlaceholders();
 			}
@@ -271,7 +273,6 @@ function identifyPeople(placeForPeople, options) {
 }
 
 addEventListener("loadedAllPeople", function () {
-	console.log("Loaded all people");
 	S.forEach(S.getTag("aside"), function (aside) {
 		if (aside.dataset.hasOwnProperty("heading") && aside.dataset.heading.search(/p\d+/) > -1) {
 			aside.dataset.heading = replacePersonReference(aside.dataset.heading);

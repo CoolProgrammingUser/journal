@@ -30,7 +30,6 @@ function reformatPersonNumbers(location) {
 	});
 	// replaces the location's HTML
 	location.innerHTML = HTML;
-	console.log("Finished preformatting");
 	return location;
 }
 
