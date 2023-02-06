@@ -21,17 +21,23 @@ var placeholders = [];
 function replacePersonReference(location, options) {
 	let number;
 	let person;
+	console.log(location.outerHTML);
+	console.log(S.getType(location));
+	console.log(location instanceof Element);
+	console.log(options);
 	switch (S.getType(location)) {
 		case "undefined":
 			console.error("No location to replace was specified.");
 			return;
 		case "HTMLElement":
 			number = location.className.match(/p(\d+)/);
+			console.log(number);
 			if (!number) {
 				console.error("The person number couldn't be found.");
 				return;
 			}
 			number = number[1];
+			console.log(number);
 			if (number == "0") {
 				console.warn("An attempt was made to replace an unidentified person.");
 				return;
@@ -40,7 +46,7 @@ function replacePersonReference(location, options) {
 			} else {
 				person = people[Number(number)];
 			}
-
+			console.log(person);
 			if (options === undefined) {
 				options = {};
 			}
@@ -56,12 +62,8 @@ function replacePersonReference(location, options) {
 			console.error("The provided location was an incorrect type.");
 			return;
 	}
-	console.log(location);
-	console.log(location.outerHTML);
-	console.log(S.getType(location));
-	console.log(location instanceof Element);
-	console.log(Element);
-	if (S.getType(location) == "HTMLElement") {  // if modifying an HTML element
+
+	if (location instanceof Element) {  // if modifying an HTML element
 
 		let link = document.createElement("a");
 		if (window.location.protocol == "file:") {

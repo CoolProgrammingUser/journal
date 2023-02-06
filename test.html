@@ -5,48 +5,6 @@
 		<title>
 			Journal
 		</title>
-		<script>
-			var logText = "";
-			console.log = function (text) {
-				if (true) {
-					logText += text + "\n";
-				} else {
-					logText += JSON.stringify(text) + "\n";
-				}
-			};
-		</script>
-		<script src="preformatting.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
-		<script src="loadpeople.js"></script>
-		<script src="behavior.js"></script>
-		<script>
-			var S = Standards.general;
-			
-			window.addEventListener("error", function (error) {
-				let log = document.createElement("div");
-				log.className = "logDisplay";
-				log.textContent = error.filename + ":" + error.lineno + ":" + error.colno + "\n";
-				if (error.error === null) {
-					log.textContent += "null";
-				} else {
-					log.textContent += error.error.stack.replace(/    /g, "\t\t");
-				}
-				console.error(error);
-				document.getElementsByTagName("main")[0].appendChild(log);
-			});
-
-			S.listen(window, ["load", "loadedPeople", "loadedPlaceholders", "loadedAllPeople"], function () {
-				let log = document.createElement("div");
-				log.className = "logDisplay";
-				log.textContent = logText;
-				document.getElementsByTagName("main")[0].appendChild(log);
-				logText = "";
-			});
-		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<style>
@@ -60,11 +18,37 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 6
+			Test 7
 		</h1>
 		<main>
 			<section>p024</section>
 			<section id="result1"></section>
 		</main>
+		<script>
+			var Standards = {
+				general: {
+					options: { console: "recorded" }
+				}
+			};
+		</script>
+		<script>
+			window.addEventListener("console written", function () {
+				let log = document.createElement("div");
+				log.className = "logDisplay";
+				console.messages.forEach(function (message) {
+					log.textContent += message + "\n";
+				});
+				console.messages = [];
+				document.getElementsByTagName("main")[0].appendChild(log);
+			});
+		</script>
+		<script src="preformatting.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script src="loadpeople.js"></script>
+		<script src="behavior.js"></script>
 	</body>
 </html>
