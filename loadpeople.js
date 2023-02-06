@@ -19,7 +19,6 @@ var placeholders = [];
 })();
 
 function replacePersonReference(location, options) {
-	console.log("Replacing reference");
 	let number;
 	let person;
 	switch (S.getType(location)) {
@@ -57,9 +56,13 @@ function replacePersonReference(location, options) {
 			console.error("The provided location was an incorrect type.");
 			return;
 	}
+	console.log(location);
+	console.log(location.outerHTML);
+	console.log(S.getType(location));
+	console.log(location instanceof Element);
+	console.log(Element);
+	if (S.getType(location) == "HTMLElement") {  // if modifying an HTML element
 
-	if (location instanceof Element) {  // if modifying an HTML element
-		console.log("Modifying an element");
 		let link = document.createElement("a");
 		if (window.location.protocol == "file:") {
 			link.href = "file:///C:/Users/rtben/Documents/GitHub/journal/search.html?p=" + number;
@@ -139,14 +142,12 @@ function replacePersonReference(location, options) {
 
 		location.textContent = link.textContent;
 		location.title = link.title;
-		console.log(location.outerHTML);
 		link.textContent = person.name;
 		link.title = "";
 		S.listen(location, "click", function () {  // makes a dialog about the person on click
 			S.makeDialog(link.outerHTML + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
 		});
 	} else {  // if returning a modified string
-		console.log("Returning string");
 		S.forEach(location.match(/p\d+(?:\.\w+)?/g), function (match) {
 			if (match[1] == "0") {  // if wanting to replace a person placeholder (p0#)
 				person = placeholders[Number(match.match(/p0(\d+)/)[1])];
@@ -222,12 +223,9 @@ function identifyPeople(placeForPeople, options) {
 	}
 
 	function replacePlaceholders() {
-		console.log("Replacing placeholders");
 		// makes all of the placeholder references pseudolinks
 		S.forEach(placeholders.slice(1), function (person, index) {
-			console.log(index);
 			S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
-				console.log(occurrence);
 				replacePersonReference(occurrence);
 			});
 		});
@@ -252,7 +250,6 @@ function identifyPeople(placeForPeople, options) {
 
 		server.recall("placeholders", null, { requireSignIn: false }).then(function (list) {
 			placeholders = list;
-			console.log(placeholders);
 			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 				replacePlaceholders();
 			}
