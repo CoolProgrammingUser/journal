@@ -5,6 +5,50 @@
 		<title>
 			Journal
 		</title>
+		<script src="preformatting.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script src="loadpeople.js"></script>
+		<script src="behavior.js"></script>
+		<script>
+			var S = Standards.general;
+			
+			window.addEventListener("error", function (error) {
+				let log = document.createElement("div");
+				log.id = "logDisplay";
+				log.textContent = error.filename + ":" + error.lineno + ":" + error.colno + "\n";
+				if (error.error === null) {
+					log.textContent += "null";
+				} else {
+					log.textContent += error.error.stack.replace(/    /g, "\t\t");
+				}
+				console.error(error);
+				document.getElementsByTagName("main")[0].appendChild(log);
+			});
+			
+			window.addEventListener("load", function () {
+				document.getElementById("result1").textContent = "This was replaced.";
+				S.getId("result2").textContent = "This was replaced.";
+			});
+			S.queue.add({
+				runOrder: "first",
+				function: function () {
+					document.getElementById("result3").textContent = "This was replaced.";
+				}
+			});
+			S.onLoad(function () {
+				document.getElementById("result4").textContent = "This was replaced.";
+			});
+			S.listen(window, "load", function () {
+				document.getElementById("result5").textContent = "This was replaced.";
+			});
+			window.addEventListener("newEvent", function () {
+				document.getElementById("result6").textContent = "This was replaced.";
+			});
+		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<style>
@@ -17,54 +61,19 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 2
+			Test 3
 		</h1>
 		<main>
 			<section>p024</section>
-			<section id="result">Original text</section>
+			<section id="result1">Original text</section>
+			<section id="result2">Original text</section>
+			<section id="result3">Original text</section>
+			<section id="result4">Original text</section>
+			<section id="result5">Original text</section>
+			<section id="result6">Original text</section>
 		</main>
 		<script>
-			window.addEventListener("error", function (error) {
-				let log = document.createElement("div");
-				log.id = "logDisplay";
-				log.textContent = error.filename + ":" + error.lineno + ":" + error.colno + "\n";
-				if (error.error === null) {
-					log.textContent += "null";
-				} else {
-					log.textContent += error.error.stack.replace(/    /g, "\t\t");
-				}
-				console.log(error);
-				document.getElementsByTagName("main")[0].appendChild(log);
-			});
-		</script>
-		<script src="preformatting.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished preformatting";
-		</script>
-		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished loading Firebase";
-		</script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished initializing Firebase";
-		</script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished loading general behavior";
-		</script>
-		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished loading storage behavior";
-		</script>
-		<script src="loadpeople.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished loading people";
-		</script>
-		<script src="behavior.js"></script>
-		<script>
-			document.getElementById("result").textContent = "Finished everything";
+			window.dispatchEvent(new Event("newEvent"));
 		</script>
 	</body>
 </html>
