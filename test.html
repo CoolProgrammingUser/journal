@@ -5,6 +5,12 @@
 		<title>
 			Journal
 		</title>
+		<script>
+			var logText = "";
+			console.log = function (text) {
+				logText += text + "\n";
+			};
+		</script>
 		<script src="preformatting.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
@@ -18,7 +24,7 @@
 			
 			window.addEventListener("error", function (error) {
 				let log = document.createElement("div");
-				log.id = "logDisplay";
+				log.className = "logDisplay";
 				log.textContent = error.filename + ":" + error.lineno + ":" + error.colno + "\n";
 				if (error.error === null) {
 					log.textContent += "null";
@@ -28,31 +34,25 @@
 				console.error(error);
 				document.getElementsByTagName("main")[0].appendChild(log);
 			});
-			
-			window.addEventListener("load", function () {
-				document.getElementById("result1").textContent = "This was replaced.";
-				S.getId("result2").textContent = "This was replaced.";
-			});
-			S.queue.add({
-				runOrder: "first",
-				function: function () {
-					document.getElementById("result3").textContent = "This was replaced.";
-				}
+
+			S.listen(window, ["load", "loadedPeople", "loadedPlaceholders", "loadedAllPeople"], function () {
+				let log = document.createElement("div");
+				log.className = "logDisplay";
+				log.textContent = logText;
+				document.getElementsByTagName("main")[0].appendChild(log);
+				logText = "";
 			});
 			S.onLoad(function () {
-				document.getElementById("result4").textContent = "This was replaced.";
-			});
-			S.listen(window, "load", function () {
-				document.getElementById("result5").textContent = "This was replaced.";
-			});
-			window.addEventListener("newEvent", function () {
-				document.getElementById("result6").textContent = "This was replaced.";
+				let span = document.createElement("span");
+				span.textContent = "Text added";
+				S.getId("result1").appendChild(span);
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<style>
-			#logDisplay {
+			.logDisplay {
+				display: table;
 				text-align: left;
 				text-align-last: left;
 				white-space: pre;
@@ -61,19 +61,11 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 3
+			Test 4
 		</h1>
 		<main>
 			<section>p024</section>
-			<section id="result1">Original text</section>
-			<section id="result2">Original text</section>
-			<section id="result3">Original text</section>
-			<section id="result4">Original text</section>
-			<section id="result5">Original text</section>
-			<section id="result6">Original text</section>
+			<section id="result1"></section>
 		</main>
-		<script>
-			window.dispatchEvent(new Event("newEvent"));
-		</script>
 	</body>
 </html>

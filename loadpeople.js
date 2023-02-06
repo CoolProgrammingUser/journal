@@ -11,6 +11,7 @@ var placeholders = [];
 	let incrementProgress = function () {
 		listsToLoad--;
 		if (listsToLoad == 0) {
+			console.log("Recalled people and placeholders");
 			window.dispatchEvent(new Event("loadedAllPeople"));
 		}
 	};
@@ -167,6 +168,7 @@ function replacePersonReference(location, options) {
 }
 
 function identifyPeople(placeForPeople, options) {
+	console.log("Starting to identify people");
 	// makes sure there's a place
 	switch (S.getType(placeForPeople)) {
 		case "undefined":
@@ -228,11 +230,13 @@ function identifyPeople(placeForPeople, options) {
 	}
 
 	if (options.loadPeople) {
+		console.log("Waiting for people to load");
 		let originalServerStorageLocation = Standards.storage.server.defaultLocation;
 		server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
 
 		// loads the people
 		server.recall("people", null, { requireSignIn: false }).then(function (list) {
+			console.log("Recalled regular people");
 			people = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the people variable
 				replacePeople();
@@ -245,6 +249,7 @@ function identifyPeople(placeForPeople, options) {
 		});
 
 		server.recall("placeholders", null, { requireSignIn: false }).then(function (list) {
+			console.log("Recalled placeholders");
 			placeholders = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 				replacePlaceholders();
@@ -266,6 +271,7 @@ function identifyPeople(placeForPeople, options) {
 }
 
 addEventListener("loadedAllPeople", function () {
+	console.log("Loaded all people");
 	S.forEach(S.getTag("aside"), function (aside) {
 		if (aside.dataset.hasOwnProperty("heading") && aside.dataset.heading.search(/p\d+/) > -1) {
 			aside.dataset.heading = replacePersonReference(aside.dataset.heading);
