@@ -4,7 +4,7 @@
 function reformatPersonNumbers(location) {
 	// replaces p# placeholders with <span> elements
 	let HTML = location.innerHTML;
-	HTML = HTML.replace(/<.+?>|p0?\d+(?:\.\w+(?:\.(?:s|str|string)(?:\.\w+(?:\([^)]*\))?)+)?)?/g, function (person) {
+	HTML = HTML.replace(/<.+?>|p0?\d+(?:\.\w+(?:\([^)]*\))?)*/g, function (person) {
 		if (person[0] == "<" || person.search(/p0[^\d]|p0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
 			return person;
 		} else if (person.indexOf(".") > -1) {  // if a special name should be used

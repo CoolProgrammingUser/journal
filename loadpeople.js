@@ -80,11 +80,20 @@ function replacePersonReference(location, options) {
 			let text;
 			if (location.dataset.use.indexOf("extra") == 0) { // if one of the extra names should be used
 				text = person.extraNames[Number(location.dataset.use.match(/\d+/)[0]) - 1];
-			} else {  // if one of the other designated names should be used
+			} else if (location.dataset.use.indexOf("pronunciation") == 0) {
+				if (location.dataset.use.includes("extraNames")) {
+					text = person.pronunciation.extraNames[Number(location.dataset.use.match(/\d+/)[0]) - 1];
+				} else {
+					text = person.pronunciation[location.dataset.use.match(/\.(\w+)/)[1]];
+				}
+			}  else {  // if one of the other designated names should be used
 				text = person[location.dataset.use.match(/\w+/)[0]];
 			}
-			if (location.dataset.use.search(/\.(?:s|str|string)\./) > -1) {  // if the string should be modified
-				location.dataset.use.match(/\.(?:s|str|string)((?:\.\w+(?:\([^)]*\))?)+)/)[1].slice(1).split(".").forEach(function (mod) {
+			if (location.dataset.use.search(/(?:^|\.)(?:s|str|string)\./) > -1) {  // if the string should be modified
+				if (location.dataset.use.search(/^(?:s|str|string)\./) == 0) {  // if no special name was specified (p#.str.stuff)
+					text = person.name;
+				}
+				location.dataset.use.match(/(?:^|\.)(?:s|str|string)((?:\.\w+(?:\([^)]*\))?)+)/)[1].slice(1).split(".").forEach(function (mod) {
 					switch (mod.match(/^\w+/)[0]) {
 						case "toUpperCase":
 							text = text.toUpperCase();
