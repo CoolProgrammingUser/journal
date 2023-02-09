@@ -18,18 +18,28 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 7
+			Test 8
 		</h1>
 		<main>
 			<section>p024</section>
 			<section id="result1"></section>
 		</main>
 		<script>
+			/*
 			var Standards = {
 				general: {
 					options: { console: "recorded" }
 				}
 			};
+			*/
+			console.messages = [];
+			console.log = function (message) {
+				console.info(new Error().stack);
+				console.messages.push(new Error().stack.match(/at (?!console\.).+\/([^\n)]+)/)[1]);
+				console.messages.push(message);
+				window.dispatchEvent(new Event("console written"));
+			};
+			console.error = console.log;
 		</script>
 		<script>
 			window.addEventListener("console written", function () {
