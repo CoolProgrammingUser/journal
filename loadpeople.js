@@ -4,6 +4,36 @@ var server = Standards.storage.server;
 var people = [];
 var placeholders = [];
 
+console.messages = [];
+console.loggedLog = function (message) {
+	console.log(new Error().stack.match(/at (?!console\.).+\/([^\n)]+)/)[1]);
+	console.log(message);
+	let msg = "Log at " + new Error().stack.match(/at (?!console\.).+\/([^\n)]+)/)[1] + " {\n";
+	if (message instanceof Array) {
+		msg += "\t[\n\t\t" + message.join("\n\t\t") + "\n\t]";
+	} else if (message instanceof Object) {
+		msg += "\t{\n";
+		for (const key in message) {
+			msg += "\t\t";
+			if (message[key] === undefined) {
+				msg += key + ": undefined\n";
+			} else if (message[key] === null) {
+				msg += key + ": null\n";
+			} else if (message[key].toString) {
+				msg += key + ": " + message[key].toString().replace(/\r\n/g, "\n") + "\n";
+			} else {
+				msg += key + ": " + message[key] + "\n";
+			}
+		}
+		msg += "\t}";
+	} else {
+		msg += "\t" + message;
+	}
+	msg += "\n}";
+	console.messages.push(msg);
+	window.dispatchEvent(new Event("console written"));
+};
+
 
 
 (function () {  // makes a separate event fire when all people have been loaded
@@ -21,23 +51,23 @@ var placeholders = [];
 function replacePersonReference(location, options) {
 	let number;
 	let person;
-	console.log(location.outerHTML);
-	console.log(S.getType(location));
-	console.log(location instanceof Element);
-	console.log(options);
+	console.loggedLog(location.outerHTML);
+	console.loggedLog(S.getType(location));
+	console.loggedLog(location instanceof Element);
+	console.loggedLog(options);
 	switch (S.getType(location)) {
 		case "undefined":
 			console.error("No location to replace was specified.");
 			return;
 		case "HTMLElement":
 			number = location.className.match(/p(\d+)/);
-			console.log(number);
+			console.loggedLog(number);
 			if (!number) {
 				console.error("The person number couldn't be found.");
 				return;
 			}
 			number = number[1];
-			console.log(number);
+			console.loggedLog(number);
 			if (number == "0") {
 				console.warn("An attempt was made to replace an unidentified person.");
 				return;
@@ -46,7 +76,7 @@ function replacePersonReference(location, options) {
 			} else {
 				person = people[Number(number)];
 			}
-			console.log(person);
+			console.loggedLog(person);
 			if (options === undefined) {
 				options = {};
 			}
