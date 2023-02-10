@@ -18,11 +18,11 @@
 	</head>
 	<body>
 		<h1 class="main-title">
-			Test 9
+			Test 10
 		</h1>
 		<main>
 			<section>p024</section>
-			<section id="result1"></section>
+			<section id="result1">Original text</section>
 		</main>
 		<script>
 			/*
@@ -32,6 +32,7 @@
 				}
 			};
 			*/
+			document.getElementById("result1").textContent = "Started scripts";
 		</script>
 		<script>
 			window.addEventListener("console written", function () {
@@ -43,14 +44,33 @@
 				console.messages = [];
 				document.getElementsByTagName("main")[0].appendChild(log);
 			});
+			document.getElementById("result1").textContent = "Made listener";
 		</script>
 		<script src="preformatting.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished preformatting";
+		</script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished Firebase";
+		</script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished general";
+		</script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished storage";
+		</script>
 		<script src="loadpeople.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished loadpeople";
+		</script>
 		<script src="behavior.js"></script>
+		<script>
+			document.getElementById("result1").textContent = "Finished everything";
+		</script>
 	</body>
 </html>
