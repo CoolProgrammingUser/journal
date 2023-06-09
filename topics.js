@@ -6,4 +6,4 @@ topics[4] = { title: "Honesty", summary: "How I don't lie to anyone", keywords: 
 topics[5] = { title: "Sneakiness", summary: "When I hide my master plan behind a convincing fascade of innocence", keywords: ["sneaky", "mischevious", "evil", "plotting", "scheming", "guilty", "innocent", "orchestrating", "masterminding", "secret"] };
 topics[6] = { title: "Homework", summary: "The misery that is doing school work outside of class", keywords: ["school", "home", "work", "class", "highschool", "college", "awful", "miserable", "consuming", "time-consuming", "forever", "slow"] };
 topics[7] = { title: "Band", summary: "The fine arts class where primarily wind-based instruments are played", keywords: ["school", "class", "play", "performance", "music", "concert"] };
-topics[8] = { title: "Codes", summary: "The art of concealing written messages", keywords: ["encryption", "hidden", "messages", "symbols", "ciphers", "secret"] };
+topics[8] = { title: "Codes", summary: "The art of concealing written messages", keywords: ["encryption", "decryption", "cryptography", "hidden", "messages", "symbols", "ciphers", "secret"] };
