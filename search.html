@@ -121,7 +121,7 @@
 								S.getId("heading").textContent = person.firstName + (person.middleName ? " " + person.middleName : "") + (person.lastName ? " " + person.lastName : "");
 								addListItem("Common name: " + person.name);
 								if (person.pronunciation) {
-									addListItem("Full name pronunciation: " + person.pronunciation);
+									addListItem("Full name pronunciation: " + person.pronunciation.name + " " + person.pronunciation.lastName);
 								}
 								if (person.maidenName && person.maidenName != person.lastName) {
 									addListItem("Maiden name: " + person.maidenName);
@@ -139,6 +139,9 @@
 									} else {
 										addListItem("Date of birth: " + months[date[0]] + " " + date[1]);
 									}
+								}
+								if (person.tags) {
+									addListItem("Tags: " + person.tags.join(", "));
 								}
 								addListItem("Numerical designation: " + query[1]);
 
@@ -321,7 +324,7 @@
 											name += person[subkey] + " ";
 										});
 										name = name.trim().toLowerCase();
-									} else {
+									} else if (person[key]) {
 										name = person[key].toLowerCase();
 									}
 									personComparison = Math.min(S.compare(name, hint) / name.length * 100, personComparison);
