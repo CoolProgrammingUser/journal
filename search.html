@@ -54,7 +54,13 @@
 				resetPage();
 				S.getId("heading").textContent = (people.length - 1) + " results found:";
 				S.forEach(people.slice(1), function (person, index) {
-					addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + person.firstName + (person.lastName ? " " + person.lastName : "") + "</a>");
+					let name = person.firstName;
+					if (person.maidenName && person.marriedName) {
+						name += " " + person.marriedName + " n&eacute;e " + person.maidenName;
+					} else if (person.lastName) {
+						name += " " + person.lastName;
+					}
+					addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + name + "</a><br>" + person.tags.join(", "));
 				});
 			});
 			S.listen("peopleLister", ["contextmenu", "touchhold"], function () {  // when trying to list people placeholders
@@ -106,22 +112,30 @@
 							/// prevents ordinary people from seeing entries that aren't ready yet
 						}
 
-						let query = window.location.href.slice(window.location.href.indexOf("?") + 1).split("=");
-						if (query[0] == "p") {
+						let query = S.parse_str(window.location.href.slice(window.location.href.indexOf("?") + 1));
+						if (query.hasOwnProperty("p")) {
 							let person;
-							if (query[1][0] !== "0") {  // if it's not a person placeholder
-								person = people[query[1]];
+							if (query.p[0] !== "0") {  // if it's not a person placeholder
+								person = people[query.p];
 							} else {
-								person = placeholders[query[1].slice(1)];
+								person = placeholders[query.p.slice(1)];
 							}
 							if (typeof person === "undefined" || person == {}) {
 								S.getId("heading").textContent = "Error";
 								S.getId("result").innerHTML = "This person doesn't exist.";
 							} else {
 								S.getId("heading").textContent = person.firstName + (person.middleName ? " " + person.middleName : "") + (person.lastName ? " " + person.lastName : "");
-								addListItem("Common name: " + person.name);
+								if (person.name.includes(" ")) {  // if the name has a title (such as "Mrs. Lastname" or "my dad")
+									addListItem("Common name: " + person.firstName);
+								} else {
+									addListItem("Common name: " + person.name);
+								}
 								if (person.pronunciation) {
-									addListItem("Full name pronunciation: " + person.pronunciation.name + " " + person.pronunciation.lastName);
+									if (person.name.includes(" ")) {  // if the name has a title (such as "Mrs. Lastname" or "my dad")
+										addListItem("Full name pronunciation: " + person.pronunciation.firstName + " " + person.pronunciation.lastName);
+									} else {
+										addListItem("Full name pronunciation: " + person.pronunciation.name + " " + person.pronunciation.lastName);
+									}
 								}
 								if (person.maidenName && person.maidenName != person.lastName) {
 									addListItem("Maiden name: " + person.maidenName);
@@ -143,7 +157,7 @@
 								if (person.tags) {
 									addListItem("Tags: " + person.tags.join(", "));
 								}
-								addListItem("Numerical designation: " + query[1]);
+								addListItem("Numerical designation: " + query.p);
 
 								// shows which entries the person appears in
 								let pagesToLoad = pagesToCheck.length;
@@ -156,7 +170,7 @@
 											let entryList = [];
 											// find all of the entries where the person appears
 											S.forEach(journalPages, function (page, pagePath) {
-												S.forEach(page.getElementsByClassName("p" + query[1]), function (occurrence) {
+												S.forEach(page.getElementsByClassName("p" + query.p), function (occurrence) {
 													/// for every time the person's p# shows up on each page of the journal...
 													if (!occurrence.className.includes("noindex")) {  // if the occurrence should be indexed
 														let entry = findEntry(occurrence);
@@ -253,15 +267,15 @@
 									});
 								});
 							}
-						} else if (query[0] == "t") {
-							let topic = topics[query[1]];
+						} else if (query.hasOwnProperty("t")) {
+							let topic = topics[query.t];
 							if (typeof topic === undefined || topic == {}) {
 								S.getId("heading").textContent = "Error";
 								S.getId("result").innerHTML = "This topic doesn't exist.";
 							} else {
 								S.getId("heading").textContent = topic.title;
 								addListItem("Summary:", topic.summary);
-								addListItem("Topic number: " + query[1]);
+								addListItem("Topic number: " + query.t);
 
 								// shows which entries the topic appears in
 								let pagesToLoad = pagesToCheck.length;
@@ -274,7 +288,7 @@
 											let entryList = [];
 											// find all of the entries where the topic appears
 											S.forEach(journalPages, function (page, pagePath) {
-												S.forEach(page.getElementsByClassName("t" + query[1]), function (occurrence) {
+												S.forEach(page.getElementsByClassName("t" + query.t), function (occurrence) {
 													let entry = findEntry(occurrence);
 													if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {
 														let info = {};
@@ -311,8 +325,8 @@
 
 							//// add snippets of text where the topic is found
 							//// use text fragment linking to link to the location?
-						} else if (query[0] == "hint") {
-							let hint = decodeURIComponent(query[1]).toLowerCase();
+						} else if (query.hasOwnProperty("hint")) {
+							let hint = query.hint.toLowerCase();
 							let results = {};
 							// checks for matches with people
 							S.forEach(people.slice(1), function (person, index) {

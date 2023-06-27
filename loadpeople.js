@@ -93,13 +93,19 @@ function replacePersonReference(location, options) {
 			return;
 	}
 
-	if (location instanceof Element) {  // if modifying an HTML element
+	if (location instanceof Element) {  // if modifying an HTML element (the primary use case)
 
 		let link = document.createElement("a");
 		if (window.location.protocol == "file:") {
 			link.href = "file:///C:/Users/rtben/Documents/GitHub/journal/search.html?p=" + number;
 		} else {
 			link.href = "/journal/search?p=" + number;  // "/journal/" is included to make sure the link navigates correctly no matter where it is
+		}
+		let entryDate = location.closest(".entry");
+		if (entryDate) {  // if the name appears within an entry
+			// allows changing search information displayed depending on where the name appears
+			entryDate = entryDate.dataset.date;
+			link.href += "&d=" + entryDate;
 		}
 		//// link.target = "_blank";  // This might not be necessary.
 		link.title = person.firstName + (person.lastName ? " " + person.lastName : "");  // adds a last name in the title if availible
@@ -188,7 +194,7 @@ function replacePersonReference(location, options) {
 		S.listen(location, "click", function () {  // makes a dialog about the person on click
 			S.makeDialog(link.outerHTML + " (p" + number + ")<br>" + person.firstName + (person.lastName ? " " + person.lastName : ""));
 		});
-	} else {  // if returning a modified string
+	} else {  // if returning a modified string (such as for the heading of an aside)
 		S.forEach(location.match(/p\d+(?:\.\w+)?/g), function (match) {
 			if (match[1] == "0") {  // if wanting to replace a person placeholder (p0#)
 				person = placeholders[Number(match.match(/p0(\d+)/)[1])];
