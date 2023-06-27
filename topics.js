@@ -11,3 +11,4 @@ topics[9] = { title: "Being an outsider", summary: "Not integrating into convent
 topics[10] = { title: "Family conflicts", summary: "When members of my family can't get along with each other", keywords: ["relatives", "arguments", "disputes", "dad", "fights"] };
 topics[11] = { title: "Crazy stories", summary: "Unconventional or ridiculous problems or incidents which give me good stories to tell", keywords: ["problem", "incident", "story", "ridiculous", "unnecessary"] };
 topics[12] = { title: "Awkwardness", summary: "When I'm awkward", keywords: [""] };
+topics[13] = { title: "Quirkiness", summary: "When I do something or feel a way that stands out from the general population", keywords: ["weird", "strange", "unique", "unconventional"] };
