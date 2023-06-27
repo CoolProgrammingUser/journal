@@ -7,3 +7,7 @@ topics[5] = { title: "Sneakiness", summary: "When I hide my master plan behind a
 topics[6] = { title: "Homework", summary: "The misery that is doing school work outside of class", keywords: ["school", "home", "work", "class", "highschool", "college", "awful", "miserable", "consuming", "time-consuming", "forever", "slow"] };
 topics[7] = { title: "Band", summary: "The fine arts class where primarily wind-based instruments are played", keywords: ["school", "class", "play", "performance", "music", "concert"] };
 topics[8] = { title: "Codes", summary: "The art of concealing written messages", keywords: ["encryption", "decryption", "cryptography", "hidden", "messages", "symbols", "ciphers", "secret"] };
+topics[9] = { title: "Being an outsider", summary: "Not integrating into conventional social groups", keywords: ["strange", "weird", "unconventional", "unique", "outsider", "observer"] };
+topics[10] = { title: "Family conflicts", summary: "When members of my family can't get along with each other", keywords: ["relatives", "arguments", "disputes", "dad", "fights"] };
+topics[11] = { title: "Crazy stories", summary: "Unconventional or ridiculous problems or incidents which give me good stories to tell", keywords: ["problem", "incident", "story", "ridiculous", "unnecessary"] };
+topics[12] = { title: "Awkwardness", summary: "When I'm awkward", keywords: [""] };
