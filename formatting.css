@@ -154,25 +154,28 @@ span {
 	border-style: solid;
 }
 
-.afterthought {
+.afterthought, .reflection {
 	border-width: .15em;
-	border-color: cyan;
+	border-color: #2222cc;
 	border-style: solid;
 	border-radius: .4em;
 }
-section.afterthought, p.afterthought, div.afterthought {
+.reflection{
+	border-color: cyan;
+}
+section.afterthought, section.reflection, p.afterthought, p.reflection, div.afterthought, div.reflection {
 	padding: .5em;
 }
-section.afterthought::after, p.afterthought::after, div.afterthought::after {
+section.afterthought::after, section.reflection::after, p.afterthought::after, p.reflection::after, div.afterthought::after, div.reflection::after {
 	content: " (" attr(data-date) ")";
 }
-div.afterthought section:first-child, div.afterthought p:first-child {
+div.afterthought section:first-child, div.reflection section:first-child, div.afterthought p:first-child, div.reflection p:first-child {
 	margin-top: 0em;
 }
-aside.afterthought {
+aside.afterthought, aside.reflection {
 	border-radius: 0em;
 }
-aside.afterthought::after {
+aside.afterthought::after, aside.reflection::after {
 	content: "(" attr(data-date) ")";
 	display: block;
 	margin-top: 1em;
