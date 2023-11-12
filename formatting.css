@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Comic Neue");
+
 :root {
 	--bookmarks-bar-width: 6rem;
 }
@@ -8,10 +10,13 @@ body {
 	background-attachment: fixed;
 	background-position: center;
 	background-size: cover;
+	font-family: "Comic Neue", serif;
 }
+/*
 body.navigation {
 	font-family: "Comic Sans MS", serif;
 }
+*/
 @keyframes rainbow {
 	0% {
 		color: red;
