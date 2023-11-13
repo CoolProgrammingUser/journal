@@ -171,7 +171,7 @@ span {
 section.afterthought, section.reflection, p.afterthought, p.reflection, div.afterthought, div.reflection {
 	padding: .5em;
 }
-section.afterthought::after, section.reflection::after, p.afterthought::after, p.reflection::after, div.afterthought::after, div.reflection::after {
+section.afterthought:not([data-date="none"])::after, section.reflection:not([data-date="none"])::after, p.afterthought:not([data-date="none"])::after, p.reflection:not([data-date="none"])::after, div.afterthought:not([data-date="none"])::after, div.reflection:not([data-date="none"])::after {
 	content: " (" attr(data-date) ")";
 }
 div.afterthought section:first-child, div.reflection section:first-child, div.afterthought p:first-child, div.reflection p:first-child {
@@ -180,7 +180,7 @@ div.afterthought section:first-child, div.reflection section:first-child, div.af
 aside.afterthought, aside.reflection {
 	border-radius: 0em;
 }
-aside.afterthought::after, aside.reflection::after {
+aside.afterthought:not([data-date="none"])::after, aside.reflection:not([data-date="none"])::after {
 	content: "(" attr(data-date) ")";
 	display: block;
 	margin-top: 1em;
