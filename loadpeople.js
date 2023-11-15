@@ -51,23 +51,25 @@ console.loggedLog = function (message) {
 function replacePersonReference(location, options) {
 	let number;
 	let person;
+	/*
 	console.loggedLog(location.outerHTML);
 	console.loggedLog(S.getType(location));
 	console.loggedLog(location instanceof Element);
 	console.loggedLog(options);
+	*/
 	switch (S.getType(location)) {
 		case "undefined":
 			console.error("No location to replace was specified.");
 			return;
 		case "HTMLElement":
 			number = location.className.match(/p(\d+)/);
-			console.loggedLog(number);
+			//// console.loggedLog(number);
 			if (!number) {
 				console.error("The person number couldn't be found.");
 				return;
 			}
 			number = number[1];
-			console.loggedLog(number);
+			//// console.loggedLog(number);
 			if (number == "0") {
 				console.warn("An attempt was made to replace an unidentified person.");
 				return;
@@ -76,7 +78,7 @@ function replacePersonReference(location, options) {
 			} else {
 				person = people[Number(number)];
 			}
-			console.loggedLog(person);
+			//// console.loggedLog(person);
 			if (options === undefined) {
 				options = {};
 			}
