@@ -54,13 +54,19 @@
 				resetPage();
 				S.getId("heading").textContent = (people.length - 1) + " results found:";
 				S.forEach(people.slice(1), function (person, index) {
-					let name = person.firstName;
+					let name = person.firstName ? person.firstName : person.name;
 					if (person.maidenName && person.marriedName) {
 						name += " " + person.marriedName + " n&eacute;e " + person.maidenName;
 					} else if (person.lastName) {
 						name += " " + person.lastName;
 					}
-					addListItem("p" + (index+1), '<a href="?p=' + (index + 1) + '">' + name + "</a><br>" + person.tags.join(", "));
+					if (person.tags) {
+						addListItem("p" + (index + 1), '<a href="?p=' + (index + 1) + '">' + name + "</a><br>" + person.tags.join(", "));
+					} else if (person.notes) {
+						addListItem("p" + (index + 1), '<a href="?p=' + (index + 1) + '">' + name + "</a><br>" + person.notes.join(", "));
+					} else {
+						addListItem("p" + (index + 1), '<a href="?p=' + (index + 1) + '">' + name + "</a>");
+					}
 				});
 			});
 			S.listen("peopleLister", ["contextmenu", "touchhold"], function () {  // when trying to list people placeholders

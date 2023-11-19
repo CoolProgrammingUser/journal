@@ -13,3 +13,4 @@ topics[11] = { title: "Crazy stories", summary: "Unconventional or ridiculous pr
 topics[12] = { title: "Awkwardness", summary: "When I'm awkward", keywords: [""] };
 topics[13] = { title: "Quirkiness", summary: "When I do something or feel a way that stands out from the general population", keywords: ["weird", "strange", "unique", "unconventional"] };
 topics[14] = { title: "Lonliness", summary: "Wishing I had more people to talk to", keywords: ["lonely", "alone", "isolated"] };
+topics[15] = { title: "Ladies' man?", summary: "Wondering whether I'm biased towards girls.", keywords: ["girls", "bias", "preference", "attraction"] };
