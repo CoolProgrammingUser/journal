@@ -304,7 +304,11 @@
 														if (info.url.includes("snapshots")) {
 															info.url += "?show=" + info.date;
 														}
-														info.snippet = occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/) + " ...";
+														info.snippet = (occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/) + " ...").trim();
+														let entryDate = info.snippet.match(/^\w+day, \w+ \d+, \d\d\d\d\s+/);
+														if (entryDate) {  // if the date of the entry was included
+															info.snippet = info.snippet.slice(entryDate[0].length);  // remove the date
+														}
 														info.HTML = entry;
 														entryList.push(info);
 													}
