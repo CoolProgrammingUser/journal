@@ -97,15 +97,15 @@ main.bookmark-padding {
 }
 
 img {
-	max-width: 40%;
+	max-width: 50%;
 }
 img.display-right {
 	float: right;
-	margin: 1em;
+	margin: .75em;
 }
 img.display-left {
 	float: left;
-	margin: 1em;
+	margin: .75em;
 }
 
 a.discreet {
