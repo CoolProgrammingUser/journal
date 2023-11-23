@@ -96,6 +96,18 @@ main.bookmark-padding {
 	content: "View bookmarks";
 }
 
+img {
+	max-width: 40%;
+}
+img.display-right {
+	float: right;
+	margin: 1em;
+}
+img.display-left {
+	float: left;
+	margin: 1em;
+}
+
 a.discreet {
 	color: inherit;
 }
