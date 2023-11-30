@@ -99,13 +99,17 @@ main.bookmark-padding {
 img {
 	max-width: 50%;
 }
-img.display-right {
+img.display-right, div.display-right {
 	float: right;
 	margin: .75em;
 }
-img.display-left {
+img.display-left, div.display-left {
 	float: left;
 	margin: .75em;
+}
+div > img {
+	margin: .25em;
+	max-width: 100%;
 }
 
 a.discreet {
@@ -185,6 +189,8 @@ section.afterthought, section.reflection, p.afterthought, p.reflection, div.afte
 }
 section.afterthought:not([data-date="none"])::after, section.reflection:not([data-date="none"])::after, p.afterthought:not([data-date="none"])::after, p.reflection:not([data-date="none"])::after, div.afterthought:not([data-date="none"])::after, div.reflection:not([data-date="none"])::after {
 	content: " (" attr(data-date) ")";
+	display: block;
+	margin-top: .5em;
 }
 div.afterthought section:first-child, div.reflection section:first-child, div.afterthought p:first-child, div.reflection p:first-child {
 	margin-top: 0em;

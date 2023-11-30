@@ -16,3 +16,5 @@ topics[14] = { title: "Lonliness", summary: "Wishing I had more people to talk t
 topics[15] = { title: "Rant", summary: "When I have a lot to complain about", keywords: ["complaining", "annoying", "ridiculous", "frustrating", "fired up"] };
 topics[16] = { title: "Ladies' man?", summary: "Wondering whether I'm biased towards girls.", keywords: ["girls", "bias", "preference", "attraction"] };
 topics[17] = { title: "Emotions", summary: "Uncovering and processing my deep feelings towards myself and others", keywords: ["sadness", "love", "affection", "regret", "connection", "separation", "fury", "euphoria"]}
+topics[18] = { title: "Ego", summary: "", keywords: [""] };
+topics[19] = { title: "Ambition", summary: "", keywords: [""] };
