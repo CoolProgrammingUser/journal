@@ -18,4 +18,5 @@ topics[16] = { title: "Ladies' man?", summary: "Wondering whether I'm biased tow
 topics[17] = { title: "Emotions", summary: "Uncovering and processing my deep feelings towards myself and others", keywords: ["sadness", "love", "affection", "regret", "connection", "separation", "fury", "euphoria"]}
 topics[18] = { title: "Ego", summary: "When I have a high opinion of myself or my accomplishments", keywords: ["egotistical"] };
 topics[19] = { title: "Ambition", summary: "My persistent desire to do accomplish extravagent goals", keywords: [""] };
-topics[20] = { title: "Sensitive", summary: "A topic which is sensitive for me to talk about", keywords: ["uncomfortable", "top secret", "delicate", "triggering", "upsetting", "self-conscious", "insecure", "anxious", "worried", "scared"] };
+topics[20] = { title: "Delicate", summary: "A topic which is sensitive for me to talk about", keywords: ["uncomfortable", "top secret", "sensitive", "triggering", "upsetting", "self-conscious", "insecure", "anxious", "worried", "scared"] };
+topics[21] = { title: "Irritation", summary: "When I very much do not like something", keywords: ["angry", "mad", "frustrated", "furious", "fury", "loathing", "upset"] };
