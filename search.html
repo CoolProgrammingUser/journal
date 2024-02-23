@@ -11,6 +11,7 @@
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<!--<script src="file:///C:/Users/rtben/Documents/GitHub/standards/behavior/general.js"></script>-->
 		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
 		<script src="loadpeople.js"></script>
 		<script src="topics.js"></script>
@@ -171,6 +172,7 @@
 								S.forEach(pagesToCheck, function (path) {
 									S.getFile(path, function (content) {
 										journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
+										idParagraphs(journalPages[path]);
 										pagesToLoad--;
 										if (pagesToLoad == 0) {  // if all of the pages have loaded
 											let entryList = [];
@@ -184,7 +186,15 @@
 															let info = {};
 															info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
 															info.date = entry.dataset.date;
-															info.url = pagePath + "#" + encodeURIComponent(info.heading);
+															let infoSection = occurrence;
+															while (infoSection.tagName != "SECTION" && infoSection !== entry) {
+																infoSection = infoSection.parentNode;
+															}
+															if (infoSection === entry || !infoSection.id) {
+																info.url = pagePath + "#" + encodeURIComponent(info.heading);
+															} else {
+																info.url = pagePath + "#" + infoSection.id;
+															}
 															if (info.url.includes("snapshots")) {
 																info.url += "?show=" + info.date;
 															}
@@ -192,7 +202,7 @@
 															let beforeText = "";
 															let beforeNode = occurrence;
 															do {
-																if (beforeNode.previousSibling === null) {  // if the next sibling doesn't exist
+																if (beforeNode.previousSibling === null) {  // if the previous sibling doesn't exist
 																	beforeNode = beforeNode.parentElement;  // move to the parent
 																	beforeText = " " + beforeText;
 																} else {
@@ -289,6 +299,7 @@
 								S.forEach(pagesToCheck, function (path) {
 									S.getFile(path, function (content) {
 										journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
+										idParagraphs(journalPages[path]);
 										pagesToLoad--;
 										if (pagesToLoad == 0) {  // if all of the pages have loaded
 											let entryList = [];
@@ -300,7 +311,15 @@
 														let info = {};
 														info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
 														info.date = entry.dataset.date;
-														info.url = pagePath + "#" + encodeURIComponent(info.heading);
+														let infoSection = occurrence;
+														while (infoSection.tagName != "SECTION" && infoSection !== entry) {
+															infoSection = infoSection.parentNode;
+														}
+														if (infoSection === entry || !infoSection.id) {
+															info.url = pagePath + "#" + encodeURIComponent(info.heading);
+														} else {
+															info.url = pagePath + "#" + infoSection.id;
+														}
 														if (info.url.includes("snapshots")) {
 															info.url += "?show=" + info.date;
 														}

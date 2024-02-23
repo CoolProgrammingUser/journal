@@ -33,6 +33,18 @@ function reformatPersonNumbers(location) {
 	return location;
 }
 
+function idParagraphs(searchZone) {
+	if (!searchZone) {
+		searchZone = document.body;
+	}
+	S.forEach(searchZone.getElementsByClassName("entry"), function (entry) {
+		S.forEach(entry.getElementsByTagName("section"), function (section, index) {
+			section.id = entry.dataset.date + "p" + (index + 1);
+		});
+	});
+}
+
 addEventListener("load", function () {
-    reformatPersonNumbers(document.body);
+	reformatPersonNumbers(document.body);
+	idParagraphs();
 });
