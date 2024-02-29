@@ -39,7 +39,9 @@ function idParagraphs(searchZone) {
 	}
 	S.forEach(searchZone.getElementsByClassName("entry"), function (entry) {
 		S.forEach(entry.getElementsByTagName("section"), function (section, index) {
-			section.id = entry.dataset.date + "p" + (index + 1);
+			if (!section.id) {  // if the paragraph doesn't already have an ID
+				section.id = entry.dataset.date + "p" + (index + 1);
+			}
 		});
 	});
 }

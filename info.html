@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="icon" href="favicon.ico">
+		<title>
+			Journal
+		</title>
+		<base target="_self">
+		<script src="preformatting.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<!--<script src="file:///C:/Users/rtben/Documents/GitHub/standards/behavior/general.js"></script>-->
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script src="loadpeople.js"></script>
+		<script src="topics.js"></script>
+		<script src="behavior.js"></script>
+		<script>
+			var pagesToCheck = ["entries/first.html"];
+
+
+			window.addEventListener("loadedAllPeople", function () {
+				// fills entry information
+				let pagesToLoad = pagesToCheck.length;
+				let journalPages = {};
+				S.forEach(pagesToCheck, function (path) {
+					S.getFile(path, function (content) {
+						journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
+						idParagraphs(journalPages[path]);
+						pagesToLoad--;
+						if (pagesToLoad == 0) {  // if all of the pages have loaded
+							totalWordCount = 0;
+							totalEntryCount = 0;
+							S.forEach(journalPages, function (page, pagePath) {
+								totalWordCount += (page.getElementsByClassName("page-jump-sections")[0].textContent.match(/ +/g)||[]).length;
+								totalEntryCount += page.getElementsByClassName("entry").length;
+								S.forEach(page.getElementsByClassName("entry"), function (entry) {
+
+								});
+							});
+							S.getId("totalWords").textContent = totalWordCount;
+							S.getId("numberOfEntries").textContent = totalEntryCount;
+							S.getId("wordsPerEntry").textContent = Math.round(totalWordCount / totalEntryCount);
+							// adds commas to numbers in the thousands
+							S.forEach(["totalWords", "numberOfEntries", "wordsPerEntry"], function (id) {
+								let number = S.getId(id).textContent;
+								if (number.length > 3) {  // if it's > a 3-digit number
+									for (let index = 3; index < number.length; index += 4) {
+										number = number.slice(0, -index) + "," + number.slice(-index);
+									}
+									S.getId(id).textContent = number;
+								}
+							});
+						}
+					});
+				});
+
+				// fills people information
+				let uniqueTags = ["male", "female"]
+				S.forEach(people, function (person) {
+					if (person.tags) {
+						S.forEach(person.tags, function (tag) {
+							if (!uniqueTags.includes(tag)) {
+								uniqueTags.push(tag);
+							}
+						});
+					}
+				});
+				// alphabetizes the list of filters
+				uniqueTags.sort();
+				// counts the people satisfying the current filter
+				function countPeople() {
+					let checkedBoxes = [];
+					S.forEach(S.getId("filterList").getElementsByTagName("input"), function (checkbox) {
+						if (checkbox.checked) {
+							let id = checkbox.id.replace(/-/g, " ");
+							id = id.slice(0, id.lastIndexOf(" "));
+							checkedBoxes.push(id);
+						}
+					});
+					let personCount = 0;
+					if (S.getName("personFilterType", true).id == "personNeedsOne") {
+						S.forEach(people, function (person) {
+							if (person.tags && person.tags.some(tag => checkedBoxes.includes(tag))) {
+								personCount++;
+							} else if (checkedBoxes.includes("male") && person.gender && person.gender == "male") {
+								personCount++;
+							} else if (checkedBoxes.includes("female") && person.gender && person.gender == "female") {
+								personCount++;
+							}
+						});
+					} else {
+						S.forEach(people, function (person) {
+							if (checkedBoxes.includes("male")) {
+								if (person.gender && person.gender == "male") {
+									let newFilter = checkedBoxes.slice();
+									newFilter.splice(newFilter.indexOf("male"), 1);
+									if (newFilter.length > 0) {
+										if (person.tags && newFilter.every(tag => person.tags.includes(tag))) {
+											personCount++;
+										}
+									} else {
+										personCount++;
+									}
+								}
+							} else if (checkedBoxes.includes("female")) {
+								if (person.gender && person.gender == "female") {
+									let newFilter = checkedBoxes.slice();
+									newFilter.splice(newFilter.indexOf("female"), 1);
+									if (newFilter.length > 0) {
+										if (person.tags && newFilter.every(tag => person.tags.includes(tag))) {
+											personCount++;
+										}
+									} else {
+										personCount++;
+									}
+								}
+							} else {
+								if (checkedBoxes.length > 0) {
+									if (person.tags && checkedBoxes.every(tag => person.tags.includes(tag))) {
+										personCount++;
+									}
+								}
+							}
+						});
+					}
+					S.getId("personCount").textContent = personCount;
+
+				}
+				// adds the filter options to the page
+				S.forEach(uniqueTags, function (tag) {
+					let filterItem = document.createElement("div");
+					let filterBox = document.createElement("input");
+					filterBox.type = "checkbox";
+					filterBox.id = tag.replace(" ", "-") + "-tag";
+					// filterBox.checked = true;
+					let filterLabel = document.createElement("label");
+					filterLabel.htmlFor = filterBox.id;
+					filterLabel.textContent = tag;
+					filterItem.append(filterBox);
+					filterItem.append(filterLabel);
+					S.getId("filterList").append(filterItem);
+					filterBox.addEventListener("change", countPeople);
+				});
+				countPeople();
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="formatting.css">
+		<style>
+			#filterList div {
+				display: block;
+				text-align: left;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="hidden-left-nav">
+			<iframe src="navigation.html"></iframe>
+		</nav>
+		<h1 class="main-title">
+			Info
+		</h1>
+		<main>
+			<section>
+				This displays interesting information about the journal.
+			</section>
+			<h2>
+				Entry information
+			</h2>
+			<table class="organizational">
+				<tr>
+					<th>Total words:</th>
+					<td id="totalWords"></td>
+				</tr>
+				<tr>
+					<th>Number of entries:</th>
+					<td id="numberOfEntries"></td>
+				</tr>
+				<tr>
+					<th>Words per entry:</th>
+					<td id="wordsPerEntry"></td>
+				</tr>
+			</table>
+			<h2>
+				People information
+			</h2>
+			<input type="radio" name="personFilterType" id="personNeedsOne">
+			<label for="personNeedsOne">person needs one requirement</label>
+			<input type="radio" name="personFilterType" id="personNeedsAll" checked>
+			<label for="personNeedsAll">person needs all requirements</label>
+			<br>
+			<div id="filterList"></div>
+			<br>
+			<br>
+			People count: <span id="personCount"></span>
+		</main>
+	</body>
+</html>

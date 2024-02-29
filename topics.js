@@ -20,3 +20,6 @@ topics[18] = { title: "Ego", summary: "When I have a high opinion of myself or m
 topics[19] = { title: "Ambition", summary: "My persistent desire to do accomplish extravagent goals", keywords: [""] };
 topics[20] = { title: "Delicate", summary: "A topic which is sensitive for me to talk about", keywords: ["uncomfortable", "top secret", "sensitive", "triggering", "upsetting", "self-conscious", "insecure", "anxious", "worried", "scared"] };
 topics[21] = { title: "Irritation", summary: "When I very much do not like something", keywords: ["angry", "mad", "frustrated", "furious", "fury", "loathing", "upset"] };
+topics[22] = { title: "Appreciation", summary: "When I'm thankful for something or someone", keywords: ["thankful", "happy", "relieved", "caring", "love", "affection"] };
+topics[23] = { title: "Worries", summary: "Part of the endless list of things I'm concerned about", keywords: ["worry", "anxiety", "anxious", "concerned", "stressed", "scared", "fearful"] };
+topics[24] = { title: "Sadness", summary: "When I feel disappointed or hopeless about a situation", keywords: ["disappointed", "sad", "upset", "let-down", "hopeless", "despairing", "detached", "despondent", "depressing"] };
