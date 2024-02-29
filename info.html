@@ -79,15 +79,15 @@
 							checkedBoxes.push(id);
 						}
 					});
-					let personCount = 0;
+					let personList = [];
 					if (S.getName("personFilterType", true).id == "personNeedsOne") {
 						S.forEach(people, function (person) {
 							if (person.tags && person.tags.some(tag => checkedBoxes.includes(tag))) {
-								personCount++;
+								personList.push(person);
 							} else if (checkedBoxes.includes("male") && person.gender && person.gender == "male") {
-								personCount++;
+								personList.push(person);
 							} else if (checkedBoxes.includes("female") && person.gender && person.gender == "female") {
-								personCount++;
+								personList.push(person);
 							}
 						});
 					} else {
@@ -98,10 +98,10 @@
 									newFilter.splice(newFilter.indexOf("male"), 1);
 									if (newFilter.length > 0) {
 										if (person.tags && newFilter.every(tag => person.tags.includes(tag))) {
-											personCount++;
+											personList.push(person);
 										}
 									} else {
-										personCount++;
+										personList.push(person);
 									}
 								}
 							} else if (checkedBoxes.includes("female")) {
@@ -110,23 +110,28 @@
 									newFilter.splice(newFilter.indexOf("female"), 1);
 									if (newFilter.length > 0) {
 										if (person.tags && newFilter.every(tag => person.tags.includes(tag))) {
-											personCount++;
+											personList.push(person);
 										}
 									} else {
-										personCount++;
+										personList.push(person);
 									}
 								}
 							} else {
 								if (checkedBoxes.length > 0) {
 									if (person.tags && checkedBoxes.every(tag => person.tags.includes(tag))) {
-										personCount++;
+										personList.push(person);
 									}
 								}
 							}
 						});
 					}
-					S.getId("personCount").textContent = personCount;
-
+					S.getId("personCount").textContent = personList.length;
+					let listDisplay = [];
+					S.forEach(personList, function (person) {
+						listDisplay.push(person.firstName + " " + person.lastName);
+					});
+					listDisplay.sort();
+					S.getId("peopleList").value = listDisplay.join("\n");
 				}
 				// adds the filter options to the page
 				S.forEach(uniqueTags, function (tag) {
@@ -160,7 +165,7 @@
 			<iframe src="navigation.html"></iframe>
 		</nav>
 		<h1 class="main-title">
-			Info
+			Cool info
 		</h1>
 		<main>
 			<section>
@@ -186,15 +191,22 @@
 			<h2>
 				People information
 			</h2>
-			<input type="radio" name="personFilterType" id="personNeedsOne">
-			<label for="personNeedsOne">person needs one requirement</label>
-			<input type="radio" name="personFilterType" id="personNeedsAll" checked>
-			<label for="personNeedsAll">person needs all requirements</label>
+			<div>
+				<input type="radio" name="personFilterType" id="personNeedsOne">
+				<label for="personNeedsOne">person needs one requirement</label>
+			</div>
+			<div>
+				<input type="radio" name="personFilterType" id="personNeedsAll" checked>
+				<label for="personNeedsAll">person needs all requirements</label>
+			</div>
 			<br>
 			<div id="filterList"></div>
 			<br>
 			<br>
 			People count: <span id="personCount"></span>
+			<br>
+			<br>
+			<textarea id="peopleList"></textarea>
 		</main>
 	</body>
 </html>
