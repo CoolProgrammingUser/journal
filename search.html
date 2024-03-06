@@ -120,7 +120,8 @@
 						}
 
 						let query = S.parse_str(window.location.href.slice(window.location.href.indexOf("?") + 1));
-						if (query.hasOwnProperty("p")) {
+
+						if (query.hasOwnProperty("p")) {  // if displaying a person
 							let person;
 							if (query.p[0] !== "0") {  // if it's not a person placeholder
 								person = people[query.p];
@@ -283,7 +284,8 @@
 									});
 								});
 							}
-						} else if (query.hasOwnProperty("t")) {
+
+						} else if (query.hasOwnProperty("t")) {  // if displaying a topic
 							let topic = topics[query.t];
 							if (typeof topic === undefined || topic == {}) {
 								S.getId("heading").textContent = "Error";
@@ -354,7 +356,8 @@
 
 							//// add snippets of text where the topic is found
 							//// use text fragment linking to link to the location?
-						} else if (query.hasOwnProperty("hint")) {
+
+						} else if (query.hasOwnProperty("hint")) {  // if searching using keywords
 							let hint = query.hint.toLowerCase();
 							let results = {};
 							// checks for matches with people
@@ -373,8 +376,11 @@
 									personComparison = Math.min(S.compare(name, hint) / name.length * 100, personComparison);
 								});
 								let nameList = [];
+								if (person.tags) {
+									nameList = person.tags;
+								}
 								if (person.extraNames) {
-									nameList = person.extraNames;
+									nameList.concat(person.extraNames);
 								}
 								if (person.maidenName) {
 									nameList.push(person.maidenName);
@@ -418,9 +424,9 @@
 								S.forEach(set, function (result) {
 									numberOfResults++;
 									if (result.type == "person") {
-										addListItem('<a href="?p=' + result.index + '">' + result.item.name + "</a><br>(" + result.item.firstName + " " + result.item.lastName + ")");
+										addListItem('<a class="person-item" href="?p=' + result.index + '">' + result.item.name + "</a><br>(" + result.item.firstName + " " + result.item.lastName + ")");
 									} else if (result.type == "topic") {
-										addListItem('<a href="?t=' + result.index + '">' + result.item.title + "</a><br>(" + result.item.summary + ")");
+										addListItem('<a class="topic-item" href="?t=' + result.index + '">' + result.item.title + "</a><br>(" + result.item.summary + ")");
 									}
 								});
 							});
@@ -448,6 +454,11 @@
 				font-size: 1.25rem;
 				font-weight: bold;
 			}
+			.topic-item::before {
+				content: "(Topic) ";
+				color: var(--generic-color);
+				font-weight: normal;
+			}
 		</style>
 	</head>
 	<body>
@@ -463,7 +474,7 @@
 				Search
 			</button>
 			<section>
-				This allows you to find things scattered thoughout my entries and shows you consolidated information about a person or topic. Searching for something other than a person or topic is currently unsupported.
+				This allows you to find things scattered thoughout my entries and shows you consolidated information about a person or topic. Searching for something other than a person or topic is currently unsupported. Besides searching for a specific person or topic, you can search for tags associated with people such as "friend", "family", "teacher", or "high school", and you can search for qualities associated with topics.
 			</section>
 			<button id="peopleLister" disabled>
 				List people
