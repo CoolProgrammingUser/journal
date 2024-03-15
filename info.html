@@ -32,16 +32,68 @@
 						if (pagesToLoad == 0) {  // if all of the pages have loaded
 							totalWordCount = 0;
 							totalEntryCount = 0;
+							importantList = [];
+							coolList = [];
 							S.forEach(journalPages, function (page, pagePath) {
 								totalWordCount += (page.getElementsByClassName("page-jump-sections")[0].textContent.match(/ +/g)||[]).length;
 								totalEntryCount += page.getElementsByClassName("entry").length;
 								S.forEach(page.getElementsByClassName("entry"), function (entry) {
-
+									// counts the entries of a given importance
+									if (entry.dataset.hasOwnProperty("importance")) {
+										if (importantList.length <= entry.dataset.importance) {
+											while (importantList.length <= entry.dataset.importance) {
+												importantList.push(0);
+											}
+										}
+										importantList[entry.dataset.importance]++;
+									} else if (importantList.length > 0) {
+										importantList[0]++;
+									} else {
+										importantList.push(1);
+									}
+									// finds the maximum coolness of each entry
+									coolStuff = entry.querySelectorAll("[data-coolness]");
+									if (coolStuff.length == 0) {  // if no cool things were found
+										if (!entry.dataset.hasOwnProperty("coolness")) {
+											entry.dataset.coolness = 0;
+										}
+									} else {
+										maxCoolness = 0;
+										S.forEach(coolStuff, function (place) {
+											if (place.dataset.coolness > maxCoolness) {
+												maxCoolness = place.dataset.coolness;
+											}
+										});
+										entry.dataset.coolness = maxCoolness;
+									}
+									// counts the entries of a given coolness
+									if (entry.dataset.hasOwnProperty("coolness")) {
+										if (coolList.length <= entry.dataset.coolness) {
+											while (coolList.length <= entry.dataset.coolness) {
+												coolList.push(0);
+											}
+										}
+										coolList[entry.dataset.coolness]++;
+									} else if (coolList.length > 0) {
+										coolList[0]++;
+									} else {
+										coolList.push(1);
+									}
 								});
 							});
 							S.getId("totalWords").textContent = totalWordCount;
 							S.getId("numberOfEntries").textContent = totalEntryCount;
 							S.getId("wordsPerEntry").textContent = Math.round(totalWordCount / totalEntryCount);
+							S.forEach(importantList, function (number) {
+								let item = document.createElement("li");
+								item.textContent = number;
+								S.getId("importantEntries").appendChild(item);
+							});
+							S.forEach(coolList, function (number) {
+								let item = document.createElement("li");
+								item.textContent = number;
+								S.getId("coolEntries").appendChild(item);
+							});
 							// adds commas to numbers in the thousands
 							S.forEach(["totalWords", "numberOfEntries", "wordsPerEntry"], function (id) {
 								let number = S.getId(id).textContent;
@@ -158,6 +210,17 @@
 				display: block;
 				text-align: left;
 			}
+			#importantEntries, #coolEntries {
+				list-style-type: none;  /* Clear out the old numbers using "#." */
+			}
+			#importantEntries li::before, #coolEntries li::before {
+				content: counter(list-item) ":";  /* Set content to a counter value followed by ":" */
+				display: inline-block;  /* Make sure the numbers obey the alignment */
+				margin-right: 5px;  /* Prevents the content from touching the numbers */
+				width: 25px;  /* Set width for alignment */
+				text-align-last: right;  /* Align text to the right */
+				font-weight: bold;  /* Helps distinguish the label from the content of the list item */
+			}
 		</style>
 	</head>
 	<body>
@@ -186,6 +249,14 @@
 				<tr>
 					<th>Words per entry:</th>
 					<td id="wordsPerEntry"></td>
+				</tr>
+				<tr>
+					<th>Entries with<br>importance of ...</th>
+					<td><ol start="0" id="importantEntries"></ol></td>
+				</tr>
+				<tr>
+					<th>Entries containing<br>coolness of ...</th>
+					<td><ol start="0" id="coolEntries"></ol></td>
 				</tr>
 			</table>
 			<h2>
