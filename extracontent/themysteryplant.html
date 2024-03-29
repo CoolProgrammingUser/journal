@@ -6,7 +6,13 @@
 			Journal
 		</title>
 		<base target="_blank">
+		<script src="../preformatting.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script src="../loadpeople.js"></script>
 		<script src="../behavior.js"></script>
 		<script>
 			people[0] = {};
@@ -29,14 +35,14 @@
 		</h1>
 		<main>
 			<p>
-				This is a series I wrote in fourth grade when we had the chance to free write. To help you know my writing level at this time, I've copied it without correcting any spelling or grammar errors. It's worth noting, though, that a few of the mistakes may have been one-time errors. Also, I improved my writing as the story progressed. The story is told primarily as a dialogue between characters despite the conspicuous lack of quotation marks. Although the very beginning mentions three main characters (which was a surprise to me), I quickly forget about the third person and center the story around two characters and occasionally a mayor. Since I don't really indicate who's talking, it can be difficult to keep track of the speakers, but once you figure it out at a given point, there's a general pattern of switching speakers each sentence. In the original writing, there were pictures scattered throughout the story, but I don't have any of those in here at this time.
+				This is a series I wrote in fourth grade when we had the chance to free write. To help you know my writing level at this time, I've copied it without correcting any spelling or grammar errors. It's worth noting, though, that a few of the mistakes may have been one-time errors. Also, I improved my writing as the story progressed. The story is told primarily as a dialogue between characters despite the conspicuous lack of quotation marks. Although the very beginning mentions three main characters (which was a surprise to me), I quickly forget about the third person and center the story around two characters and occasionally a mayor. The main characters travel to various places in an exceptionally fast helicopter and discover a number of mysterious plants. Since I don't really indicate who's talking, it can be difficult to keep track of the speakers, but once you figure it out at a given point, there's a general pattern of switching speakers each sentence. In the original writing, there were pictures scattered throughout the story, but I don't have any of those in here at this time.
 			</p>
 			<div class="page-jump-sections">
 				<h2>
 					Part 1
 				</h2>
 				<section>
-					SWOOSH! Me, Robbie and my friend, p1 put our 10 year savings into buying a helicopter and we're off to exsplore the north pole!
+					SWOOSH! Me, Robbie and my friend, p10 put our 10 year savings into buying a helicopter and we're off to exsplore the north pole!
 				</section>
 				<h3>
 					100 minutes later
@@ -67,7 +73,7 @@
 					100 minutes later
 				</h3>
 				<section>
-					"I declair this plant as a plant!" Did you hear that! we're going to be faumous! "Now I want you to go back there to tell us about this mistery plant." Ok. lets go p1. Ok Robbie.
+					"I declair this plant as a plant!" Did you hear that! we're going to be faumous! "Now I want you to go back there to tell us about this mistery plant." Ok. lets go p10. Ok Robbie.
 				</section>
 				<h3>
 					2 days later
@@ -75,7 +81,7 @@
 				<section>
 					Here are the facts.
 				</section>
-				<div class="paper">
+				<div class="generic-border">
 					&bull; It eats meat &bull; It uses it's four long tonges that look like seaweed to lewer prey &bull; So streachy mouth it can streach to it's stem &bull; Very sharp needeles that work like evergreen trees leafs a few inches behind mouth &bull; when it gets to cold or it has snow on it, it sucks up water, warms it up in it's mout and spits it out to rain on it's self &bull; when a fish brushes the pretend sea weed it pollinates the plant and seeds start collecting in it's stomac and when it starts to snow it spits them out so they will be incubated and grow &bull; it's roots are just hot enough
 				</div>
 				<section data-revisit="add picture">
@@ -90,7 +96,7 @@
 				<section>
 					Wwwwwwe ggggggot tttttthe rrrrrrest. Wwwwwwarm uuuuuus! O.k. but what dose the other pice say. Iiiiiiit ssssssays tttttthat iiiiiiit's rrrrrrr&ndash; give me that!
 				</section>
-				<div class="paper">
+				<div class="generic-border">
 					that it's roots melt the ice to get the water &bull; it blooms once a month &bull; when it dies it slowly turns into an ice sculpture of it's self and then the ice breaks and [writing blurred by ice]
 				</div>
 				<section>
@@ -109,7 +115,7 @@
 					(Imagine the bottom half of a ripped paper which has runny writing.)
 				</section>
 				<section>
-					Oh! (Sob) (runs to his room) (Robbie dabs sponge on writing and writing is fixed) (p1 pulls out a peice of paper) Wwell what ddo you tthink we sshould do wwith this ppeice of ppaper? I don't know, leave it on his desk? Hey whats that! It's a $<span data-currency="USD">100</span> bill! Don't find many of these flowting around. Hey do you know what this means?! SNOW SHOES!!!!!!!!!! (both say it at the same time and run out the door)
+					Oh! (Sob) (runs to his room) (Robbie dabs sponge on writing and writing is fixed) (p10 pulls out a peice of paper) Wwell what ddo you tthink we sshould do wwith this ppeice of ppaper? I don't know, leave it on his desk? Hey whats that! It's a $<span data-currency="USD">100</span> bill! Don't find many of these flowting around. Hey do you know what this means?! SNOW SHOES!!!!!!!!!! (both say it at the same time and run out the door)
 				</section>
 				<h3>
 					10 minutes later
@@ -119,7 +125,7 @@
 					(Both say it together)
 				</section>
 				<section>
-					Hey. Why did we burst in here? I don't know Robbie, I don't know. Do you guys know how this new paper got here, and I see you fixed the old one. Oh well thats another plant we found at the north pole when we were serching for the paper. Can you write on this carbord and tell me about it? Will it earn us a pair of snow shoes and a free trip to the equator? Yep. Done! (Both say it at the same time.) I'm felling a lot warmer now aren't you p1? Oh ya. Let's Go!
+					Hey. Why did we burst in here? I don't know Robbie, I don't know. Do you guys know how this new paper got here, and I see you fixed the old one. Oh well thats another plant we found at the north pole when we were serching for the paper. Can you write on this carbord and tell me about it? Will it earn us a pair of snow shoes and a free trip to the equator? Yep. Done! (Both say it at the same time.) I'm felling a lot warmer now aren't you p10? Oh ya. Let's Go!
 				</section>
 				<section style="font-size:.8em" data-revisit="font size">
 					please read our next book The Mistery Plant 2!
@@ -137,7 +143,7 @@
 					2 days later
 				</h3>
 				<section>
-					WILL YOU MOVE ALREADY! YOU HAVE TOOK WAY TOO LONG ON YOUR FIRST TURN! TOM'S DOG CAN MOVE FASTER THAN YOU! At least it would eat the peices and it would be more interesting. Wait. We wern't wating the plant! Now we have to wait even longer! p1 i'm done with my turn you can go now. Finally!
+					WILL YOU MOVE ALREADY! YOU HAVE TOOK WAY TOO LONG ON YOUR FIRST TURN! TOM'S DOG CAN MOVE FASTER THAN YOU! At least it would eat the peices and it would be more interesting. Wait. We wern't wating the plant! Now we have to wait even longer! p10 i'm done with my turn you can go now. Finally!
 				</section>
 				<h3>
 					1 month later
@@ -169,7 +175,7 @@
 				<section>
 					Mr. Mayor! Mr. Mayor! We got the facts! O.k. let's hear them! O.k. here are the facts.
 				</section>
-				<div class="paper">
+				<div class="generic-border">
 					&bull; Eats meat it can get its leaves on &bull; Evergreen leaves pop out of its leaves &bull; Invisible until you pour water on it &bull; Has only three roots &bull; Made allmost intirely out of ice &bull; When it gets too hot it melts and dies.
 				</div>
 				<section>

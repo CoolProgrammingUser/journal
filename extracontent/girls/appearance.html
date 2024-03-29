@@ -8,8 +8,79 @@
 		<base target="_blank">
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="../../behavior.js"></script>
+		<script>
+			S.onLoad(function () {
+				S.forEach(S.getClass("boondoggle"), function (b) {
+					if (b.tagName == "DIV") {
+						S.listen(b, "click", function () {
+							S.makeDialog("Please remember that I don't want to upset anyone.", "Yes, yes,<br>I know");
+							b.style.visibility = "visible";
+						}, { listenOnce: true });
+					}
+				});
+
+				S.forEach(S.getTag("section"), function (section) {
+					HTML = '<span class="boondoggle">' + section.innerHTML.replace(/\\\\/g, '</span><span class="boondoggle">') + "</span>";
+					section.innerHTML = HTML;
+					boondoggles = section.getElementsByClassName("boondoggle");
+					if (boondoggles.length > 1) {
+						let showMore = document.createElement("span");
+						showMore.className = "show-more";
+						showMore.textContent = " ";  // adds spacing between the "[Show more]" option and the preceding text (and doesn't underline it)
+						S.insertAfter(showMore, boondoggles[0]);
+						showMore.addEventListener("click", function () {
+							let nextSpan = showMore.nextSibling;
+							if (nextSpan) {
+								nextSpan.style.display = "inline";
+								S.insertAfter(showMore, nextSpan);
+								if (!showMore.nextSibling) {
+									showMore.style.display = "none";
+								}
+							} else {
+								showMore.style.display = "none";
+							}
+						});
+					}
+				});
+			});
+		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../../formatting.css">
+		<style>
+			div.boondoggle {
+				/**/ visibility: hidden; /*/ visibility: visible; /**/
+			}
+			div.boondoggle::before {
+				content: "[Click to display]";
+				display: block;
+				visibility: visible;
+				text-decoration: underline;
+				text-decoration-style: dotted;
+				cursor: pointer;
+			}
+			div.boondoggle:hover::before {
+				text-decoration-style: solid;
+			}
+
+			span.boondoggle {
+				display: none;
+			}
+			span.boondoggle:first-child {
+				display: inline;
+			}
+			span.boondoggle span.show-more {
+				display: inline;
+			}
+			span.show-more::after {
+				content: "[Show more]";
+				text-decoration: underline;
+				text-decoration-style: dotted;
+				cursor: pointer;
+			}
+			span.show-more:hover::after {
+				text-decoration-style: solid;
+			}
+		</style>
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
@@ -20,44 +91,205 @@
 		</h1>
 		<main>
 			<section>
-				If you know me very well at all, you'll know that, under ordinary circumstances, it's extremely difficult to drag out an opinion from me on how good a person looks beyond a very general evaluation because I don't like being that superficial. However, I'd be lying if I told you I didn't have an opinion at all. Some of you may want to know my thoughts on this subject, so I've compiled things here. Since most people have the same opinion on things like body proportions and general facial features but no one can really do anything about those things, I'm going to restrict my discussion to things that can be changed. <!--If I'm to be completely up-front with you, I have to admit that another motivation behind creating this is to inspire the girls closest to me to wear the things that make them look prettiest, since I'd never tell them any other time. -->Largely as a way of aleviating my guilt for being so superficial here, I've created a section at the end for people to offer their opinions on what would make me look best. It may be worth noting that it's unlikely you'll be able to address everything you think is relevant about me after only brief consideration; if there's anything I've learned while taking far too much time to think about this, it's that there's a very large variety of ways to alter appearance, and you aren't likely to be able to come up with all of them at once.
+				This webpage isn't finished, but this introduction acts like it is.
 			</section>
-			<table>
-				<tr>
-					<th>Hideous</th>
-					<th>1</th>
-					<th>2</th>
-					<th>3</th>
-					<th>4</th>
-					<th>5</th>
-					<th>6</th>
-					<th>7</th>
-					<th>8</th>
-					<th>9</th>
-					<th>10</th>
-					<th>Gorgeous</th>
-				</tr>
-				<tr>
-					<th>Approximate<br>percentage<br>in category</th>
-					<td>0%</td>
-					<td>0%</td>
-					<td>1%</td>
-					<td>4%</td>
-					<td>14%</td>
-					<td>28%</td>
-					<td>33%</td>
-					<td>15%</td>
-					<td>4%</td>
-					<td>1%</td>
-					<td rowspan="2"></td>
-				</tr>
-				<tr>
-					<th>My<br>description</th>
-					<td colspan="3">Maybe you could try changing ____</td>
-					<td colspan="4">Fine/alright</td>
-					<td colspan="3">(Pretty) good / nice</td>
-				</tr>
-			</table>
+			<section>
+				If you know me very well at all, you'll know that, under ordinary circumstances, it's extremely difficult to drag out an opinion from me on how good a person looks beyond a very general evaluation because I don't like being that superficial, and I'm all too aware of the pressure placed on women to tend to their appearances, and I don't want to reinforce that pressure. However, I'd be lying if I told you that I didn't have an opinion at all. If the people who read this are very similar at all to the people I get to know in real life, there's plenty of interest in what that opinion is, so now your curiosity can finally be satisfied. <strong>If this is a topic that makes you feel too insecure, though, please don't read it.</strong> I try really hard to not make anything sound derogatory, but nobody's perfect, and even if I was perfect, it surely still wouldn't be possible to avoid upsetting the people most predisposed to taking this personally. As is hopefully apparent with how much time I spend explaining myself, it's not my intent to upset anyone, so if you don't think you can read this without being negatively affected or if you start off thinking it'll be fine but then start changing your mind as you go along, I'd like to ask you to discontinue your perusal. This is only here to allow people to learn something about me that they're curious about and to show people that even someone like me thinks about this kind of stuff; it's not here to make people feel bad. (Actually, that's kind-of the point of the entire journal as well.)
+			</section>
+			<section>
+				You may notice that it's unnecessarily difficult to navigate this page. That's intentional. When reading the stuff I've written myself, even I can feel like I was insensitive or coldly logical because it's not possible to adequately express my hesitation or respond to a person's subtle cues that they're starting to get upset. Based on how many friends I've offended or lost after a conversation in text and how few friends I've come anywhere near that after talking to them in-person, I don't think the difference is purely in my mind. I anticipate this part of the website having a significant potential for inspiring hurt feelings, so in an effort to demonstrate the reluctance you'd encounter if discussing this topic with me in-person and hopefully defuse some of the chance of an unfavorable outcome, I've made it so you have to go through multiple steps to uncover the information (and more for things I'm especially worried about mentioning). I can understand your frustration, but I'd rather frustrate people than offend them.
+			</section>
+			<section>
+				I debated whether I should include reference to aspects that are either impossible to change or hard to change, but since pretty much all of those things can be scientifically proven to apply to all human beings (or at least all human males), I thought I'd address those things by including a section describing what has been shown to be inherently attractive because I don't feel as personally responsible for those opinions, and people may find it interesting to gain insight into what they may not have realized is a hardwired or at least widespread preference. I'm only going to go over the stuff that I find most relevant and interesting, but if you'd like a more in-depth analysis (especially pertaining to what women find attractive in men), Wikipedia has <a href="https://en.wikipedia.org/wiki/Physical_attractiveness">a rather thorough article</a> where you can learn more and find specific references to read if you so desire. Unless other studies reveal that there are likely underlying reasons behind more of my preferences, the rest of the stuff is just my opinion (although my opinion is surely shaped by the society I grew up in).
+			</section>
+			<section>
+				Largely as a way of alleviating my guilt for being so superficial here, I've created a section at the end for people to offer their opinions on what would make me look best. Besides, I wouldn't consider myself to be a particularly fashionable person, so I could probably benefit from the feedback. I'd like to point out, however, that the weather outside in Missouri is cold for a large proportion of the year, so if you act like my girlfriends in the past and only tell me stuff like what short-sleeve shirt would look nice on me, you're restricting the amount of time I'd consider your advice. It also may be worth noting that it's unlikely you'll be able to address everything you think is relevant about me after only brief consideration; if there's anything I've learned while taking far too much time to think about this, it's that there's a very large variety of ways to alter appearance, and you aren't likely to be able to come up with all of them at once. It's also possible that, after getting enough comments, I'll put together a section breaking down my appearance much like I did for girls here. I deserve to be critiqued just as much as girls are.
+			</section>
+			<section>
+				I can't say I'd be all that upset if any girl wanted to make use of the information on this page, but I'd like to be very clear that nothing here indicates my personal feelings towards anyone. I may have opinions on what people look like, but those opinions have little correlation to what I think of their personality or how much I care about them. Even if I don't know you, I don't want you to base your value of yourself on whether or not you measure up to my standards (or anyone else's). You're worth more than a collection of physical attributes.
+			</section>
+			<div class="page-jump-sections">
+				<h2>
+					Demonstration of my cautiousness
+				</h2>
+				<section>
+					The table below helps you understand my overall opinion of the female population around my age and how I would describe it. Since I don't plan on ever updating this table, I should specify that "my age" is roughly centered on early 20's since I made this table while looking around in college, but I didn't notice significant differences from earlier in my life, and I don't think there will be much change until people start getting old and ugly.
+				</section>
+				<section>
+					The first row establishes the common ranking of 1-10 with 1 being the worst and 10 being the best. When ranking things on a set scale, I tend to reserve the highest and lowest values for exceptional cases, so the observable differences between the middle values are likely to be smaller than at the extreme values. However, I do aspire to be relatively linear with my classifications, so the centering effect isn't necessarily as strong as you might otherwise be led to believe. Asking me to provide a numerical value for my opinion of appearance is the most reliable way of obtaining meaninful information about it, but I don't give out that information very easily, and if I believe the wrong answer could have a significantly negative impact or if the asker doesn't ask very politely, I'll outright refuse. (Note that I wouldn't necessarily have to actually have the wrong answer in order for a wrong answer to exist.)
+				</section>
+				<section>
+					The second row establishes roughly what percentage of girls around my age I believe fall into the various rankings. I didn't tally people up, but I looked around to either validate or refine my general impression, and I did do some small scale sampling and room-size estimations. It's worth noting, however, that these percentages only apply to my opinion of strangers: It's almost universal that a person's ranking increases at least a little after I get to know them (which is another reason why I don't like placing much importance on something so fickle).
+				</section>
+				<section>
+					The third row establishes how I would refer to the appearances of the people falling into the above rankings if asked for an opinion (and I provided it). To be clear, this is what I would say if given the opportunity to phrase things in my own way; this is <em>not</em> necessarily the same as what descriptions I might agree to. I started second-guessing myself and debated whether those would actually be the things I said because they're so ridiculously vague, and it's not difficult to imagine things like "fine" and "nice" being used interchangeably in this kind of situation, but when I employ my mind to create a realistic situation with as much real emotion as possible, I find myself almost instinctively saying essentially those exact words about girls with those corresponding true-opinion values. "Fine/alright" might have a larger range than depicted, and close friends might get slightly more detail, but I think you wouldn't be surprised very often if you expected those words to be what came out of my mouth.
+				</section>
+				<table>
+					<tr>
+						<th>Hideous</th>
+						<th>1</th>
+						<th>2</th>
+						<th>3</th>
+						<th>4</th>
+						<th>5</th>
+						<th>6</th>
+						<th>7</th>
+						<th>8</th>
+						<th>9</th>
+						<th>10</th>
+						<th>Gorgeous</th>
+					</tr>
+					<tr>
+						<th>Approximate<br>percentage<br>in category</th>
+						<td>0%</td>
+						<td>0%</td>
+						<td>1%</td>
+						<td>4%</td>
+						<td>14%</td>
+						<td>28%</td>
+						<td>33%</td>
+						<td>15%</td>
+						<td>4%</td>
+						<td>1%</td>
+						<td rowspan="2"></td>
+					</tr>
+					<tr>
+						<th>My<br>description</th>
+						<td colspan="3">Maybe you could try changing ____</td>
+						<td colspan="4">Fine/alright</td>
+						<td colspan="3">[(Pretty) good] / nice</td>
+					</tr>
+				</table>
+				<h2>
+					Universal preferences
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about what everone prefers.
+					</section>
+				</div>
+				<h2>
+					General opinion themes
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about the themes that generally apply across all of my preferences and will explain the different categories I consider.
+					</section>
+				</div>
+				<h2>
+					Hair
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about favorable hair stylings.
+					</section>
+				</div>
+				<h2>
+					Makeup
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about favorable use of makeup.
+					</section>
+					<section>
+						Since I don't know where else to put it, I'll say here that I generally prefer an absence of tatoos, but it's not that big of a deal, and\\ the right tatoo in the right place (I don't really know any more specifically than that) can provide something interesting to look at.
+					</section>
+				</div>
+				<h2>
+					Jewelry
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about favorable jewelry.
+					</section>
+				</div>
+				<h2>
+					Upper body
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about favorable shirts and stuff.
+					</section>
+					<h3>
+						Neckline
+					</h3>
+					<section>
+						
+					</section>
+					<h3>
+						Sleeves
+					</h3>
+					<section>
+						
+					</section>
+					<h3>
+						Back
+					</h3>
+					<section>
+						\\There's not typically too much going on with backs,\\ and even when there is,\\ there's very little that can\\ make me think\\ unfavorably of them.\\ If there was anything I'd say I have some preference against,\\ it would be\\ when there's\\ one central strap that splits just before reaching the neck, as is common in athletic clothing.\\ However,\\ I wouldn't say\\ I'm as opposed\\ to that type of strap\\ when it's present\\ in\\ a\\ sports\\ bra.\\ Also, although it can have a similar characteristics,\\ two straps\\ crossing in the back\\ can be cute.\\ Finally, although there's prbably a way to mess it up if you try to go really crazy with it, ...\\ there's essentially never a time\\ when I think\\ there's\\ too\\ much\\ back\\ showing.\\ I do think it's better, though,\\ if\\ there\\ isn't\\ a\\ horizontal\\ bra strap showing if there's an opening in that vicinity.\\ I don't think\\ the vertical straps\\ are as big of a deal,\\ although I typically think\\ it looks\\ a little nicer\\ without them.
+					</section>
+					<h3>
+						Bottom edge
+					</h3>
+					<section>
+						
+					</section>
+					<h3>
+						Patterning/style
+					</h3>
+					<section>
+						
+					</section>
+				</div>
+				<h2>
+					Lower body
+				</h2>
+				<div class="boondoggle">
+					<section>
+						Since they can be so different, I decided to divide this section up between skirts and pants. Since some people can be picky about what terms are used to describe clothing, I'll say that "skirts" refers to all lower body clothing with one opening on the bottom whereas "pants" refers to all lower body clothing with two openings on the bottom. If that's not your definition but you don't have a better way of referring to those things, you can just get over it.
+					</section>
+					<section>
+						\\I tend to prefer skirts over pants, but\\ if the skirt is tight or fairly stiff, I'd generally prefer pants.\\ Unsurprisingly,\\ I prefer\\ the shorter versions of both,\\ although I'd stop a little short of the absolute shortest legwear.\\ The best length\\ is probably\\ a little above\\ the typical school-appropriateness length (the end of your fingertips with your arms resting at your side).\\ However,\\ if that length\\ reveals\\ a tan line,\\ I'd generally prefer\\ that the length compensate.
+					</section>
+					<h3>
+						Skirts
+					</h3>
+					<section>
+						
+					</section>
+					<h3>
+						Pants
+					</h3>
+					<section>
+						
+					</section>
+				</div>
+				<h2>
+					Feet
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about what little opinion I have regarding feet.
+					</section>
+				</div>
+				<h2>
+					Behavior
+				</h2>
+				<div class="boondoggle">
+					<section>
+						This will talk about some particularly favorable behaviors but will primarily refer to pages talking about what personality traits I prefer. There will also be a distinction made between average girls and girlfriends.
+					</section>
+				</div>
+				<h2>
+					Feedback
+				</h2>
+				<section>
+					This will allow you to provide feeback on my appearance.
+				</section>
+			</div>
 		</main>
+		<footer>
+			Last updated March 28, 2024
+		</footer>
 	</body>
 </html>
