@@ -24,3 +24,4 @@ topics[22] = { title: "Appreciation", summary: "When I'm thankful for something 
 topics[23] = { title: "Worries", summary: "Part of the endless list of things I'm concerned about", keywords: ["worry", "anxiety", "anxious", "concerned", "stressed", "scared", "fearful"] };
 topics[24] = { title: "Sadness", summary: "When I feel disappointed or hopeless about a situation", keywords: ["disappointed", "sad", "upset", "let-down", "hopeless", "despairing", "detached", "despondent", "depressing"] };
 topics[25] = { title: "Discomfort", summary: "Getting stuck in a situation I'd greatly prefer to avoid.", keywords: ["uncomfortable", "embarrassing", "awkward", "mortifying", "self-conscious"] };
+topics[26] = { title: "Accomplishments", summary: "The various accomplishments I've achieved", keywords: ["accomplish", "awards", "success", "victory", "achieve"]}

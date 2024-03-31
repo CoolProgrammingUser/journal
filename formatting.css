@@ -99,11 +99,11 @@ main.bookmark-padding {
 img {
 	max-width: 50%;
 }
-img.display-right, div.display-right {
+img.display-right, div.display-right, video.display-right {
 	float: right;
 	margin: .75em;
 }
-img.display-left, div.display-left {
+img.display-left, div.display-left, video.display-left {
 	float: left;
 	margin: .75em;
 }
