@@ -82,6 +82,7 @@ function assignTone(items) {
 		{ c: ["6"], e: ["5", "6", "7"], n: "Happy" },
 		{ c: ["6", "7"], e: ["1", "2"], n: "Relieved" },
 		{ c: ["6", "7"], e: ["4"], n: "Amused" },
+		{ c: ["7"], e: ["5", "6"], n: "Joyful" },
 		{ c: ["7"], e: ["7"], n: "Ecstatic" },
 		{ d: "a1", n: "Worried" },
 		{ d: "a2", n: "Anxious" },
