@@ -35,13 +35,22 @@
 				if (S.getId("searchText").value.trim()) {
 					let text = S.getId("searchText").value.trim();
 					let query;
-					if (text.search(/p.*\d+/) > -1) {
+					if (text.search(/(?:p|P).*\d+/) > -1) {
 						query = "?p=" + text.match(/\d+/)[0];
-					} else if (text.search(/t.*\d+/) > -1) {
+					} else if (text.search(/(?:t|T).*\d+/) > -1) {
 						query = "?t=" + text.match(/\d+/)[0];
+					} else if (text.toLowerCase() == "all") {
+						query = "?entries=all";
+					} else if (text.search(/\d+/) > -1) {
+						text = text.replace(/[^\/\d\-]/g, " ");
+						text = text.replace(/(\d\d?)\/(\d\d?)\/(\d\d\d\d)/g, "$3/$1/$2");
+						text = text.replace(/ +/g, " ");
+						text = text.replace(/ ?- ?/g, "-");
+						query = "?entries=" + text;
 					} else {
 						query = "?hint=" + encodeURIComponent(text);
 					}
+					query = query.replace(/ +|%20/g, "+");
 					window.location.href = query;
 				}
 			});
@@ -174,6 +183,8 @@
 					row.appendChild(item);
 				}
 			}
+
+
 
 			S.onLoad(function () {
 				if (window.location.href.includes("?")) {
@@ -373,7 +384,7 @@
 											S.forEach(journalPages, function (page, pagePath) {
 												S.forEach(page.getElementsByClassName("t" + query.t), function (occurrence) {
 													let entry = findEntry(occurrence);
-													if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {
+													if (entry && entryList.every(function (item) { return item.date != entry.dataset.date })) {  // if the entry exists and the entry isn't already included in the list
 														let info = {};
 														info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
 														info.date = entry.dataset.date;
@@ -389,7 +400,7 @@
 														if (info.url.includes("snapshots")) {
 															info.url += "?show=" + info.date;
 														}
-														info.snippet = (occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/) + " ...").trim();
+														info.snippet = (occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/)[0] + " ...").trim();
 														let entryDate = info.snippet.match(/^\w+day, \w+ \d+, \d\d\d\d\s+/);
 														if (entryDate) {  // if the date of the entry was included
 															info.snippet = info.snippet.slice(entryDate[0].length);  // remove the date
@@ -499,6 +510,83 @@
 							if (S.getId("result").innerHTML == "") {
 								S.getId("result").innerHTML = "No result was found.";
 							}
+
+						} else if (query.hasOwnProperty("entries")) {  // if searching for entries
+							let pagesToLoad = pagesToCheck.length;
+							let journalPages = {};
+							S.forEach(pagesToCheck, function (path) {
+								S.getFile(path, function (content) {
+									journalPages[path] = identifyPeople(reformatPersonNumbers(content), { loadPeople: false });
+									idParagraphs(journalPages[path]);
+									pagesToLoad--;
+									if (pagesToLoad == 0) {  // if all of the pages have loaded
+										let entryList = [];
+										// find all of the desired entries
+										S.forEach(journalPages, function (page, pagePath) {
+											S.forEach(page.getElementsByClassName("entry"), function (entry) {
+												let shouldCountEntry = false;
+												if (query.entries == "all") {  // if looking for all entries
+													shouldCountEntry = true;
+												} else {
+													S.forEach(query.entries.split(" "), function (date) {
+														if (entry.dataset.date == date) {  // if a specific entry is wanted
+															shouldCountEntry = true;
+														} else if (entry.dataset.date.slice(0, 4) == date) {  // if all entries in a year is wanted
+															shouldCountEntry = true;
+														} else if (date.includes("-")) {  // if a date range is included
+															let startDate = new Date(date.split("-")[0]).getTime();
+															let endDate;
+															if (date.split("-")[1].includes("/")) {
+																endDate = new Date(date.split("-")[1]).getTime();
+															} else {
+																let year = String(Number(date.split("-")[1]) + 1);
+																endDate = new Date(year).getTime() - 1;
+															}
+															console.log(endDate);
+															let entryDate = new Date(entry.dataset.date).getTime();
+															if (startDate <= entryDate && entryDate <= endDate) {  // if the entry is in the date range
+																shouldCountEntry = true;
+															}
+														}
+													});
+												}
+												if (shouldCountEntry) {
+													let info = {};
+													info.heading = entry.getElementsByTagName("h2")[0].textContent.trim();
+													info.date = entry.dataset.date;
+													info.url = pagePath + "#" + encodeURIComponent(info.heading);
+													if (info.url.includes("snapshots")) {
+														info.url += "?show=" + info.date;
+													}
+													info.snippet = entry.textContent.match(/^(?:[^ ]+ ){0,45}[^ ]+/)[0].trim();
+													let entryDate = info.snippet.match(/^\w+day, \w+ \d+, \d\d\d\d\s+/);
+													info.snippet = info.snippet.slice(entryDate[0].length);  // remove the date
+													if (info.snippet.split(" ").length > 40) {  // if the entry wasn't extra short
+														info.snippet += " ...";
+													}
+													info.period = entry.className.match(/bce|ce/)[0];
+													info.HTML = entry;
+													entryList.push(info);
+												}
+											});
+										});
+										S.getId("heading").textContent = (entryList.length + " entries found").replace(/^1 entries/, "1 entry");
+										// display the entries
+										S.forEach(entryList, function (entry) {
+											let container = document.createElement("div");
+											container.className = entry.period;
+											let heading = document.createElement("h2");
+											heading.innerHTML = "<a href='" + entry.url + "'>" + entry.heading + "</a>";
+											container.appendChild(heading);
+											let snippet = document.createElement("section");
+											snippet.textContent = entry.snippet;
+											container.appendChild(snippet);
+											S.getId("entryDisplay").appendChild(container)
+										});
+									}
+								});
+							});
+
 						} else {
 							S.getId("result").innerHTML = "An invalid type of search was attempted.";
 						}
@@ -526,6 +614,10 @@
 				color: var(--generic-color);
 				font-weight: normal;
 			}
+			.bce, .ce {
+				display: block;
+				padding: 0em .5em .5em;
+			}
 		</style>
 	</head>
 	<body>
@@ -541,8 +633,29 @@
 				Search
 			</button>
 			<section>
-				This allows you to find things scattered thoughout my entries and shows you consolidated information about a person or topic. Searching for something other than a person or topic is currently unsupported. Besides searching for a specific person or topic, you can search for tags associated with people such as "friend", "family", "teacher", or "high school", and you can search for qualities associated with topics.
+				Use this to search the entries of this journal. It's not currently possible to search for specific sections of text, but there are a number of other potentially useful types of searching:
 			</section>
+			<table class="labeled-list">
+				<tr>
+					<th>People:</th>
+					<td>
+						Searching a person's name will bring up options of who you could be referring to, and clicking on an option will pull up more information about the person and where they can be found in the journal. Typing "p#" using the person's number will allow bringing them up directly. It's also possible to search for people using tags associated with them such as "friend", "family", "teacher", or "high school".
+					</td>
+				</tr>
+				<tr>
+					<th>Topics:</th>
+					<td>
+						Searching a brief description of a topic will bring up options of what you may be looking for, and clicking on an option will pull up more information about the topic and where it's referenced in the journal. Typing "t#" using the topic's number will allow bringing it up directly. It's possible that a topic could come up while searching for a person (or vice versa) since the searching isn't exclusive. You can see the topics available by clicking on the button to list them.
+					</td>
+				</tr>
+				<tr>
+					<th>Entries:</th>
+					<td>
+						Searching a date or set of dates will bring up the corresponding entries. Using the word "all" will list all entries along with a snippet of the beginning of each entry. Typing a year or set of years will display only the entries from that/those year(s). A specific date will list that specific entry (or more if more are included). All dates should only use numbers and slashes ("/") with a 4-digit year. It's also possible to list entries within a certain date range (inclusively) if you separate the ends of the date range with a hyphen ("-"). Don't worry about the specifics of how to separate the dates because everything except the dates is ignored.
+					</td>
+				</tr>
+			</table>
+			<br>
 			<button id="peopleLister" disabled>
 				List people
 			</button>
