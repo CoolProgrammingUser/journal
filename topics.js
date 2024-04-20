@@ -27,3 +27,5 @@ topics[25] = { title: "Discomfort", summary: "Getting stuck in a situation I'd g
 topics[26] = { title: "Accomplishments", summary: "The various accomplishments I've achieved", keywords: ["accomplish", "awards", "success", "victory", "achieve"]}
 topics[27] = { title: "Talkativity", summary: "When it turns out I can talk a lot", keywords: ["talk", "social", "out-going", "people", "person", "extraverted"] };
 topics[28] = { title: "Reconsideration", summary: "When I question my previously-held beliefs", keywords: ["reconsider", "rethink", "question", "wonder", "doubt", "revise"] };
+topics[29] = { title: "Girls", summary: "... When I definitely am feeling some favoritism towards girls", keywords: ["girlfriend", "wife", "attraction"] };
+topics[30] = { title: "Kindness", summary: "When I do particularly nice things for people", keywords: ["nice", "thoughtful", "caring"] };

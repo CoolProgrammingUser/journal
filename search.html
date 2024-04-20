@@ -400,7 +400,12 @@
 														if (info.url.includes("snapshots")) {
 															info.url += "?show=" + info.date;
 														}
-														info.snippet = (occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/)[0] + " ...").trim();
+														info.snippet = occurrence.textContent.match(/^(?:[^ ]+ ){0,40}[^ ]+/);
+														if (info.snippet) {
+															info.snippet = info.snippet[0].trim() + " ...";
+														} else {
+															info.snippet = "A snippet couldn't be loaded.";
+														}
 														let entryDate = info.snippet.match(/^\w+day, \w+ \d+, \d\d\d\d\s+/);
 														if (entryDate) {  // if the date of the entry was included
 															info.snippet = info.snippet.slice(entryDate[0].length);  // remove the date
