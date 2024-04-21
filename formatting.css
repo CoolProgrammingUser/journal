@@ -40,7 +40,7 @@ body.navigation {
 		color: red;
 	}
 }
-body.navigation a:hover {
+body.navigation a:hover, body.navigation summary:hover {
 	font-weight: bold;
 	animation: rainbow 1s linear 0s infinite normal forwards;
 }

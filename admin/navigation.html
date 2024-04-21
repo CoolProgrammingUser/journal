@@ -4,24 +4,16 @@
 		<base target="_parent">
 		<script src="https://epicenterprograms.github.io/standards/behavior/navigation.js"></script>
 		<script>
-			Standards.navigation.contents = [
-				[
-					["..", "Main website"],
-					["../profile", "Profile"],
-					["../indicators", "Indicators"],
-					["../first", "First section"],
-					["../search", "Search"],
-					["../phonetics", "Phonetics"],
-					["../extracontent/", "Extra content"]
-				],
-				[".", "Administrative home"],
-				["people", "People list"],
-				["entries", "Hidden entries"],
-				["savedcode", "Saved code"],
-				["plans", "Journal plans"],
-				["dailylog", "Daily log"],
-				["notes", "Notes"]
-			];
+			Standards.navigation.contents = {
+				"..": "Main website",
+				".": "Administrative home",
+				people: "People list",
+				entries: "Hidden entries",
+				savedcode: "Saved code",
+				plans: "Journal plans",
+				dailylog: "Daily log",
+				notes: "Notes"
+			};
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="../formatting.css">

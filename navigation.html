@@ -4,35 +4,50 @@
 		<base target="_parent">
 		<script src="https://epicenterprograms.github.io/standards/behavior/navigation.js"></script>
 		<script>
-			Standards.navigation.contents = [
-				[".", "Home"],
-				["profile", "Profile"],
-				["indicators", "Indicators"],
-				[
-					["entries/", "Entries"],
-					["entries/first", "First section"]
-				],
-				["search", "Search"],
-				["info", "Cool info"],
-				["phonetics", "Phonetics"],
-				[
-					["extracontent/", "Extra content"],
-					["extracontent/evolution", "Why evolution is real"],
-					["extracontent/talking", "How to talk to people"],
-					["extracontent/conflicts", "Conflict resolution"],
-					["extracontent/girls/", "Girls"],
-					["extracontent/sleeplessness", "Sleep deprivation"],
-					["extracontent/addiction/", "My addiction"],
-					["extracontent/writings/themysteryplant", "The Mystery Plant"],
-					["extracontent/writings/votingforthefuture", "Voting for the Future"],
-					["extracontent/links", "External links"]
-				]
-			];
+			Standards.navigation.contents = {
+				".": "Home",
+				profile: "Profile",
+				indicators: "Indicators",
+				entries: {
+					summary: "Entries",
+					first: "First section"
+				},
+				search: "Search",
+				info: "Cool info",
+				phonetics: "Phonetics",
+				extracontent: {
+					summary: "Extra content",
+					talking: "How to talk to people",
+					conflicts: "Conflict resolution",
+					girls: {
+						summary: "Girls",
+						preferences: "Preferences",
+						appearance: "Appearance"
+					},
+					sleeplessness: "Sleep deprivation",
+					addiction: {
+						summary: "My addiction",
+						".": "Introduction",
+						entries: "Entries",
+						attempts: "Attempts to quit",
+						plea: "Plea to myself",
+						advice: "Advice",
+						consolation: "Consolation"
+					},
+					writings: {
+						summary: "Stuff I've written",
+						themysteryplant: "The Mystery Plant",
+						votingforthefuture: "Voting for the Future"
+					},
+					evolution: "Why evolution is real",
+					links: "External links"
+				}
+			};
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
 		<link rel="stylesheet" href="formatting.css">
 		<style>
-			#contentsList ul li:nth-child(6) a:hover {
+			#contentsList ul li:nth-child(5) a:hover, #contentsList ul li:nth-child(5) summary:hover {
 				animation: none;
 			}
 		</style>
