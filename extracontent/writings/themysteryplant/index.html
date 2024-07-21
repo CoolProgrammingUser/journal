@@ -1,34 +1,56 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="icon" href="../../favicon.ico">
+		<link rel="icon" href="../../../favicon.ico">
 		<title>
 			Journal
 		</title>
 		<base target="_blank">
-		<script src="../../preformatting.js"></script>
+		<script src="../../../preformatting.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
-		<script src="../../loadpeople.js"></script>
-		<script src="../../behavior.js"></script>
+		<script src="../../../loadpeople.js"></script>
+		<script src="../../../behavior.js"></script>
 		<script>
 			people[0] = {};
 			people[1] = { name: "Zane", firstName: "Zane", lastName: "Dotson", pronunciation: "zAyn DAhtsin", gender: "male", dateOfBirth: "1997/4/8" };
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="../../formatting.css">
+		<link rel="stylesheet" href="../../../formatting.css">
 		<style>
 			.paper {
 				border: .05rem solid black;
+			}
+
+			.small-width {
+				width: 30%;
+			}
+			.medium-width {
+				width: 40%;
+			}
+			.large-width {
+				width: 60%;
+			}
+
+			@media (max-width: 1000px) {
+				.small-width {
+					width: 60%;
+				}
+				.medium-width {
+					width: 80%;
+				}
+				.large-width {
+					width: 100%;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
-			<iframe src="../../navigation.html"></iframe>
+			<iframe src="../../../navigation.html"></iframe>
 		</nav>
 		<h1 class="main-title">
 			The Mystery Plant
@@ -69,6 +91,7 @@
 					Hey! What's that! I have to draw this! Let's get back to the helicopter.<br>
 					SWOOSH!
 				</section>
+				<img class="medium-width" src="First mystery plant.jpg">
 				<h3>
 					100 minutes later
 				</h3>
@@ -124,6 +147,7 @@
 					<span style="font-size:4em;">I CAN'T BELIVE THEY WERE OUT OF SNOW SHOES!</span><br>
 					(Both say it together)
 				</section>
+				<img class="small-width" src="Out of snowshoes.jpg">
 				<section>
 					Hey. Why did we burst in here? I don't know Robbie, I don't know. Do you guys know how this new paper got here, and I see you fixed the old one. Oh well thats another plant we found at the north pole when we were serching for the paper. Can you write on this carbord and tell me about it? Will it earn us a pair of snow shoes and a free trip to the equator? Yep. Done! (Both say it at the same time.) I'm felling a lot warmer now aren't you p10? Oh ya. Let's Go!
 				</section>
@@ -166,6 +190,7 @@
 				<section data-revisit="add picture">
 					(Imagine a few frames of video showing a flower look left and right and then disappear followed by a darkening screen.)
 				</section>
+				<img class="large-width" src="Second mystery plant.jpg">
 				<section>
 					Suuuure, at least a days taping. THE PLANT DISAPEAED AND THE BATEREYS RAN OUT BEFORE 30 SECONDS WENT BY! That was acculy 14 seconds. I know I counted. SO! WE STILL HAVE NOTHING! Why don't we pick it roots and all, put it in a pot with mud, and study it here. O.k. lets do that.
 				</section>

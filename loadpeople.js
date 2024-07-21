@@ -57,12 +57,15 @@ function replacePersonReference(location, options) {
 	console.loggedLog(location instanceof Element);
 	console.loggedLog(options);
 	*/
+	if (options === undefined) {
+		options = {};
+	}
 	switch (S.getType(location)) {
 		case "undefined":
 			console.error("No location to replace was specified.");
 			return;
 		case "HTMLElement":
-			number = location.className.match(/p(\d+)/);
+			number = location.className.match(/[pP](\d+)/);
 			//// console.loggedLog(number);
 			if (!number) {
 				console.error("The person number couldn't be found.");
@@ -79,12 +82,9 @@ function replacePersonReference(location, options) {
 				person = people[Number(number)];
 			}
 			//// console.loggedLog(person);
-			if (options === undefined) {
-				options = {};
-			}
 			break;
 		case "String":
-			number = location.match(/p(\d+)/);
+			number = location.match(/[pP](\d+)/);
 			if (!number) {
 				console.error("The person number couldn't be found.");
 				return;
@@ -183,9 +183,16 @@ function replacePersonReference(location, options) {
 					}
 				});
 			}
+			if (options.firstLetterCapital) {
+				text = text.charAt(0).toUpperCase() + text.slice(1);
+			}
 			link.textContent = text
 		} else {  // if the person's common name should be used
-			link.textContent = person.name;
+			let text = person.name;
+			if (options.firstLetterCapital) {
+				text = text.charAt(0).toUpperCase() + text.slice(1);
+			}
+			link.textContent = text;
 		}
 		link.target = "_blank";
 
@@ -204,16 +211,39 @@ function replacePersonReference(location, options) {
 				person = people[Number(match.match(/p(\d+)/)[1])];
 			}
 			let specialName = match.match(/\.(\w+)/);
+			let name;
 			if (specialName) {  // if a different name should be used than the common name
 				specialName = specialName[1];
 				if (specialName.includes("extra")) {
-					location = location.replace(match, person.extraNames[Number(specialName.match(/\d+/)[0]) - 1]);
+					name = person.extraNames[Number(specialName.match(/\d+/)[0]) - 1];
 				} else {
-					location = location.replace(match, person[specialName]);
+					name = person[specialName];
 				}
 			} else {  // if the common name should be used
-				location = location.replace(match, person.name);
+				name = person.name;
 			}
+			location = location.replace(match, name);
+		});
+		S.forEach(location.match(/P\d+(?:\.\w+)?/g), function (match) {
+			if (match[1] == "0") {  // if wanting to replace a person placeholder (p0#)
+				person = placeholders[Number(match.match(/P0(\d+)/)[1])];
+			} else {
+				person = people[Number(match.match(/P(\d+)/)[1])];
+			}
+			let specialName = match.match(/\.(\w+)/);
+			let name;
+			if (specialName) {  // if a different name should be used than the common name
+				specialName = specialName[1];
+				if (specialName.includes("extra")) {
+					name = person.extraNames[Number(specialName.match(/\d+/)[0]) - 1];
+				} else {
+					name = person[specialName];
+				}
+			} else {  // if the common name should be used
+				name = person.name;
+			}
+			name = name.charAt(0).toUpperCase() + name.slice(1);
+			location = location.replace(match, name);
 		});
 		return location;
 	}
@@ -248,6 +278,9 @@ function identifyPeople(placeForPeople, options) {
 			S.forEach(placeForPeople.getElementsByClassName("p" + (index + 1)), function (occurrence) {
 				replacePersonReference(occurrence);
 			});
+			S.forEach(placeForPeople.getElementsByClassName("P" + (index + 1)), function (occurrence) {
+				replacePersonReference(occurrence, { firstLetterCapital: true });
+			});
 		});
 
 		// handles special uses of p0 references
@@ -276,6 +309,9 @@ function identifyPeople(placeForPeople, options) {
 		S.forEach(placeholders.slice(1), function (person, index) {
 			S.forEach(placeForPeople.getElementsByClassName("p0" + (index + 1)), function (occurrence) {
 				replacePersonReference(occurrence);
+			});
+			S.forEach(placeForPeople.getElementsByClassName("P0" + (index + 1)), function (occurrence) {
+				replacePersonReference(occurrence, { firstLetterCapital: true });
 			});
 		});
 	}

@@ -4,28 +4,13 @@
 function reformatPersonNumbers(location) {
 	// replaces p# placeholders with <span> elements
 	let HTML = location.innerHTML;
-	HTML = HTML.replace(/<.+?>|p0?\d+(?:\.\w+(?:\([^)]*\))?)*/g, function (person) {
-		if (person[0] == "<" || person.search(/p0[^\d]|p0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
+	HTML = HTML.replace(/<.+?>|[pP]0?\d+(?:\.\w+(?:\([^)]*\))?)*/g, function (person) {
+		if (person[0] == "<" || person.search(/[pP]0[^\d]|[pP]0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
 			return person;
 		} else if (person.indexOf(".") > -1) {  // if a special name should be used
 			return '<span class="person ' + person.slice(0, person.indexOf(".")) + '" data-use="' + person.slice(person.indexOf(".") + 1) + '"></span>';
 		} else {  // if the person's common name should be used
 			return '<span class="person ' + person + '"></span>';
-		}
-	});
-	// accounts for my parents not usually being referenced by name (which might cause a sentence to not start with a capital)
-	HTML = HTML.replace(/<.+?>|P1/g, function (tag) {
-		if (tag[0] == "<") {
-			return tag;
-		} else {
-			return '<span class="person p1">My dad</span>';
-		}
-	});
-	HTML = HTML.replace(/<.+?>|P2/g, function (tag) {
-		if (tag[0] == "<") {
-			return tag;
-		} else {
-			return '<span class="person p2">My mom</span>';
 		}
 	});
 	// replaces the location's HTML
