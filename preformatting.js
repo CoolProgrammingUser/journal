@@ -1,9 +1,12 @@
 // fills all of the empty person references with people
 // needs to run before Standards, so no listeners are removed
+//// also replaces ampersands with things that look more like my handwriting while I don't have a suitable font
 
 function reformatPersonNumbers(location) {
-	// replaces p# placeholders with <span> elements
 	let HTML = location.innerHTML;
+	// replaces ordinary ampersands with ones that look like mine
+	HTML = HTML.replace(/&amp;/g, '<span class="ampersand-hack" aria-label="&">&#10802;</span>');
+	// replaces p# placeholders with <span> elements
 	HTML = HTML.replace(/<.+?>|[pP]0?\d+(?:\.\w+(?:\([^)]*\))?)*/g, function (person) {
 		if (person[0] == "<" || person.search(/[pP]0[^\d]|[pP]0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
 			return person;
