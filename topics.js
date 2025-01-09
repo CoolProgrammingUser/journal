@@ -29,3 +29,7 @@ topics[27] = { title: "Talkativity", summary: "When it turns out I can talk a lo
 topics[28] = { title: "Reconsideration", summary: "When I question my previously-held beliefs", keywords: ["reconsider", "rethink", "question", "wonder", "doubt", "revise"] };
 topics[29] = { title: "Girls", summary: "... When I definitely am feeling some favoritism towards girls", keywords: ["girlfriend", "wife", "attraction", "flirty", "biased"] };
 topics[30] = { title: "Kindness", summary: "When I do particularly nice things for people", keywords: ["nice", "thoughtful", "caring", "sweet", "compassionate"] };
+topics[31] = { title: "Affection", summary: "When I really care about a person and/or how I show it", keywords: ["care", "like", "appreciate", "love", "hug", "kiss", "hold"] };
+topics[32] = { title: "Organization", summary: "The degree to which I keep everything clean and in its place", keywords: ["organized", "clean", "cleanliness", "dirty", "dirtiness", "tidy", "tidiness", "messy", "messiness", "ordered"] };
+topics[33] = { title: "Time management", summary: "How well (or not) I manage my time", keywords: ["slow", "slowness", "procrastination", "distracted", "distractible"] };
+topics[34] = { title: "Religion", summary: "The religious beliefs of myself or others", keywords: ["god", "church", "christian", "catholic", "atheist", "agnostic"] };

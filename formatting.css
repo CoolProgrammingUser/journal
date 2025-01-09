@@ -217,6 +217,10 @@ aside.afterthought:not([data-date="none"])::after, aside.reflection:not([data-da
 	content: "[Unfinished]";
 }
 
+.t20 {
+	text-shadow: 0em 0em .5em yellow;
+}
+
 span.ampersand-hack {
 	display: inline-block;
 	margin-top: -.1em;
