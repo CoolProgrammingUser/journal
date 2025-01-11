@@ -20,7 +20,7 @@
 			var session = Standards.storage.session;
 			session.defaultLocation = "/journal/search/";
 			var months = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			var pagesToCheck = ["entries/first.html"];
+			var pagesToCheck = ["entries/prequel.html", "entries/first.html", "entries/second.html"];
 
 
 
@@ -597,6 +597,16 @@
 						}
 					});
 				}
+
+				//// makes sure my modified ampersands display correctly in snippets while I don't have my own font
+				let andFix = new MutationObserver(function (_, observer) {
+					observer.disconnect();  // necessary because running this triggers another observation
+					S.getId("entryDisplay").innerHTML = S.getId("entryDisplay").innerHTML.replace(/\u2A32/g, '<span class="ampersand-hack" aria-label="&">&#10802;</span>');
+					setTimeout(function () {
+						observer.observe(S.getId("entryDisplay"), { childList: true });
+					}, 0);
+				});
+				andFix.observe(S.getId("entryDisplay"), { childList: true });
 			});
 
 			window.addEventListener("loadedAllPeople", function () {
