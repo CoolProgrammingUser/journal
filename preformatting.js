@@ -5,7 +5,7 @@
 function reformatPersonNumbers(location) {
 	let HTML = location.innerHTML;
 	// replaces ordinary ampersands with ones that look like mine
-	HTML = HTML.replace(/&amp;(?!\w)/g, '<span class="ampersand-hack" aria-label="&">&#10802;</span>');
+	HTML = HTML.replace(/&amp;(?!\w|#)/g, '<span class="ampersand-hack" aria-label="&">&#10802;</span>');
 	// replaces p# placeholders with <span> elements
 	HTML = HTML.replace(/<.+?>|[pP]0?\d+(?:\.\w+(?:\([^)]*\))?)*/g, function (person) {
 		if (person[0] == "<" || person.search(/[pP]0[^\d]|[pP]0$/) > -1) {  // if an HTML tag or p0 was captured (prevents matching people number classes within tags)
