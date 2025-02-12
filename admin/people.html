@@ -98,7 +98,7 @@
 				});
 				/// prevents updating the actual people list until everything has been successfully parsed
 				people = updatedPeople;
-				server.store("^websites/journal/people", people, null, { requireSignIn: false }).then(function () {
+				server.store("^websites/journal/people", people, { requireSignIn: false }).then(function () {
 					S.makeDialog("People sucessfully saved.");
 				}).catch(function (error) {
 					S.makeDialog("The people couldn't be saved.");
@@ -111,7 +111,7 @@
 				let updatedPlaceholders = JSON.parse(S.getId("placeholderList").value.replace(/\w+(?=:)/g, '"$&"'));
 				/// prevents updating the actual placeholder list until everything has been successfully parsed
 				placeholders = updatedPlaceholders;
-				server.store("^websites/journal/placeholders", placeholders, null, { requireSignIn: false }).then(function () {
+				server.store("^websites/journal/placeholders", placeholders, { requireSignIn: false }).then(function () {
 					S.makeDialog("Placeholders sucessfully saved.");
 				}).catch(function (error) {
 					S.makeDialog("The placeholders couldn't be saved.");
