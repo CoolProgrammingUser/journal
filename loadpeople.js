@@ -321,7 +321,7 @@ function identifyPeople(placeForPeople, options) {
 		server.defaultLocation = "^websites/journal/";  // needed to prevent checking for a user
 
 		// loads the people
-		server.recall("people", null, { requireSignIn: false }).then(function (list) {
+		server.recall("people", { requireSignIn: false }).then(function (list) {
 			people = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the people variable
 				replacePeople();
@@ -333,7 +333,7 @@ function identifyPeople(placeForPeople, options) {
 			console.error(error);
 		});
 
-		server.recall("placeholders", null, { requireSignIn: false }).then(function (list) {
+		server.recall("placeholders", { requireSignIn: false }).then(function (list) {
 			placeholders = list;
 			if (placeForPeople !== null) {  // if more is desired than just filling the placeholders variable
 				replacePlaceholders();
