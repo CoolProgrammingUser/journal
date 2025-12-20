@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="icon" href="../favicon.ico">
+		<title>
+			Journal
+		</title>
+		<base target="_self">
+		<script src="../preformatting.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
+		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
+		<script src="../loadpeople.js"></script>
+		<script src="../behavior.js"></script>
+		<script>
+			var pagesToCheck = ["entries/prequel.html", "entries/first.html", "entries/second.html"];
+			var carouselIds = ["prequelPage", "firstPage", "secondPage"];
+			var carouselIndices = [0, 0, 0];
+
+			function showCaption(img) {
+				img.closest(".carousel").nextSibling.textContent = '"' + img.dataset.caption + '"';
+			}
+
+			S.onLoad(function () {
+				let pagesToLoad = pagesToCheck.length;
+				let journalPages = {};
+				S.forEach(pagesToCheck, function (path) {
+					S.getFile(path, function (content) {
+						const cid = carouselIds[pagesToCheck.indexOf(path)];
+						S.forEach(content.getElementsByTagName("img"), function (img) {
+							const newImg = document.createElement("img");
+							newImg.src = img.src;
+							newImg.dataset.caption = img.closest(".entry").getElementsByTagName("h2")[0].textContent.trim();
+							const selector = "#" + cid + " .viewport";
+							document.querySelector(selector).appendChild(newImg);
+						});
+						showCaption(S.getId(cid).getElementsByTagName("img")[0]);
+					});
+				});
+
+				S.forEach(S.getClass("previous-img"), function (button) {
+					button.addEventListener("click", function () {
+						const pageIndex = carouselIds.indexOf(button.parentNode.id);
+						let imgIndex = --carouselIndices[pageIndex];
+						const images = button.parentNode.getElementsByTagName("img");
+						if (imgIndex < 0) {
+							imgIndex = images.length - 1;
+							carouselIndices[pageIndex] = images.length - 1;
+						}
+						images[imgIndex].scrollIntoView();
+						showCaption(images[imgIndex]);
+					});
+				});
+				S.forEach(S.getClass("next-img"), function (button) {
+					button.addEventListener("click", function () {
+						const pageIndex = carouselIds.indexOf(button.parentNode.id);
+						let imgIndex = ++carouselIndices[pageIndex];
+						const images = button.parentNode.getElementsByTagName("img");
+						if (imgIndex >= images.length) {
+							imgIndex = 0;
+							carouselIndices[pageIndex] = 0;
+						}
+						images[imgIndex].scrollIntoView();
+						showCaption(images[imgIndex]);
+					});
+				});
+			});
+		</script>
+		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
+		<link rel="stylesheet" href="../formatting.css">
+		<link rel="stylesheet" href="../basicfeelings.css">
+		<style>
+			.carousel {
+				display: flex;
+				border: .1em solid blue;
+				border-radius: 1em;
+				width: 60vw;
+				height: 50vw;
+				align-items: center;
+			}
+			.carousel .viewport {
+				display: flex;
+				width: 50vw;
+				height: 50vw;
+				overflow: hidden;
+				scroll-snap-type: x mandatory;
+				scroll-behavior: smooth;
+			}
+			.carousel img {
+				max-width: 100%;
+				max-height: 100%;
+				object-fit: contain;
+				scroll-snap-align: center;
+			}
+			.previous-img, .next-img {
+				margin: 0em;
+				width: 5vw;
+				height: 60%;
+				font-size: 2em;
+				font-family: monospace;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="hidden-left-nav">
+			<iframe src="../navigation.html"></iframe>
+		</nav>
+		<h1 class="main-title">
+			Gallery
+		</h1>
+		<main>
+			<section>
+				Enjoy the pretty pictures!
+			</section>
+			<br>
+			<h2>
+				The prequel
+			</h2>
+			<div class="carousel" id="prequelPage">
+				<button class="previous-img"><</button>
+				<div class="viewport"></div>
+				<button class="next-img">></button>
+			</div>
+			<section class="caption"></section>
+			<br>
+			<h2>
+				First section
+			</h2>
+			<div class="carousel" id="firstPage">
+				<button class="previous-img"><</button>
+				<div class="viewport"></div>
+				<button class="next-img">></button>
+			</div>
+			<section class="caption"></section>
+			<br>
+			<h2>
+				Second section
+			</h2>
+			<div class="carousel" id="secondPage">
+				<button class="previous-img"><</button>
+				<div class="viewport"></div>
+				<button class="next-img">></button>
+			</div>
+			<section class="caption"></section>
+		</main>
+	</body>
+</html>
