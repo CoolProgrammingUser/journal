@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="icon" href="../favicon.ico">
+		<link rel="icon" href="favicon.ico">
 		<title>
 			Journal
 		</title>
 		<base target="_self">
-		<script src="../preformatting.js"></script>
+		<script src="preformatting.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-firestore.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/firebaseinit.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/general.js"></script>
 		<script src="https://epicenterprograms.github.io/standards/behavior/storage.js"></script>
-		<script src="../loadpeople.js"></script>
-		<script src="../behavior.js"></script>
+		<script src="loadpeople.js"></script>
+		<script src="behavior.js"></script>
 		<script>
-			var pagesToCheck = ["prequel.html", "first.html", "second.html"];
+			var pagesToCheck = ["entries/prequel.html", "entries/first.html", "entries/second.html"];
 			var carouselIds = ["prequelPage", "firstPage", "secondPage"];
 			var carouselIndices = [0, 0, 0];
 
@@ -49,11 +49,11 @@
 							imgIndex = images.length - 1;
 							carouselIndices[pageIndex] = images.length - 1;
 						}
-						const xScroll = window.pageXOffset || document.documentElement.scrollLeft;
-						const yScroll = window.pageYOffset || document.documentElement.scrollTop;
+						const xScroll = document.documentElement.scrollLeft || window.pageXOffset;
+						const yScroll = document.documentElement.scrollTop || window.pageYOffset;
 						images[imgIndex].scrollIntoView();
 						showCaption(images[imgIndex]);
-						window.scrollTo(xScroll, yScroll);
+						window.scrollTo(xScroll, yScroll);  /// makes sure the whole window doesn't move when putting the img in view
 					});
 				});
 				S.forEach(S.getClass("next-img"), function (button) {
@@ -65,18 +65,18 @@
 							imgIndex = 0;
 							carouselIndices[pageIndex] = 0;
 						}
-						const xScroll = window.pageXOffset || document.documentElement.scrollLeft;
-						const yScroll = window.pageYOffset || document.documentElement.scrollTop;
+						const xScroll = document.documentElement.scrollLeft || window.pageXOffset;
+						const yScroll = document.documentElement.scrollTop || window.pageYOffset;
 						images[imgIndex].scrollIntoView();
 						showCaption(images[imgIndex]);
-						window.scrollTo(xScroll, yScroll);
+						window.scrollTo(xScroll, yScroll);  /// makes sure the whole window doesn't move when putting the img in view
 					});
 				});
 			});
 		</script>
 		<link rel="stylesheet" href="https://epicenterprograms.github.io/standards/formatting/foundation.css">
-		<link rel="stylesheet" href="../formatting.css">
-		<link rel="stylesheet" href="../basicfeelings.css">
+		<link rel="stylesheet" href="formatting.css">
+		<link rel="stylesheet" href="basicfeelings.css">
 		<style>
 			.carousel {
 				display: flex;
@@ -128,7 +128,7 @@
 	</head>
 	<body>
 		<nav class="hidden-left-nav">
-			<iframe src="../navigation.html"></iframe>
+			<iframe src="navigation.html"></iframe>
 		</nav>
 		<h1 class="main-title">
 			Gallery
